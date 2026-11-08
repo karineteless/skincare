@@ -1,5 +1,5 @@
 // Nécessaire: funciona offline depois da primeira abertura.
-// Ao publicar uma versão nova do app, aumente o número abaixo.
+// Não precisa mexer aqui para atualizar: o app sempre busca a versão nova quando há internet.
 const CACHE = 'necessaire-v3';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'dados-iniciais.json',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
@@ -19,8 +19,8 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(CACHE).then(async c => (await c.match(req)) || fetch(req).then(r => { c.put(req, r.clone()); return r; })));
     return;
   }
-  // rede primeiro (pega atualizações), cache se estiver offline
-  e.respondWith(fetch(req).then(r => {
+  // rede primeiro, sem cache HTTP (pega a versão nova do GitHub na hora); cache só se estiver offline
+  e.respondWith(fetch(req.url, {cache: 'no-cache', credentials: 'same-origin'}).then(r => {
     const copia = r.clone(); caches.open(CACHE).then(c => c.put(req, copia)); return r;
   }).catch(() => caches.match(req).then(r => r || caches.match('index.html'))));
 });

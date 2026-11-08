@@ -1,6 +1,7 @@
 {
  "app": "necessaire",
  "versao": 1,
+ "revisao": "20261108150412",
  "produtos": {
   "p001": {
    "regiao": "Rosto",

@@ -15,21 +15,25 @@ App web para a rotina de skincare, o cabelo e o estoque de cosméticos. Funciona
 
 ## Onde ficam os dados
 
-- Na primeira abertura, o app carrega `dados-iniciais.json` (seus produtos e a rotina da planilha).
+- Na primeira abertura, o app carrega `dados-iniciais.json` (seus produtos e a rotina da planilha). Quando esse arquivo muda no GitHub, o app aplica as mudanças sozinho.
 - Depois disso, tudo o que você marca fica salvo **no próprio aparelho**. Não é enviado para o GitHub.
 - Para guardar uma cópia ou passar os dados para outro aparelho, use **Rotina → Backup dos dados → Exportar / Importar**.
 - Apagar os dados do site no navegador ou desinstalar o app apaga os registros. Exporte um backup de vez em quando.
 
 ## Atualizar o app
 
-Substitua o `index.html` no repositório e aumente o número em `sw.js` (ex.: `necessaire-v3` → `necessaire-v4`). Assim o celular baixa a versão nova. Seus dados continuam no aparelho.
+Substitua os arquivos no repositório (principalmente `index.html` e `dados-iniciais.json`). Não precisa mexer em mais nada.
+
+- O app instalado confere se há versão nova sempre que é aberto ou volta para a tela, e se atualiza sozinho. O GitHub Pages pode levar alguns minutos para publicar.
+- Seus registros (histórico, ajustes temporários, prioridades, produtos criados no app) **não se perdem**.
+- Se o `dados-iniciais.json` mudar, o app junta a planilha nova com o que está no celular: produtos novos entram, e cada campo é atualizado, a não ser que você o tenha mudado no app. A rotina só é trocada se você não a editou no app.
 
 ## Arquivos
 
 | Arquivo | Para que serve |
 |---|---|
 | `index.html` | O app inteiro |
-| `dados-iniciais.json` | Produtos e rotina importados da planilha (usado só na primeira abertura) |
+| `dados-iniciais.json` | Produtos e rotina da planilha (aplicados na primeira abertura e sempre que o arquivo mudar) |
 | `manifest.webmanifest` | Nome, cores e ícone do app instalado |
 | `sw.js` | Faz o app abrir sem internet |
 | `icons/` | Ícones da tela inicial |

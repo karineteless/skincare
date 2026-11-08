@@ -310,6 +310,59 @@ const extrasTipos = () => cfg().extras || ['Máscara de tecido','Máscara de arg
 
 /* ---------- armazenamento ---------- */
 const LKEY = 'necessaire.local.v1';
+const SKEY = 'necessaire.base.v1';            // cópia da última planilha aplicada (para mesclar a próxima)
+const APP_VERSAO = '20261108150412';               // trocado pela data da build na versão do GitHub
+const PLANILHA = ['regiao','cat','marca','nome','val','viagem'];
+const estavel = o => JSON.stringify(o, (k,v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.keys(v).sort().reduce((a,x) => (a[x] = v[x], a), {}) : v);
+const igual = (a,b) => estavel(a) === estavel(b);
+/* Aplica uma planilha nova (dados-iniciais.json) sem perder o que foi feito no app:
+   - histórico, ajustes temporários e produtos criados no app ficam intactos;
+   - em produtos, um campo só é trocado se a pessoa não o alterou no app;
+   - uma rotina só é trocada se não foi editada no app. */
+async function sincronizarDadosIniciais(){
+  let j;
+  try { const r = await fetch('dados-iniciais.json', {cache:'no-store'}); if (!r.ok) return; j = await r.json(); } catch(e) { return; }
+  const rev = String(j.revisao || 'sem-revisao');
+  let meta = null; try { meta = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch(e) {}
+  if (meta && meta.revisao === rev) return;
+  const base = (meta && meta.base) || null;
+  const vazio = !Object.keys(S.produtos||{}).length && !Object.keys(S.rotinas||{}).length;
+  if (vazio) { S.produtos = j.produtos || {}; S.rotinas = j.rotinas || {}; S.config = j.config || {}; }
+  else {
+    const P = Object.assign({}, S.produtos), R = Object.assign({}, S.rotinas), C = Object.assign({}, S.config);
+    Object.entries(j.produtos || {}).forEach(([id, np]) => {
+      const loc = P[id], bp = base && base.produtos && base.produtos[id];
+      if (!loc) { if (!bp) P[id] = np; return; }          // novo na planilha (se foi excluído no app, continua excluído)
+      const out = Object.assign({}, loc);
+      Object.keys(np).forEach(f => {
+        if (bp ? igual(loc[f], bp[f]) : PLANILHA.includes(f)) out[f] = np[f];
+      });
+      P[id] = out;
+    });
+    Object.entries(j.rotinas || {}).forEach(([id, nv]) => {
+      const loc = R[id], bv = base && base.rotinas && base.rotinas[id];
+      if (!loc) { if (!bv) R[id] = nv; return; }
+      if (bv ? igual(loc, bv) : !loc.atualizadoEm) R[id] = nv;
+    });
+    Object.entries(j.config || {}).forEach(([id, c]) => { if (!C[id]) C[id] = c; });
+    S.produtos = P; S.rotinas = R; S.config = C;
+  }
+  Store.saveLocal();
+  try { localStorage.setItem(SKEY, JSON.stringify({revisao:rev, base:{produtos:j.produtos, rotinas:j.rotinas, config:j.config}})); } catch(e) {}
+}
+/* Versão instalada no celular: ao voltar para o app, confere se o GitHub tem versão nova e recarrega. */
+async function checarAtualizacao(){
+  if (!S.local || APP_VERSAO.indexOf('__') === 0) return;
+  try {
+    const t = await (await fetch('index.html', {cache:'no-store'})).text();
+    const m = t.match(/APP_VERSAO = '([^']+)'/);
+    if (m && m[1] !== APP_VERSAO && !document.querySelector('#modal').firstChild) { location.reload(); return; }
+    const antes = estavel([S.produtos, S.rotinas]);
+    await sincronizarDadosIniciais();
+    if (estavel([S.produtos, S.rotinas]) !== antes) { render(); toast('Dados da planilha atualizados'); }
+  } catch(e) {}
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checarAtualizacao(); });
 const pending = new Map(), inflight = new Set();
 const Store = {
   db:null,
@@ -322,11 +375,8 @@ const Store = {
       setTimeout(() => { if (!COLS.every(c => S.loaded[c])) { S.slow = true; render(); } }, 10000);
     } else {
       S.local = true;
-      let tem = false;
-      try { const raw = localStorage.getItem(LKEY); if (raw) { Object.assign(S, JSON.parse(raw)); tem = true; } } catch(e) {}
-      if (!tem) {
-        try { const r = await fetch('dados-iniciais.json', {cache:'no-store'}); if (r.ok) { const j = await r.json(); ['produtos','rotinas','config'].forEach(c => S[c] = j[c] || {}); this.saveLocal(); } } catch(e) {}
-      }
+      try { const raw = localStorage.getItem(LKEY); if (raw) Object.assign(S, JSON.parse(raw)); } catch(e) {}
+      await sincronizarDadosIniciais();
       COLS.forEach(c => S.loaded[c] = true);
       render();
     }
@@ -1078,7 +1128,7 @@ Store.init();
 
 <script>
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js', {updateViaCache: 'none'}).catch(() => {}));
 }
 </script>
 </body>
