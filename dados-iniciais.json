@@ -480,7 +480,7 @@
   },
   "p035": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Mantecorp",
    "nome": "Episol Color Tom 1 FPS 70",
    "qtd": 1,
@@ -494,7 +494,7 @@
   },
   "p036": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Mantecorp",
    "nome": "Episol Color Tom 2 FPS 70",
    "qtd": 1,
@@ -508,7 +508,7 @@
   },
   "p037": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Sem Cor",
    "marca": "Dauf",
    "nome": "Stick FPS 90",
    "qtd": 1,
@@ -522,7 +522,7 @@
   },
   "p038": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Bioderma",
    "nome": "Photoderm XDefense Ultra-Fluid FPS50+ Cor 01",
    "qtd": 1,
@@ -536,7 +536,7 @@
   },
   "p039": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "La Roche-Posay",
    "nome": "Anthelios Ultra Cover Cor 2.0 FPS 60",
    "qtd": 1,
@@ -550,7 +550,7 @@
   },
   "p040": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Sem Cor",
    "marca": "La Roche-Posay",
    "nome": "Anthelios Airlicium Antioleosidade FPS 50",
    "qtd": 1,
@@ -564,7 +564,7 @@
   },
   "p041": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Sem Cor",
    "marca": "Neutrogena",
    "nome": "Sun Fresh Oil Control Sem Cor FPS 80",
    "qtd": 1,
@@ -578,7 +578,7 @@
   },
   "p042": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Neutrogena",
    "nome": "Sun Fresh Oil Control Cor 2.0 FPS 80",
    "qtd": 1,
@@ -592,7 +592,7 @@
   },
   "p043": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "La Roche-Posay",
    "nome": "Anthelios UVAir Cor 2.0 FPS 60",
    "qtd": 1,
@@ -606,7 +606,7 @@
   },
   "p044": {
    "regiao": "Rosto",
-   "cat": "Protetor Solar Facial",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Pink Cheeks",
    "nome": "Pro Stick Cor 15 PS 96",
    "qtd": 1,
@@ -620,7 +620,7 @@
   },
   "p045": {
    "regiao": "Rosto",
-   "cat": "Cushion",
+   "cat": "Protetor Solar Facial Com Cor",
    "marca": "Laneige",
    "nome": "Neo Cushion Glow 23N1",
    "qtd": 1,
@@ -1303,6 +1303,48 @@
    "criadoEm": "2026-11-08",
    "periodo": "",
    "prio": 0
+  },
+  "p094": {
+   "regiao": "Rosto",
+   "cat": "Toner",
+   "marca": "Hada Labo",
+   "nome": "Gokujyun Lotion",
+   "qtd": 1,
+   "status": "Em uso",
+   "val": "2028-03-01",
+   "viagem": false,
+   "obs": "",
+   "criadoEm": "2026-11-08",
+   "periodo": "",
+   "prio": 0
+  },
+  "p095": {
+   "regiao": "Rosto",
+   "cat": "Protetor Solar Facial Com Cor",
+   "marca": "Pink Cheeks",
+   "nome": "Fluido Com Cor Tint 10",
+   "qtd": 1,
+   "status": "Em uso",
+   "val": "2028-03-01",
+   "viagem": false,
+   "obs": "",
+   "criadoEm": "2026-11-08",
+   "periodo": "",
+   "prio": 0
+  },
+  "p096": {
+   "regiao": "Cabelo",
+   "cat": "Acidificante",
+   "marca": "K.Pro",
+   "nome": "pH Balancer",
+   "qtd": 1,
+   "status": "Em uso",
+   "val": "2028-06-01",
+   "viagem": false,
+   "obs": "",
+   "criadoEm": "2026-11-08",
+   "periodo": "",
+   "prio": 0
   }
  },
  "rotinas": {
@@ -1316,6 +1358,28 @@
      "nome": "Diurna",
      "sigla": "D",
      "etapas": [
+      {
+       "id": "dt",
+       "nome": "Toner",
+       "area": "Rosto",
+       "regras": [
+        {
+         "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+         ],
+         "rotulo": "",
+         "cats": [
+          "Toner"
+         ]
+        }
+       ]
+      },
       {
        "id": "d1",
        "nome": "Sérum",
@@ -1362,7 +1426,7 @@
       },
       {
        "id": "d3",
-       "nome": "Protetor solar",
+       "nome": "Protetor solar sem cor",
        "area": "Rosto",
        "regras": [
         {
@@ -1377,8 +1441,29 @@
          ],
          "rotulo": "",
          "cats": [
-          "Protetor Solar Facial",
-          "Cushion"
+          "Protetor Solar Facial Sem Cor"
+         ]
+        }
+       ]
+      },
+      {
+       "id": "d4",
+       "nome": "Protetor solar com cor",
+       "area": "Rosto",
+       "regras": [
+        {
+         "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+         ],
+         "rotulo": "",
+         "cats": [
+          "Protetor Solar Facial Com Cor"
          ]
         }
        ]
@@ -1390,6 +1475,28 @@
      "nome": "Noturna",
      "sigla": "N",
      "etapas": [
+      {
+       "id": "nt",
+       "nome": "Toner",
+       "area": "Rosto",
+       "regras": [
+        {
+         "dias": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+         ],
+         "rotulo": "",
+         "cats": [
+          "Toner"
+         ]
+        }
+       ]
+      },
       {
        "id": "n1",
        "nome": "Sérum",
@@ -1466,6 +1573,17 @@
          "cats": [
           "Hidratante Comum"
          ]
+        },
+        {
+         "dias": [
+          2,
+          4,
+          6
+         ],
+         "rotulo": "Hidratação comum (antes do tratamento)",
+         "cats": [
+          "Hidratante Comum"
+         ]
         }
        ]
       },
@@ -1514,9 +1632,18 @@
         {
          "dias": [
           0,
-          1,
-          3,
           5
+         ],
+         "rotulo": "Hidratação comum (mesmo hidratante do rosto)",
+         "cats": [
+          "Hidratante Comum"
+         ],
+         "igual": "n3"
+        },
+        {
+         "dias": [
+          1,
+          3
          ],
          "rotulo": "Hidratação comum",
          "cats": [

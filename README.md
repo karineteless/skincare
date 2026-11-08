@@ -22,7 +22,7 @@ App web para a rotina de skincare, o cabelo e o estoque de cosméticos. Funciona
 
 ## Atualizar o app
 
-Substitua o `index.html` no repositório e aumente o número em `sw.js` (`necessaire-v2` → `necessaire-v3`). Assim o celular baixa a versão nova. Seus dados continuam no aparelho.
+Substitua o `index.html` no repositório e aumente o número em `sw.js` (ex.: `necessaire-v3` → `necessaire-v4`). Assim o celular baixa a versão nova. Seus dados continuam no aparelho.
 
 ## Arquivos
 

@@ -27,7 +27,7 @@
   --bg:#F3F1F5; --surface:#FFFFFF; --sunk:#EAE6EF; --ink:#241D30; --muted:#6B6379; --line:#DCD5E3;
   --accent:#9E2F5D; --accent-soft:#F5E2EA; --on-accent:#FFFFFF;
   --ok:#2C7656; --ok-soft:#DFF0E6; --warn:#8F5600; --warn-soft:#FAEBCF; --bad:#B0232D; --bad-soft:#FADFE1;
-  --hair:#2B6698; --hair-soft:#DFEAF5; --gold:#866510; --gold-soft:#F4EBCF;
+  --hair:#2B6698; --hair-soft:#DFEAF5; --gold:#866510; --gold-soft:#F4EBCF; --yellow:#E2A50B;
   --shadow:0 1px 2px rgba(36,29,48,.06),0 4px 14px rgba(36,29,48,.05);
   --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
   --f-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
@@ -37,13 +37,13 @@
   --bg:#16121C; --surface:#211B2A; --sunk:#2A2335; --ink:#EEE8F3; --muted:#A79EB5; --line:#3A3147;
   --accent:#E57EA9; --accent-soft:#3E2433; --on-accent:#1E1018;
   --ok:#6FC79C; --ok-soft:#1D3328; --warn:#E8B45C; --warn-soft:#3A2D16; --bad:#F2858C; --bad-soft:#3E1F23;
-  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18;
+  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18; --yellow:#EBC04A;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#16121C; --surface:#211B2A; --sunk:#2A2335; --ink:#EEE8F3; --muted:#A79EB5; --line:#3A3147;
   --accent:#E57EA9; --accent-soft:#3E2433; --on-accent:#1E1018;
   --ok:#6FC79C; --ok-soft:#1D3328; --warn:#E8B45C; --warn-soft:#3A2D16; --bad:#F2858C; --bad-soft:#3E1F23;
-  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18;
+  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18; --yellow:#EBC04A;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;}
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
@@ -88,6 +88,7 @@ h3{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0}
 .pill.acc{background:var(--accent-soft);color:var(--accent)}
 .pill.hair{background:var(--hair-soft);color:var(--hair)}
 .pill.gold{background:var(--gold-soft);color:var(--gold)}
+button.pill{border:0;cursor:pointer;font-family:inherit}
 .val{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:1px 5px;border:1px solid currentColor;border-radius:4px;opacity:.9;white-space:nowrap}
 .val.bad{color:var(--bad)} .val.warn{color:var(--warn)} .val.ok{color:var(--muted)}
 .banner{border-radius:12px;padding:10px 12px;font-size:13.5px;background:var(--sunk);color:var(--muted)}
@@ -131,6 +132,10 @@ h3{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0}
 .opt.closed{opacity:.8}
 .opt.skip{justify-content:center;font-weight:600;font-size:13px;color:var(--muted);border-style:dashed;background:transparent}
 .opt.skip.sel{background:var(--sunk);color:var(--ink);border-style:solid;border-color:var(--muted)}
+.opt.more{justify-content:center;font-weight:700;font-size:13px;color:var(--accent);background:transparent;border-color:transparent}
+.step.linked{background:var(--sunk);border-style:dotted}
+.linkinfo{font-size:13.5px;color:var(--muted)}
+.linkinfo b{color:var(--ink)}
 .miss{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:7px 10px}
 /* Cabelo */
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
@@ -162,10 +167,17 @@ h3{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0}
 .stat.bad b{color:var(--bad)} .stat.warn b{color:var(--warn)}
 .group{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .group-h{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--sunk);font-weight:700;font-size:13px}
-.prow{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;width:100%}
+.prow{display:flex;flex-direction:column;align-items:stretch;gap:7px;padding:10px 12px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;width:100%}
 .prow:first-of-type{border-top:0}
 .prow:hover{background:var(--bg)}
+.prow-top{display:flex;align-items:center;gap:10px}
 .prow .pt{flex:1;min-width:0}
+.vrow{display:flex;align-items:center;gap:10px}
+.vbar{flex:1;height:6px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.vbar i{display:block;height:100%;border-radius:inherit}
+.vbar.ok i{background:var(--ok)} .vbar.warn i{background:var(--yellow)} .vbar.bad i{background:var(--bad)}
+.vtxt{font-size:11.5px;color:var(--muted);white-space:nowrap;min-width:9.5em;text-align:right}
+.vtxt.bad{color:var(--bad);font-weight:600} .vtxt.warn{color:var(--warn);font-weight:600}
 .prow .pt small{display:block;font-size:12px;color:var(--muted)}
 .prow .pt b{font-weight:600;font-size:14px}
 .prow .pr{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
@@ -272,6 +284,17 @@ const diasTxt = n => n === 0 ? 'hoje' : n === 1 ? 'ontem' : 'há '+n+' dias';
 const listaDias = ds => ds.length === 7 ? 'Todos os dias' : ds.slice().sort().map(d => DC[d]).join(', ');
 const AREAS = ['Rosto','Olhos','Pescoço e colo'];
 const REGIOES = ['Rosto','Cabelo','Corpo'];
+/* Ordem de uso no Estoque. Tipos fora destas listas vêm depois, em ordem alfabética. */
+const ORDEM_USO = {
+  Rosto: ['Água Micelar','Sabonete Líquido','Toner','Hidratante Aquoso','Sérum','Retinol Olhos','Hidratante Olhos','Hidratante Comum','Hidratante Intenso','Tretinoína','Esfoliação Química','Tratamento Facial','Retinol / Retinal','Protetor Solar Facial Sem Cor','Protetor Solar Facial Com Cor','Sleeping Mask'],
+  Cabelo: ['Shampoo Detox','Shampoo','Acidificante','Condicionador','Máscara','Booster de Tratamento','Óleo Finalizador','Creme de Pentear','Gelatina Finalizadora'],
+  Corpo: ['Sabonete Líquido Esfoliante','Óleo Corporal','Hidratante Corporal','Protetor Solar Corporal','Repelente']
+};
+function ordemCat(cat, regiao){
+  const ri = Math.max(0, REGIOES.indexOf(regiao)), l = ORDEM_USO[regiao] || [], i = l.indexOf(cat);
+  return [ri, i < 0 ? 999 : i, norm(cat)];
+}
+const cmpOrdem = (a,b) => a[0]-b[0] || a[1]-b[1] || (a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0);
 
 /* ---------- estado ---------- */
 const S = {
@@ -350,7 +373,21 @@ async function pump(key){
 const prodList = () => Object.entries(S.produtos).map(([id,p]) => Object.assign({id}, p));
 const diasVal = p => p.val ? diff(hoje(), p.val) : 9999;
 const vencido = p => p.val && diasVal(p) < 0;
-const valClass = p => !p.val ? 'ok' : diasVal(p) < 0 ? 'bad' : diasVal(p) <= 60 ? 'warn' : 'ok';
+const addMonths = (s,n) => { const d = toD(s), dia = d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+n); d.setDate(Math.min(dia, new Date(d.getFullYear(), d.getMonth()+1, 0).getDate())); return iso(d); };
+const valClass = p => !p.val ? 'ok' : p.val < hoje() ? 'bad' : p.val <= addMonths(hoje(), 3) ? 'warn' : 'ok';
+function prazoTxt(p){
+  if (!p.val) return 'sem validade';
+  const n = diff(hoje(), p.val), m = Math.floor(Math.abs(n)/30.44);
+  const t = m >= 1 ? m+(m > 1 ? ' meses' : ' mês') : Math.abs(n)+(Math.abs(n) === 1 ? ' dia' : ' dias');
+  return n < 0 ? 'vencido há '+t : n === 0 ? 'vence hoje' : 'vence em '+t;
+}
+/* barra: tempo restante numa escala de 24 meses; vencido = barra cheia vermelha */
+function valBar(p){
+  if (!p.val) return '';
+  const n = diff(hoje(), p.val), c = valClass(p);
+  const pct = n < 0 ? 100 : Math.max(4, Math.min(100, n/730*100));
+  return `<div class="vrow"><div class="vbar ${c}" role="img" aria-label="${prazoTxt(p)}"><i style="width:${pct.toFixed(1)}%"></i></div><span class="vtxt ${c}">${prazoTxt(p)}</span></div>`;
+}
 const valTxt = p => p.val ? 'VAL '+p.val.slice(5,7)+'/'+p.val.slice(2,4) : 'sem val.';
 const valBadge = p => `<span class="val ${valClass(p)}" title="${p.val ? 'Validade '+fmtCurto(p.val)+'/'+p.val.slice(0,4) : ''}">${valTxt(p)}</span>`;
 const pNome = p => (p.marca ? p.marca+' — ' : '') + p.nome;
@@ -374,21 +411,36 @@ const categorias = () => {
 };
 
 /* ---------- rotinas ---------- */
-const versoes = () => Object.entries(S.rotinas).map(([id,v]) => Object.assign({id}, v)).sort((a,b) => a.inicio.localeCompare(b.inicio));
-function versaoPara(d){ const vs = versoes(); if (!vs.length) return null; let v = vs[0]; for (const x of vs) if (x.inicio <= d) v = x; return v; }
+const todasRotinas = () => Object.entries(S.rotinas).map(([id,v]) => Object.assign({id}, v));
+const versoes = () => todasRotinas().filter(v => !v.fim).sort((a,b) => a.inicio.localeCompare(b.inicio));
+const ajustes = () => todasRotinas().filter(v => v.fim).sort((a,b) => a.inicio.localeCompare(b.inicio));
+function basePara(d){ const vs = versoes(); if (!vs.length) return null; let v = vs[0]; for (const x of vs) if (x.inicio <= d) v = x; return v; }
+/* ajuste temporário vale entre inicio e fim e tem precedência sobre a versão base */
+function ajustePara(d){ return ajustes().filter(a => a.inicio <= d && d <= a.fim).sort((a,b) => b.inicio.localeCompare(a.inicio) || String(b.criadoEm||'').localeCompare(String(a.criadoEm||'')))[0] || null; }
+function versaoPara(d){ return ajustePara(d) || basePara(d); }
+/* etapa que repete o produto de outra etapa do mesmo período (ex.: pescoço = hidratante do rosto) */
+function linkSrc(p, e){ return e.regra && e.regra.igual ? p.etapas.find(x => x.id === e.regra.igual) || null : null; }
+function syncLinks(doc, d){
+  etapasDoDia(versaoPara(d), d).forEach(p => p.etapas.forEach(e => {
+    const src = linkSrc(p, e); if (!src) return;
+    const k = p.id+':'+e.id, s = doc.pele[p.id+':'+src.id];
+    if (s) doc.pele[k] = Object.assign({}, s, {etapa:e.nome, rotulo:e.regra.rotulo||'', ord:e.ord, area:e.area||'', auto:true});
+    else if (doc.pele[k] && doc.pele[k].auto) delete doc.pele[k];
+  }));
+}
 function etapasDoDia(v, d){
   if (!v) return [];
   const wd = dow(d);
   return (v.periodos||[]).map(p => ({
     id:p.id, nome:p.nome, sigla:p.sigla,
-    etapas: p.etapas.map((e,i) => { const r = (e.regras||[]).find(r => (r.dias||[]).includes(wd)); return r ? Object.assign({}, e, {regra:r, ord:(p.sigla||'')+(i+1)}) : null; }).filter(Boolean)
+    etapas: p.etapas.map((e,i) => { if (e.pausada) return null; const r = (e.regras||[]).find(r => (r.dias||[]).includes(wd)); return r ? Object.assign({}, e, {regra:r, ord:(p.sigla||'')+(i+1)}) : null; }).filter(Boolean)
   }));
 }
 function faltas(v){
   const out = new Map();
   if (!v) return [];
-  (v.periodos||[]).forEach(p => p.etapas.forEach((e,i) => (e.regras||[]).forEach(r => {
-    if (!(r.dias||[]).length || !(r.cats||[]).length) return;
+  (v.periodos||[]).forEach(p => p.etapas.forEach((e,i) => !e.pausada && (e.regras||[]).forEach(r => {
+    if (!(r.dias||[]).length || !(r.cats||[]).length || r.igual) return;
     const ps = prodsFor(r.cats, false, p.id);
     if (!ps.length) {
       const key = r.cats.join(' / ');
@@ -478,7 +530,8 @@ function vHoje(){
     </div>
     <div class="ctx">
       ${!isHoje ? `<button class="btn sm" data-act="dia-hoje">Voltar para hoje</button>` : ''}
-      ${v ? `<span class="pill acc">Rotina: ${h(v.nome)} · desde ${fmtCurto(v.inicio)}</span>` : ''}
+      ${v && v.fim ? `<button class="pill gold" data-act="rot-edit" data-id="${h(v.id)}" title="Editar ajuste">Ajuste temporário: ${h(v.nome)} · até ${fmtCurto(v.fim)} ✎</button>` : v ? `<span class="pill acc">Rotina: ${h(v.nome)} · desde ${fmtCurto(v.inicio)}</span>` : ''}
+      ${v && !v.fim ? `<button class="btn sm" data-act="aj-novo">Mudar só por uns dias</button>` : ''}
       <button class="switch" data-act="viagem" aria-pressed="${!!dia.viagem}"><i></i>Viagem</button>
     </div>
   </div>`;
@@ -489,11 +542,20 @@ function vHoje(){
   const usados = new Set();
   out += `<section class="section"><div class="section-h"><h2>Skincare</h2><span class="small muted">Toque no produto que usou. Toque de novo para desmarcar.</span></div>`;
   periodos.forEach(p => {
-    const feitos = p.etapas.filter(e => dia.pele[p.id+':'+e.id]).length;
+    const feitos = p.etapas.filter(e => { const src = linkSrc(p, e); return dia.pele[p.id+':'+e.id] || (src && dia.pele[p.id+':'+src.id]); }).length;
     out += `<div class="period"><div class="period-h"><h3>${h(p.nome)}</h3><span class="prog ${feitos===p.etapas.length && feitos ? 'done':''}">${feitos}/${p.etapas.length}</span></div>`;
     if (!p.etapas.length) out += `<div class="banner">Nenhuma etapa neste dia.</div>`;
     p.etapas.forEach(e => {
       const k = p.id+':'+e.id; usados.add(k);
+      const lsrc = linkSrc(p, e);
+      if (lsrc) {
+        const sr = dia.pele[p.id+':'+lsrc.id];
+        out += `<div class="step linked ${sr ? 'done' : ''}">
+          <div class="step-h"><span class="ord">${h(e.ord)}</span><div class="t"><b>${h(e.nome)}</b><small>${h([e.regra.rotulo, e.area].filter(Boolean).join(' · '))}</small></div>${sr ? (sr.pulou ? '<span class="state">não usei</span>' : '<span class="state ok">✓ automático</span>') : '<span class="state">segue o '+h(lsrc.ord)+'</span>'}</div>
+          <div class="linkinfo">${sr ? (sr.pulou ? `Igual ao ${h(lsrc.ord)}: não usado.` : `Mesmo produto do ${h(lsrc.ord)}: <b>${h(sr.prodNome)}</b>`) : `Usa o mesmo produto do ${h(lsrc.ord)} ${h(lsrc.nome)}. Marque lá.`}</div>
+        </div>`;
+        return;
+      }
       const reg = dia.pele[k];
       const ps = prodsFor(e.regra.cats, dia.viagem, p.id);
       const sugId = ps[0] && ps[0].id;
@@ -505,13 +567,13 @@ function vHoje(){
         <div class="step-h"><span class="ord">${h(e.ord)}</span><div class="t"><b>${h(e.nome)}</b><small>${h([e.regra.rotulo, e.area].filter(Boolean).join(' · '))}</small></div>${st}</div>
         ${missing ? `<div class="miss">Sem produto para ${h(e.regra.cats.join(' / '))} · comprar</div>` : ''}
         <div class="opts">
-          ${ps.filter((x,ix) => ix < (S.expand.has(k) ? 999 : 3) || (reg && reg.produto === x.id)).map(x => `<button class="opt ${reg && reg.produto===x.id ? 'sel':''} ${x.status==='Fechado'?'closed':''}" data-act="pick" data-k="${h(k)}" data-p="${h(x.id)}">
+          ${ps.filter((x,ix) => ix < (S.expand.has(d+'|'+k) ? 999 : 2) || (reg && reg.produto === x.id)).map(x => `<button class="opt ${reg && reg.produto===x.id ? 'sel':''} ${x.status==='Fechado'?'closed':''}" data-act="pick" data-k="${h(k)}" data-p="${h(x.id)}">
               <span class="pn">${h(x.nome)}</span>
               <span class="pm">${h(x.marca||'')} ${valBadge(x)} ${x.status==='Fechado' ? '<span>fechado</span>' : ''} ${x.viagem ? '<span>viagem</span>' : ''} ${x.prio===1 ? '<span>★ preferido</span>' : ''} ${x.id===sugId ? '<b>sugestão</b>' : ''}</span>
             </button>`).join('')}
           ${reg && reg.produto && !ps.some(x => x.id === reg.produto) ? `<button class="opt sel" data-act="pick" data-k="${h(k)}" data-p="${h(reg.produto)}"><span class="pn">${h(reg.prodNome)}</span><span class="pm">registrado</span></button>` : ''}
-          ${ps.length > 3 && !S.expand.has(k) ? `<button class="opt skip" data-act="more" data-k="${h(k)}">+${ps.length-3} opções</button>` : ''}
           <button class="opt skip ${reg && reg.pulou ? 'sel':''}" data-act="pick" data-k="${h(k)}" data-p="__skip">Não usei</button>
+          ${ps.length > 2 ? `<button class="opt more" data-act="more" data-k="${h(d+'|'+k)}" aria-expanded="${S.expand.has(d+'|'+k)}">${S.expand.has(d+'|'+k) ? '▴ Recolher' : '▾ Ver todos ('+ps.length+')'}</button>` : ''}
         </div>
       </div>`;
     });
@@ -603,13 +665,13 @@ function vEstoque(){
   const all = prodList();
   const ativos = all.filter(p => !p.acabou);
   const venc = ativos.filter(vencido);
-  const logo = ativos.filter(p => p.val && diasVal(p) >= 0 && diasVal(p) <= 60);
-  const v = versaoPara(hoje());
+  const logo = ativos.filter(p => valClass(p) === 'warn');
+  const v = basePara(hoje());
   const fl = faltas(v);
   let out = `<div class="stats">
     <div class="stat"><b class="mono">${ativos.length}</b><span>produtos ativos</span></div>
     <div class="stat ${venc.length?'bad':''}"><b class="mono">${venc.length}</b><span>vencidos</span></div>
-    <div class="stat ${logo.length?'warn':''}"><b class="mono">${logo.length}</b><span>vencem em 60 dias</span></div>
+    <div class="stat ${logo.length?'warn':''}"><b class="mono">${logo.length}</b><span>vencem em até 3 meses</span></div>
     <div class="stat ${fl.length?'warn':''}"><b class="mono">${fl.length}</b><span>etapas sem produto</span></div>
   </div>`;
   if (fl.length) out += `<section class="section"><div class="section-h"><h2>Lista de compras</h2><span class="small muted">Etapas da rotina atual sem nenhum produto</span></div>
@@ -625,13 +687,15 @@ function listaProdutos(){
   const q = norm(S.busca);
   const ps = prodList().filter(p => (S.reg === 'Todos' || p.regiao === S.reg) && (S.acabados ? p.acabou : !p.acabou) && (!q || norm([p.marca,p.nome,p.cat].join(' ')).includes(q)));
   if (!ps.length) return `<div class="empty"><b>Nada por aqui</b>${S.acabados ? 'Nenhum produto marcado como acabado.' : 'Ajuste o filtro ou cadastre um produto.'}</div>`;
-  const g = {}; ps.forEach(p => (g[p.cat||'Sem categoria'] = g[p.cat||'Sem categoria'] || []).push(p));
-  return Object.keys(g).sort((a,b) => a.localeCompare(b)).map(cat => {
+  const g = {}, reg = {};
+  ps.forEach(p => { const c = p.cat||'Sem categoria'; (g[c] = g[c] || []).push(p); if (!reg[c]) reg[c] = p.regiao; });
+  return Object.keys(g).sort((a,b) => cmpOrdem(ordemCat(a, reg[a]), ordemCat(b, reg[b]))).map(cat => {
     const l = g[cat].sort((a,b) => (a.val||'9999').localeCompare(b.val||'9999'));
     return `<div class="group"><div class="group-h"><span>${h(cat)}</span><span class="mono muted">${l.length}</span></div>${l.map(p => `
-      <button class="prow ${p.acabou?'gone':''}" data-act="prod-edit" data-id="${h(p.id)}">
+      <button class="prow ${p.acabou?'gone':''}" data-act="prod-edit" data-id="${h(p.id)}"><div class="prow-top">
         <div class="pt"><small>${h(p.marca||'')}</small><b>${h(p.nome)}</b></div>
-        <div class="pr">${p.prio===1 ? '<span class="pill gold">★ preferido</span>' : p.prio===-1 ? '<span class="pill">por último</span>' : ''}${p.periodo ? `<span class="pill hair">${p.periodo==='noite' ? 'só noite' : 'só dia'}</span>` : ''}${p.viagem ? '<span class="pill">viagem</span>' : ''}${(p.qtd??1) > 1 ? `<span class="pill mono">×${p.qtd}</span>` : ''}<span class="pill ${p.status==='Fechado' ? '' : 'acc'}">${h(p.acabou ? 'acabou' : p.status||'Em uso')}</span>${valBadge(p)}</div>
+        <div class="pr">${p.prio===1 ? '<span class="pill gold">★ preferido</span>' : p.prio===-1 ? '<span class="pill">por último</span>' : ''}${p.periodo ? `<span class="pill hair">${p.periodo==='noite' ? 'só noite' : 'só dia'}</span>` : ''}${p.viagem ? '<span class="pill">viagem</span>' : ''}${(p.qtd??1) > 1 ? `<span class="pill mono">×${p.qtd}</span>` : ''}<span class="pill ${p.status==='Fechado' ? '' : 'acc'}">${h(p.acabou ? 'acabou' : p.status||'Em uso')}</span>${valBadge(p)}</div></div>
+        ${p.acabou ? '' : valBar(p)}
       </button>`).join('')}</div>`;
   }).join('');
 }
@@ -662,7 +726,7 @@ function prodModal(id){
 
 /* ---------- VIEW: Rotina ---------- */
 function vRotina(){
-  const vs = versoes(), atual = versaoPara(hoje());
+  const vs = versoes(), atual = basePara(hoje()), ajs = ajustes();
   if (!vs.length) return `<div class="empty"><b>Nenhuma rotina ainda</b><button class="btn primary" data-act="rot-nova" style="margin-top:10px">Criar rotina</button></div>`;
   const sel = (S.verSel && S.rotinas[S.verSel]) ? Object.assign({id:S.verSel}, S.rotinas[S.verSel]) : atual;
   let out = `<section class="section" style="margin-top:0"><div class="section-h"><h2>Versões da rotina</h2><button class="btn primary sm" data-act="rot-nova">+ Nova versão a partir de uma data</button></div>
@@ -671,17 +735,26 @@ function vRotina(){
     const prox = vs[vs.indexOf(v)+1];
     const tag = v.id === atual.id ? '<span class="pill ok">em vigor</span>' : v.inicio > hoje() ? '<span class="pill acc">agendada</span>' : '<span class="pill">anterior</span>';
     return `<button class="ver" data-act="rot-sel" data-id="${h(v.id)}" aria-pressed="${v.id===sel.id}"><div class="vt"><b>${h(v.nome)}</b><small class="mono">${fmtCurto(v.inicio)}/${v.inicio.slice(0,4)} → ${prox ? fmtCurto(addDays(prox.inicio,-1))+'/'+addDays(prox.inicio,-1).slice(0,4) : 'atual'}</small></div>${tag}</button>`;
-  }).join('')}</div></section>`;
+  }).join('')}</div></section>
+  <section class="section"><div class="section-h"><h2>Ajustes temporários</h2><button class="btn sm" data-act="aj-novo">+ Ajuste temporário</button></div>
+  <div class="small muted">Mudam a rotina só entre duas datas, por exemplo uma semana sem ácidos e retinoides. Depois a rotina normal volta sozinha.</div>
+  ${ajs.length ? `<div class="vers">${ajs.slice().reverse().map(a => {
+    const tag = a.inicio <= hoje() && hoje() <= a.fim ? '<span class="pill ok">ativo</span>' : a.inicio > hoje() ? '<span class="pill acc">agendado</span>' : '<span class="pill">encerrado</span>';
+    return `<button class="ver" data-act="rot-sel" data-id="${h(a.id)}" aria-pressed="${a.id===sel.id}"><div class="vt"><b>${h(a.nome)}</b><small class="mono">${fmtCurto(a.inicio)} → ${fmtCurto(a.fim)}/${a.fim.slice(0,4)}</small></div>${tag}</button>`;
+  }).join('')}</div>` : ''}</section>`;
 
-  out += `<section class="section"><div class="section-h"><h2>${h(sel.nome)}</h2><div class="row"><button class="btn sm" data-act="rot-edit" data-id="${h(sel.id)}">Editar esta versão</button>${vs.length > 1 ? `<button class="btn sm danger" data-act="rot-del" data-id="${h(sel.id)}" data-confirm="Confirmar exclusão">Excluir</button>` : ''}</div></div>
+  const ehAj = !!sel.fim;
+  out += `<section class="section"><div class="section-h"><h2>${h(sel.nome)}</h2><div class="row"><button class="btn sm" data-act="rot-edit" data-id="${h(sel.id)}">${ehAj ? 'Editar este ajuste' : 'Editar esta versão'}</button>${ehAj || vs.length > 1 ? `<button class="btn sm danger" data-act="rot-del" data-id="${h(sel.id)}" data-confirm="Confirmar exclusão">Excluir</button>` : ''}</div></div>
+  ${ehAj ? `<div class="banner warn">Ajuste temporário de ${fmtCurto(sel.inicio)} a ${fmtCurto(sel.fim)}.</div>` : ''}
   ${sel.obs ? `<div class="small muted">${h(sel.obs)}</div>` : ''}`;
   (sel.periodos||[]).forEach(p => {
     out += `<h3 style="margin-top:6px">${h(p.nome)}</h3><div class="tblwrap"><table class="grid"><thead><tr><th class="s">Etapa</th>${DL.map((l,i) => `<th title="${DIAS[i]}" data-l="${l}">${DC[i]}</th>`).join('')}</tr></thead><tbody>`;
     p.etapas.forEach((e,i) => {
       const multi = (e.regras||[]).length > 1;
-      out += `<tr><td class="s"><b><span class="mono muted">${h((p.sigla||'')+(i+1))}</span> ${h(e.nome)}</b>${(e.regras||[]).map((r,ri) => `<small>${multi ? `<span class="cell c${ri%4}" style="min-width:16px;height:16px;font-size:9.5px">${ri+1}</span> ` : ''}${h(r.rotulo || (r.dias.length===7 ? 'Todos os dias' : listaDias(r.dias)))}: ${h((r.cats||[]).join(', ') || '—')}</small>`).join('')}</td>`;
+      const fonte = r => { if (r.igual) { const xi = p.etapas.findIndex(x => x.id === r.igual); if (xi >= 0) return 'mesmo produto da '+(p.sigla||'')+(xi+1); } return (r.cats||[]).join(', ') || '—'; };
+      out += `<tr${e.pausada ? ' style="opacity:.5"' : ''}><td class="s"><b><span class="mono muted">${h((p.sigla||'')+(i+1))}</span> ${h(e.nome)}${e.pausada ? ' <span class="pill">pausada</span>' : ''}</b>${(e.regras||[]).map((r,ri) => `<small>${multi ? `<span class="cell c${ri%4}" style="min-width:16px;height:16px;font-size:9.5px">${ri+1}</span> ` : ''}${h(r.rotulo || (r.dias.length===7 ? 'Todos os dias' : listaDias(r.dias)))}: ${h(fonte(r))}</small>`).join('')}</td>`;
       for (let wd = 0; wd < 7; wd++) {
-        const ri = (e.regras||[]).findIndex(r => (r.dias||[]).includes(wd));
+        const ri = e.pausada ? -1 : (e.regras||[]).findIndex(r => (r.dias||[]).includes(wd));
         out += `<td>${ri < 0 ? '<span class="cell cnone">–</span>' : `<span class="cell c${ri%4}">${multi ? ri+1 : '●'}</span>`}</td>`;
       }
       out += `</tr>`;
@@ -709,19 +782,25 @@ function impMsg(){
 }
 /* editor de versão */
 function novaEtapa(){ return {id:uid('e'), nome:'Nova etapa', area:'Rosto', regras:[{dias:[0,1,2,3,4,5,6], rotulo:'', cats:[]}]}; }
-function abrirEditor(base, nova){
+/* modo: false = editar existente · true = nova versão · 'temp' = novo ajuste temporário */
+function abrirEditor(base, modo){
   const ed = clone(base);
-  if (nova) { ed.id = uid('r'); ed.inicio = hoje(); ed.nome = 'Rotina a partir de '+fmtCurto(hoje()); }
+  if (modo === true) { ed.id = uid('r'); ed.inicio = hoje(); ed.nome = 'Rotina a partir de '+fmtCurto(hoje()); delete ed.fim; }
+  if (modo === 'temp') { const ini = S.view === 'hoje' ? S.dia : hoje(); ed.id = uid('t'); ed.inicio = ini; ed.fim = ini; ed.nome = 'Ajuste temporário'; ed.obs = ''; }
+  if (modo) ed.criadoEm = new Date().toISOString();
   ed.cabelo = Object.assign({minSemana:3, prioridade:[0,2,4], acidDias:14, detoxSemana:1, cowashConta:false, nota:''}, ed.cabelo);
-  S.ed = ed; S.edNova = nova; renderEditor();
+  S.ed = ed; S.edNova = !!modo; S.edTemp = !!ed.fim; renderEditor();
 }
 function renderEditor(){
   const ed = S.ed, cats = categorias();
   const sheet = document.querySelector('#modal .sheet'); const st = sheet ? sheet.scrollTop : 0;
-  let html = `<div class="sheet-h"><h2>${S.edNova ? 'Nova versão da rotina' : 'Editar versão'}</h2><button class="iconbtn" data-act="close" aria-label="Fechar">×</button></div>
+  const tmp = S.edTemp;
+  let html = `<div class="sheet-h"><h2>${tmp ? (S.edNova ? 'Novo ajuste temporário' : 'Editar ajuste temporário') : (S.edNova ? 'Nova versão da rotina' : 'Editar versão')}</h2><button class="iconbtn" data-act="close" aria-label="Fechar">×</button></div>
+  ${tmp ? '<div class="banner warn">Vale só entre as duas datas. Pause etapas, mude os dias ou troque os tipos de produto. A rotina normal não é alterada.</div>' : ''}
   <div class="form">
-    <label class="f">Nome<input id="ed-nome" data-ed="nome" value="${h(ed.nome)}"></label>
-    <label class="f">Vale a partir de<input id="ed-inicio" type="date" data-ed="inicio" value="${h(ed.inicio)}"></label>
+    <label class="f ${tmp ? 'full' : ''}">Nome<input id="ed-nome" data-ed="nome" value="${h(ed.nome)}" ${tmp ? 'placeholder="ex.: Semana só hidratação"' : ''}></label>
+    <label class="f">${tmp ? 'De' : 'Vale a partir de'}<input id="ed-inicio" type="date" data-ed="inicio" value="${h(ed.inicio)}"></label>
+    ${tmp ? `<label class="f">Até (inclusive)<input id="ed-fim" type="date" data-ed="fim" value="${h(ed.fim||'')}"></label>` : ''}
     <label class="f full">Observação<input id="ed-obs" data-ed="obs" value="${h(ed.obs||'')}" placeholder="ex.: pele mais sensível no inverno"></label>
   </div>
   <datalist id="ed-cats">${cats.map(c => `<option value="${h(c)}">`).join('')}</datalist>`;
@@ -736,13 +815,16 @@ function renderEditor(){
           <button class="iconbtn" data-act="ed-mv" data-pi="${pi}" data-ei="${ei}" data-d="-1" aria-label="Subir" ${ei===0?'disabled':''}>↑</button>
           <button class="iconbtn" data-act="ed-mv" data-pi="${pi}" data-ei="${ei}" data-d="1" aria-label="Descer" ${ei===p.etapas.length-1?'disabled':''}>↓</button>
           <button class="iconbtn" data-act="ed-step-del" data-pi="${pi}" data-ei="${ei}" aria-label="Remover etapa">×</button>
-        </div>`;
+        </div>
+        <label class="chk small"><input type="checkbox" id="ed-${pi}-${ei}-pausa" data-ed="periodos.${pi}.etapas.${ei}.pausada" data-bool ${e.pausada ? 'checked' : ''}> Pausar esta etapa (não aparece no dia)</label>`;
       e.regras.forEach((r,ri) => {
         const outros = new Set(); e.regras.forEach((o,oi) => { if (oi !== ri) o.dias.forEach(d => outros.add(d)); });
         html += `<div class="edrule">
           <div class="row between"><div class="days">${DC.map((l,wd) => `<button class="dchip ${outros.has(wd)?'taken':''}" data-act="ed-day" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}" data-wd="${wd}" aria-pressed="${r.dias.includes(wd)}" title="${DIAS[wd]}">${l}</button>`).join('')}</div>
           ${e.regras.length > 1 ? `<button class="btn sm ghost" data-act="ed-rule-del" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}">Remover variação</button>` : ''}</div>
           <input class="inp" id="ed-${pi}-${ei}-${ri}-rot" data-ed="periodos.${pi}.etapas.${ei}.regras.${ri}.rotulo" value="${h(r.rotulo||'')}" placeholder="Rótulo (opcional), ex.: Hidratação intensa">
+          <select class="inp" id="ed-${pi}-${ei}-${ri}-ig" data-ed="periodos.${pi}.etapas.${ei}.regras.${ri}.igual" data-rr aria-label="De onde vem o produto"><option value="">Escolher o produto entre os tipos abaixo</option>${p.etapas.map((x,xi) => xi === ei ? '' : `<option value="${h(x.id)}" ${r.igual === x.id ? 'selected' : ''}>Mesmo produto da ${h((p.sigla||'')+(xi+1))} ${h(x.nome)} (marca sozinho)</option>`).join('')}</select>
+          ${r.igual ? '<span class="small muted">Os tipos abaixo só valem se a etapa de origem não existir naquele dia.</span>' : ''}
           <div class="row">${r.cats.map((c,ci) => `<span class="catchip">${h(c)}<button data-act="ed-cat-del" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}" data-ci="${ci}" aria-label="Remover ${h(c)}">×</button></span>`).join('') || '<span class="small muted">Nenhum tipo de produto: a etapa vai aparecer como "sem produto".</span>'}</div>
           <div class="row"><input class="inp" id="ed-${pi}-${ei}-${ri}-cat" list="ed-cats" placeholder="Tipo de produto que serve nesta etapa" style="flex:1;min-width:0"><button class="btn sm" data-act="ed-cat-add" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}">Adicionar tipo</button></div>
         </div>`;
@@ -765,7 +847,7 @@ function renderEditor(){
     <label class="f">Lembrete (aparece no card do cabelo)<textarea id="ed-c-nota" rows="2" data-ed="cabelo.nota">${h(c.nota||'')}</textarea></label>
   </div></div>
   <div id="ed-msg"></div>
-  <div class="row"><button class="btn primary" data-act="ed-save">${S.edNova ? 'Salvar nova versão' : 'Salvar alterações'}</button><button class="btn ghost" data-act="close">Cancelar</button></div>`;
+  <div class="row"><button class="btn primary" data-act="ed-save">${tmp ? 'Salvar ajuste' : S.edNova ? 'Salvar nova versão' : 'Salvar alterações'}</button><button class="btn ghost" data-act="close">Cancelar</button></div>`;
   openModal(html);
   const sh = document.querySelector('#modal .sheet'); if (sh) sh.scrollTop = st;
 }
@@ -829,7 +911,7 @@ function closeModal(){ $('#modal').innerHTML = ''; S.ed = null; }
 const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
 const A = {
   dia: t => { S.dia = addDays(S.dia, +t.dataset.n); S.extraForm = false; render(); },
-  more: t => { S.expand.add(t.dataset.k); render(); },
+  more: t => { const k = t.dataset.k; if (S.expand.has(k)) S.expand.delete(k); else S.expand.add(k); render(); },
   'dia-hoje': () => { S.dia = hoje(); render(); },
   viagem: () => { const doc = getDia(S.dia); doc.viagem = !doc.viagem; saveDia(doc); },
   pick: t => {
@@ -845,6 +927,7 @@ const A = {
       doc.pele[k] = Object.assign({}, info, {produto:pid, prodNome:pNome(p), cat:p.cat||''});
       if (p.status === 'Fechado') { Store.write('produtos', pid, Object.assign(clone(p), {status:'Em uso', abertoEm:d})); toast('Marcado como "em uso" no estoque'); }
     }
+    syncLinks(doc, d);
     saveDia(doc);
   },
   'hair-tog': t => { const dr = S.hairDraft[S.dia]; dr[t.dataset.f] = !dr[t.dataset.f]; render(); },
@@ -891,7 +974,8 @@ const A = {
   'prod-restore': t => { const id = t.dataset.id; const p = clone(S.produtos[id]); p.acabou = false; delete p.acabouEm; if (!p.qtd) p.qtd = 1; Store.write('produtos', id, p); closeModal(); toast('Produto restaurado'); },
   'prod-del': t => { Store.write('produtos', t.dataset.id, null); closeModal(); toast('Produto excluído'); },
   'rot-sel': t => { S.verSel = t.dataset.id; render(); },
-  'rot-nova': () => { const base = versaoPara(hoje()) || {nome:'', inicio:hoje(), periodos:[{id:'manha', nome:'Diurna', sigla:'D', etapas:[]},{id:'noite', nome:'Noturna', sigla:'N', etapas:[]}]}; abrirEditor(base, true); },
+  'aj-novo': () => { const b = basePara(S.view === 'hoje' ? S.dia : hoje()); if (b) abrirEditor(b, 'temp'); },
+  'rot-nova': () => { const base = basePara(hoje()) || {nome:'', inicio:hoje(), periodos:[{id:'manha', nome:'Diurna', sigla:'D', etapas:[]},{id:'noite', nome:'Noturna', sigla:'N', etapas:[]}]}; abrirEditor(base, true); },
   'rot-edit': t => abrirEditor(Object.assign({id:t.dataset.id}, S.rotinas[t.dataset.id]), false),
   'rot-del': t => { Store.write('rotinas', t.dataset.id, null); S.verSel = null; toast('Versão excluída'); },
   'ed-mv': t => { const p = S.ed.periodos[+t.dataset.pi], i = +t.dataset.ei, j = i + +t.dataset.d; if (j < 0 || j >= p.etapas.length) return; [p.etapas[i], p.etapas[j]] = [p.etapas[j], p.etapas[i]]; renderEditor(); },
@@ -911,13 +995,15 @@ const A = {
   'ed-save': () => {
     const ed = S.ed, msg = document.getElementById('ed-msg');
     if (!/^\d{4}-\d{2}-\d{2}$/.test(ed.inicio || '')) { msg.innerHTML = '<div class="banner bad">Escolha a data de início.</div>'; return; }
-    const clash = versoes().find(v => v.inicio === ed.inicio && v.id !== ed.id);
+    if (S.edTemp && !(/^\d{4}-\d{2}-\d{2}$/.test(ed.fim || '') && ed.fim >= ed.inicio)) { msg.innerHTML = '<div class="banner bad">A data final precisa ser igual ou depois da data inicial.</div>'; return; }
+    const clash = !S.edTemp && versoes().find(v => v.inicio === ed.inicio && v.id !== ed.id);
     if (clash) { msg.innerHTML = `<div class="banner bad">Já existe a versão "${h(clash.nome)}" começando em ${fmtCurto(ed.inicio)}. Escolha outra data ou edite aquela.</div>`; return; }
     const id = ed.id; const body = clone(ed); delete body.id;
-    body.nome = (body.nome || '').trim() || 'Rotina de '+fmtCurto(body.inicio);
+    body.nome = (body.nome || '').trim() || (S.edTemp ? 'Ajuste de '+fmtCurto(body.inicio) : 'Rotina de '+fmtCurto(body.inicio));
+    if (!S.edTemp) delete body.fim;
     body.atualizadoEm = hoje();
     Store.write('rotinas', id, body); S.verSel = id; closeModal();
-    toast(S.edNova ? 'Nova versão vale a partir de '+fmtCurto(body.inicio) : 'Versão atualizada');
+    toast(S.edTemp ? 'Ajuste vale de '+fmtCurto(body.inicio)+' a '+fmtCurto(body.fim) : S.edNova ? 'Nova versão vale a partir de '+fmtCurto(body.inicio) : 'Versão atualizada');
   },
   close: () => closeModal(),
   exportar: async () => {
@@ -965,6 +1051,7 @@ document.addEventListener('input', ev => {
 document.addEventListener('change', ev => {
   const t = ev.target;
   if (t.dataset && 'bool' in t.dataset && S.ed) setPath(S.ed, t.dataset.ed, t.checked);
+  if (t.dataset && 'rr' in t.dataset && S.ed) { setPath(S.ed, t.dataset.ed, t.value); renderEditor(); }
   if (t.id === 'imp-file' && t.files && t.files[0]) {
     const fr = new FileReader();
     fr.onload = () => {

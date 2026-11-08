@@ -1,6 +1,6 @@
 // Nécessaire: funciona offline depois da primeira abertura.
 // Ao publicar uma versão nova do app, aumente o número abaixo.
-const CACHE = 'necessaire-v2';
+const CACHE = 'necessaire-v3';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'dados-iniciais.json',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
