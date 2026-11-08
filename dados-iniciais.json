@@ -1,7 +1,8 @@
 {
  "app": "necessaire",
  "versao": 1,
- "revisao": "20261108150412",
+ "revisao": "20261108151313",
+ "reinicio": 1,
  "produtos": {
   "p001": {
    "regiao": "Rosto",
@@ -1616,7 +1617,7 @@
       },
       {
        "id": "n5",
-       "nome": "Tratamento pescoço e colo",
+       "nome": "Pescoço e colo",
        "area": "Pescoço e colo",
        "regras": [
         {

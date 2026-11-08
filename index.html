@@ -311,7 +311,7 @@ const extrasTipos = () => cfg().extras || ['Máscara de tecido','Máscara de arg
 /* ---------- armazenamento ---------- */
 const LKEY = 'necessaire.local.v1';
 const SKEY = 'necessaire.base.v1';            // cópia da última planilha aplicada (para mesclar a próxima)
-const APP_VERSAO = '20261108150412';               // trocado pela data da build na versão do GitHub
+const APP_VERSAO = '20261108151313';               // trocado pela data da build na versão do GitHub
 const PLANILHA = ['regiao','cat','marca','nome','val','viagem'];
 const estavel = o => JSON.stringify(o, (k,v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.keys(v).sort().reduce((a,x) => (a[x] = v[x], a), {}) : v);
 const igual = (a,b) => estavel(a) === estavel(b);
@@ -322,12 +322,14 @@ const igual = (a,b) => estavel(a) === estavel(b);
 async function sincronizarDadosIniciais(){
   let j;
   try { const r = await fetch('dados-iniciais.json', {cache:'no-store'}); if (!r.ok) return; j = await r.json(); } catch(e) { return; }
-  const rev = String(j.revisao || 'sem-revisao');
+  const rev = String(j.revisao || 'sem-revisao'), reinicio = j.reinicio || 0;
   let meta = null; try { meta = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch(e) {}
-  if (meta && meta.revisao === rev) return;
+  /* "reinicio" muda só quando a planilha deve apagar e substituir tudo no aparelho (ex.: fim dos testes) */
+  const forcar = (meta ? meta.reinicio || 0 : 0) !== reinicio;
+  if (!forcar && meta && meta.revisao === rev) return;
   const base = (meta && meta.base) || null;
   const vazio = !Object.keys(S.produtos||{}).length && !Object.keys(S.rotinas||{}).length;
-  if (vazio) { S.produtos = j.produtos || {}; S.rotinas = j.rotinas || {}; S.config = j.config || {}; }
+  if (vazio || forcar) { S.produtos = j.produtos || {}; S.rotinas = j.rotinas || {}; S.config = j.config || {}; if (forcar) S.diario = {}; }
   else {
     const P = Object.assign({}, S.produtos), R = Object.assign({}, S.rotinas), C = Object.assign({}, S.config);
     Object.entries(j.produtos || {}).forEach(([id, np]) => {
@@ -348,7 +350,7 @@ async function sincronizarDadosIniciais(){
     S.produtos = P; S.rotinas = R; S.config = C;
   }
   Store.saveLocal();
-  try { localStorage.setItem(SKEY, JSON.stringify({revisao:rev, base:{produtos:j.produtos, rotinas:j.rotinas, config:j.config}})); } catch(e) {}
+  try { localStorage.setItem(SKEY, JSON.stringify({revisao:rev, reinicio, base:{produtos:j.produtos, rotinas:j.rotinas, config:j.config}})); } catch(e) {}
 }
 /* Versão instalada no celular: ao voltar para o app, confere se o GitHub tem versão nova e recarrega. */
 async function checarAtualizacao(){
@@ -821,7 +823,9 @@ function vRotina(){
     <div class="card stack"><div class="small muted">Um arquivo .json com produtos, rotinas e histórico. Serve para guardar uma cópia ou passar os dados para outro aparelho.</div>
     <div class="row"><button class="btn" data-act="exportar">Exportar backup</button>
     <label class="btn" for="imp-file">Importar backup</label><input type="file" id="imp-file" accept=".json,application/json" hidden></div>
-    <div id="imp-msg">${impMsg()}</div></div></section>`;
+    <div id="imp-msg">${impMsg()}</div>
+    ${S.local ? `<div class="small muted" style="margin-top:6px">Recomeçar do zero apaga histórico, ajustes e mudanças feitas no app, e carrega de novo a planilha publicada no GitHub.</div>
+    <div><button class="btn danger" data-act="reset-planilha" data-confirm="Toque de novo para apagar tudo">Recomeçar com os dados da planilha</button></div>` : ''}</div></section>`;
   return out;
 }
 
@@ -1074,6 +1078,11 @@ const A = {
       Object.entries(novo).forEach(([id,doc]) => Store.write(col, id, doc));
     });
     S.importando = null; document.getElementById('imp-msg').innerHTML = ''; toast('Backup importado');
+  },
+  'reset-planilha': async () => {
+    try { localStorage.removeItem(LKEY); localStorage.removeItem(SKEY); } catch(e) {}
+    S.produtos = {}; S.rotinas = {}; S.diario = {}; S.config = {};
+    await sincronizarDadosIniciais(); S.verSel = null; render(); toast('Dados da planilha carregados');
   },
   'importar-cancel': () => { S.importando = null; document.getElementById('imp-msg').innerHTML = ''; },
   'hist-dia': t => { S.dia = t.dataset.d; location.hash = 'hoje'; },
