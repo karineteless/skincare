@@ -2,658 +2,997 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#EDF1EF">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Nécessaire">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F3F1F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16121C" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Rotina de skincare, cabelo e estoque de cosméticos">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Nécessaire da Karine</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<style>
-/* Layout: app de uma tela — cabeçalho, conteúdo rolável, abas embaixo; coluna central até 560px. Visual de prateleira de banheiro: porcelana fria + eucalipto, carimbos de validade em mono */
-:root{
-  --bg:#EDF1EF; --surface:#FFFFFF; --sunk:#E1E8E5; --ink:#16232A; --muted:#58686D; --line:#D2DBD7;
-  --accent:#2C5E56; --accent-ink:#FFFFFF; --accent-soft:#D6E7E1;
-  --bad:#B3261E; --bad-soft:#F7DFDC; --warn:#965800; --warn-soft:#F5E7CF; --good:#2B7449; --good-soft:#D9EEDF;
-  --f-acido:#C27A17; --f-retinol:#7155C2; --f-hidrat:#2A7BAD; --f-argila:#8A684A; --f-hair:#A8721A; --f-manha:#2C5E56;
-  --display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
-  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-  --r:14px; --shadow:0 1px 2px rgba(22,35,42,.06),0 4px 14px rgba(22,35,42,.06);
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0F171A; --surface:#172227; --sunk:#1D2A2F; --ink:#E4EDEA; --muted:#97A8AC; --line:#2A3A40;
-  --accent:#7CC0B3; --accent-ink:#0F171A; --accent-soft:#1E3633;
-  --bad:#F08A80; --bad-soft:#3A1F1D; --warn:#E6AE5C; --warn-soft:#3A2D18; --good:#79C795; --good-soft:#1B3325;
-  --f-acido:#E2A04A; --f-retinol:#A48BEA; --f-hidrat:#6CB2DE; --f-argila:#C09C7C; --f-hair:#D9A24C; --f-manha:#7CC0B3;
-  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#0F171A; --surface:#172227; --sunk:#1D2A2F; --ink:#E4EDEA; --muted:#97A8AC; --line:#2A3A40;
-  --accent:#7CC0B3; --accent-ink:#0F171A; --accent-soft:#1E3633;
-  --bad:#F08A80; --bad-soft:#3A1F1D; --warn:#E6AE5C; --warn-soft:#3A2D18; --good:#79C795; --good-soft:#1B3325;
-  --f-acido:#E2A04A; --f-retinol:#A48BEA; --f-hidrat:#6CB2DE; --f-argila:#C09C7C; --f-hair:#D9A24C; --f-manha:#7CC0B3;
-  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark }
-
-html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--body);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer;background:none;border:0;padding:0}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
-#app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-block:14px 10px}
-.eyebrow{font:600 11px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
-h1{font:700 30px/1 var(--display);margin:0;letter-spacing:-.015em}
-h2{font:700 21px/1.15 var(--display);margin:0;text-wrap:balance}
-h3{font:600 17px/1.2 var(--display);margin:0}
-.alert{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--bad-soft);color:var(--bad);font-weight:600;font-size:12.5px;white-space:nowrap}
-.alert::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-main{flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:14px;padding-block:2px 18px;scrollbar-width:none}
-main::-webkit-scrollbar{display:none}
-main>*{flex-shrink:0}
-nav.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-block:6px 8px;border-top:1px solid var(--line)}
-.tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;color:var(--muted);font-size:12px;font-weight:600}
-.tab svg{width:22px;height:22px}
-.tab[aria-current="true"]{color:var(--accent);background:var(--accent-soft)}
-
-/* semana */
-.week{display:grid;grid-template-columns:28px 1fr 28px;align-items:center;gap:4px}
-.wkbtn{height:44px;border-radius:10px;color:var(--muted);font-size:20px}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 7px;border-radius:12px;font-variant-numeric:tabular-nums}
-.day .dl{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.day .dn{font:600 16px/1 var(--display)}
-.day .dots{display:flex;gap:3px;height:6px}
-.day .dots i{width:6px;height:6px;border-radius:50%;background:var(--c)}
-.day .dots i.hair{border-radius:50% 50% 50% 0;transform:rotate(-45deg)}
-.day.today .dn{color:var(--accent)}
-.day[aria-pressed="true"]{background:var(--surface);box-shadow:var(--shadow)}
-.day.full .dn{text-decoration:underline 2px var(--good);text-underline-offset:3px}
-
-.dayhead{display:flex;flex-direction:column;gap:8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--sunk);font-size:12.5px;font-weight:600;color:var(--ink);border:1px solid transparent}
-.chip.dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--accent))}
-.chip.on{background:var(--surface);border-color:var(--c,var(--accent));color:var(--c,var(--accent));box-shadow:var(--shadow)}
-.chips.sm .chip{padding:4px 9px;font-size:12px}
-
-/* prateleira */
-.shelf{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px 0}
-.shelf-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.shelf-h span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.shelf-row{display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding:12px 2px 0;border-bottom:3px solid var(--line);scrollbar-width:none;min-height:58px}
-.shelf-row::-webkit-scrollbar{display:none}
-.shelf-row .b{flex:none;display:flex;transition:opacity .2s,transform .2s}
-.shelf-row .b.pend{opacity:.32}
-.shelf-row .sep{flex:none;width:1px;height:28px;background:var(--line);margin:0 4px 4px}
-.shelf-leg{display:flex;gap:12px;font-size:11.5px;color:var(--muted);padding:8px 0 10px;flex-wrap:wrap}
-
-/* rotina */
-.rot{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
-.rot-h{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
-.rot-h .ttl{flex:1;min-width:0}
-.rot-h p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
-.ring{flex:none;width:38px;height:38px}
-.ring .bgc{stroke:var(--sunk)} .ring .fg{stroke:var(--c,var(--accent));transition:stroke-dashoffset .3s}
-.ring text{font:600 10.5px var(--body);fill:var(--ink)}
-.allbtn{font-size:12.5px;font-weight:600;color:var(--accent);padding:6px 8px;border-radius:8px}
-.seg2{display:inline-flex;background:var(--sunk);border-radius:999px;padding:2px;margin-top:6px}
-.seg2 button{padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted)}
-.seg2 button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-.steps{list-style:none;margin:0;padding:4px 0}
-.step{display:grid;grid-template-columns:40px 1fr;align-items:center;gap:4px;padding:4px 12px 4px 6px;position:relative}
-.step+.step::before{content:"";position:absolute;left:25px;top:-8px;height:16px;border-left:2px dotted var(--line)}
-.check{width:40px;height:40px;display:grid;place-items:center;border-radius:50%}
-.check i{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;transition:background .15s,border-color .15s}
-.check[aria-pressed="true"] i{background:var(--c,var(--accent));border-color:var(--c,var(--accent))}
-.check[aria-pressed="true"] i::after{content:"";width:10px;height:5px;border-left:2px solid var(--surface);border-bottom:2px solid var(--surface);transform:translateY(-1px) rotate(-45deg)}
-.check:disabled{opacity:.35;cursor:default}
-.pick{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;text-align:left;padding:7px 10px;border-radius:12px;min-width:0;border:1px solid transparent}
-.pick:hover{background:var(--sunk)}
-.pick .lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.pick .nm{display:block;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pick .br{font-size:12.5px;color:var(--muted)}
-.pick .mid{min-width:0}
-.pick .chev{color:var(--muted);font-size:18px}
-.pick.none .nm{color:var(--muted);font-weight:500;font-style:italic}
-.pick.skip .nm{color:var(--muted);font-weight:500;text-decoration:line-through}
-.step.done .nm{color:var(--muted)}
-.flags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
-.flag{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px}
-.flag.bad{background:var(--bad-soft);color:var(--bad)} .flag.warn{background:var(--warn-soft);color:var(--warn)} .flag.info{background:var(--accent-soft);color:var(--accent)}
-.ghostico{width:22px;height:30px;border:1.5px dashed var(--line);border-radius:5px;justify-self:center}
-.nohair{padding:14px;border-radius:var(--r);border:1.5px dashed var(--line);color:var(--muted);font-size:13.5px}
-
-/* estoque */
-.segbar{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border-radius:12px;padding:3px}
-.segbar button{padding:8px;border-radius:10px;font-weight:600;color:var(--muted)}
-.segbar button b{font-variant-numeric:tabular-nums;font-weight:600;opacity:.7;margin-left:4px}
-.segbar button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.stat{background:var(--surface);border-radius:12px;padding:10px 8px;text-align:left;box-shadow:var(--shadow);border:1.5px solid transparent;min-width:0}
-.stat b{display:block;font:700 24px/1 var(--display);font-variant-numeric:tabular-nums}
-.stat span{font-size:11.5px;color:var(--muted);font-weight:600}
-.stat.bad b{color:var(--bad)} .stat.warn b{color:var(--warn)}
-.stat[aria-pressed="true"]{border-color:var(--ink)}
-.search{width:100%;box-sizing:border-box;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
-.group h4{margin:6px 2px 6px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
-.list{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
-.row{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:10px 12px 12px;width:100%;text-align:left;position:relative}
-.row+.row{border-top:1px solid var(--line)}
-.row .mid{min-width:0}
-.row .nm{display:block;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.row .br{font-size:12.5px;color:var(--muted)}
-.side{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.stamp{font:500 11px/1 var(--mono);letter-spacing:.02em;padding:3px 5px;border-radius:4px;border:1px solid currentColor;font-style:normal;white-space:nowrap}
-.st-ok .stamp{color:var(--muted)} .st-warn .stamp{color:var(--warn)} .st-bad .stamp{color:var(--bad)} .st-none .stamp{color:var(--muted);border-style:dashed}
-.pill{font-size:11px;font-weight:600;color:var(--muted)}
-.pill.uso{color:var(--accent)}
-.meter{position:absolute;left:52px;right:12px;bottom:5px;height:3px;border-radius:2px;background:var(--sunk);overflow:hidden}
-.meter i{display:block;height:100%;border-radius:2px;background:var(--good)}
-.st-warn .meter i{background:var(--warn)} .st-bad .meter i{background:var(--bad);width:100%!important;opacity:.5}
-.fab{position:sticky;bottom:8px;align-self:flex-end;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.18);margin-top:auto}
-.empty{color:var(--muted);text-align:center;padding:24px 8px;font-size:14px}
-
-/* plano */
-.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:10px}
-.card p.sub{margin:0;color:var(--muted);font-size:13px}
-.prow{display:grid;grid-template-columns:36px 1fr;gap:8px;align-items:start;padding:8px 0}
-.prow+.prow{border-top:1px solid var(--line)}
-.prow .pd{font:600 14px/28px var(--display)}
-.prow .pcol{display:flex;flex-direction:column;gap:6px;min-width:0}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
-.cal .h{font-size:10.5px;font-weight:600;color:var(--muted);text-transform:uppercase}
-.cal button{padding:5px 0 6px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-variant-numeric:tabular-nums;font-size:13px}
-.cal button.today{background:var(--accent-soft)}
-.cal .m{display:flex;gap:2px}
-.cal .m i{width:5px;height:5px;border-radius:50%;border:1px solid var(--c);box-sizing:border-box}
-.cal .m i.f{background:var(--c)}
-.btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;padding:11px 16px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700}
-.btn.ghost{background:var(--sunk);color:var(--ink)}
-.btn.danger{background:var(--bad-soft);color:var(--bad)}
-.btnrow{display:flex;flex-wrap:wrap;gap:8px}
-textarea{width:100%;box-sizing:border-box;min-height:90px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:12px/1.4 var(--mono);padding:8px}
-
-/* folha inferior */
-#ov{position:fixed;inset:0;background:rgba(10,18,20,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
-#sheet{background:var(--bg);width:100%;max-width:560px;max-height:86%;overflow-y:auto;border-radius:20px 20px 0 0;box-sizing:border-box;padding-top:8px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));transform:translateY(16px);transition:transform .2s ease}
-#ov.show #sheet{transform:none}
-#sheet::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 10px}
-.sh-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
-.x{width:36px;height:36px;border-radius:50%;background:var(--sunk);font-size:20px;line-height:1;flex:none}
-.hint{font-size:13px;color:var(--muted);margin:-4px 0 10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pc{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:var(--surface);border-radius:12px;padding:10px;border:2px solid transparent;box-shadow:var(--shadow);min-width:0}
-.pc .nm{font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pc .br{font-size:12px;color:var(--muted)}
-.pc .tg{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;align-items:center}
-.pc.on{border-color:var(--accent)}
-.pc.st-bad{opacity:.62}
-.tagx{font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--sunk);color:var(--muted);font-style:normal}
-.tagx.rec{background:var(--accent-soft);color:var(--accent)}
-.sh-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 12px}
-.facts div{background:var(--surface);border-radius:10px;padding:9px 10px;display:flex;flex-direction:column;gap:2px}
-.facts span{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.facts b{font-weight:600}
-.facts em{font-style:normal;font-size:12.5px;color:var(--muted)}
-form{display:flex;flex-direction:column;gap:10px}
-label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:600;color:var(--muted);min-width:0}
-label input,label select{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:15px;font-weight:500;min-width:0;width:100%;box-sizing:border-box}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.note{font-size:12px;color:var(--muted);font-weight:500;margin:0}
-#toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translate(-50%,-10px);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;font-size:13.5px;font-weight:600;max-width:min(90vw,480px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:30;text-align:center}
-#toast.show{opacity:1;transform:translate(-50%,0)}
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
-</style>
-
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;height:100%}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nécessaire">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
-<div id="app">
-  <header class="top" id="top"></header>
-  <main id="main"></main>
-  <nav class="tabs" id="tabs" aria-label="Seções">
-    <button class="tab" data-act="tab" data-t="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="10" r="4"/><path d="M9 2v1.5M9 16.5V18M2 10h1.5M14.5 10H16M4 5l1 1M13 14l1 1M4 15l1-1M13 6l1-1"/><path d="M20 15.5a4.5 4.5 0 0 1-6.3 4.1 4.5 4.5 0 0 0 3.6-6.6A4.5 4.5 0 0 1 20 15.5z"/></svg>Hoje</button>
-    <button class="tab" data-act="tab" data-t="estoque"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 20h18M3 11h18"/><rect x="5" y="4" width="4" height="7" rx="1"/><rect x="11" y="6" width="3" height="5" rx="1"/><rect x="16" y="3" width="3" height="8" rx="1"/><rect x="5" y="14" width="5" height="6" rx="1.5"/><rect x="13" y="13" width="3" height="7" rx="1"/></svg>Estoque</button>
-    <button class="tab" data-act="tab" data-t="plano"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="8" cy="15" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>Plano</button>
-  </nav>
+<title>Nécessaire</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: coluna única de "frascos" (cartões de etapa) com navegação inferior no celular e superior no desktop */
+:root{
+  --bg:#F3F1F5; --surface:#FFFFFF; --sunk:#EAE6EF; --ink:#241D30; --muted:#6B6379; --line:#DCD5E3;
+  --accent:#9E2F5D; --accent-soft:#F5E2EA; --on-accent:#FFFFFF;
+  --ok:#2C7656; --ok-soft:#DFF0E6; --warn:#8F5600; --warn-soft:#FAEBCF; --bad:#B0232D; --bad-soft:#FADFE1;
+  --hair:#2B6698; --hair-soft:#DFEAF5; --gold:#866510; --gold-soft:#F4EBCF;
+  --shadow:0 1px 2px rgba(36,29,48,.06),0 4px 14px rgba(36,29,48,.05);
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#16121C; --surface:#211B2A; --sunk:#2A2335; --ink:#EEE8F3; --muted:#A79EB5; --line:#3A3147;
+  --accent:#E57EA9; --accent-soft:#3E2433; --on-accent:#1E1018;
+  --ok:#6FC79C; --ok-soft:#1D3328; --warn:#E8B45C; --warn-soft:#3A2D16; --bad:#F2858C; --bad-soft:#3E1F23;
+  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#16121C; --surface:#211B2A; --sunk:#2A2335; --ink:#EEE8F3; --muted:#A79EB5; --line:#3A3147;
+  --accent:#E57EA9; --accent-soft:#3E2433; --on-accent:#1E1018;
+  --ok:#6FC79C; --ok-soft:#1D3328; --warn:#E8B45C; --warn-soft:#3A2D16; --bad:#F2858C; --bad-soft:#3E1F23;
+  --hair:#7FB4E6; --hair-soft:#1C2C3D; --gold:#DDBB5E; --gold-soft:#352E18;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 110px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:8px 14px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:-.02em;font-variation-settings:"opsz" 96}
+.brand small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.topnav{display:none;gap:4px}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.nav a,.topnav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:600}
+.nav a svg{width:22px;height:22px}
+.nav a[aria-current="page"],.topnav a[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+@media (min-width:820px){.nav{display:none}.topnav{display:flex}.topnav a{flex-direction:row;padding:8px 12px;font-size:14px}.topnav a svg{width:18px;height:18px}.wrap{padding-block:16px 48px}}
+h2{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h3{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.section{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.danger{color:var(--bad)}
+.btn.armed{background:var(--bad);color:#fff;border-color:var(--bad)}
+.btn.sm{padding:5px 9px;font-size:13px;border-radius:8px}
+.iconbtn{border:1px solid var(--line);background:var(--surface);width:38px;height:38px;border-radius:10px;display:inline-grid;place-items:center;font-size:18px;line-height:1}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.pill.hair{background:var(--hair-soft);color:var(--hair)}
+.pill.gold{background:var(--gold-soft);color:var(--gold)}
+.val{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:1px 5px;border:1px solid currentColor;border-radius:4px;opacity:.9;white-space:nowrap}
+.val.bad{color:var(--bad)} .val.warn{color:var(--warn)} .val.ok{color:var(--muted)}
+.banner{border-radius:12px;padding:10px 12px;font-size:13.5px;background:var(--sunk);color:var(--muted)}
+.banner.warn{background:var(--warn-soft);color:var(--warn)}
+.banner.bad{background:var(--bad-soft);color:var(--bad)}
+
+/* Dia */
+.daynav{display:flex;align-items:center;gap:8px}
+.daynav .lbl{flex:1;min-width:0;text-align:center}
+.daynav .lbl b{display:block;font-family:var(--f-display);font-size:22px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+.daynav .lbl span{font-size:13px;color:var(--muted)}
+.ctx{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:10px}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 4px;background:var(--surface)}
+.switch i{width:30px;height:18px;border-radius:999px;background:var(--sunk);position:relative;transition:background .15s}
+.switch i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--muted);transition:transform .15s}
+.switch[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.switch[aria-pressed="true"] i{background:var(--accent-soft)}
+.switch[aria-pressed="true"] i::after{transform:translateX(12px);background:var(--accent)}
+.period{display:flex;flex-direction:column;gap:8px}
+.period-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 2px 0}
+.period-h h3{display:flex;align-items:center;gap:8px}
+.prog{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.prog.done{color:var(--ok)}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.step.done{border-color:color-mix(in srgb,var(--ok) 40%,var(--line))}
+.step.missing{border-style:dashed;border-color:var(--warn)}
+.step-h{display:flex;align-items:flex-start;gap:10px}
+.ord{font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 6px;margin-top:2px}
+.step-h .t{flex:1;min-width:0}
+.step-h .t b{font-weight:700;font-size:15.5px}
+.step-h .t small{display:block;color:var(--muted);font-size:12.5px}
+.state{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;margin-top:3px}
+.state.ok{color:var(--ok)}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:7px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;max-width:100%;min-width:0}
+.opt .pn{font-weight:600;font-size:13.5px;line-height:1.25}
+.opt .pm{font-size:11.5px;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.opt.sel{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.opt.sel .pm{color:inherit;opacity:.85}
+.opt.sel .val{color:inherit}
+.opt.closed{opacity:.8}
+.opt.skip{justify-content:center;font-weight:600;font-size:13px;color:var(--muted);border-style:dashed;background:transparent}
+.opt.skip.sel{background:var(--sunk);color:var(--ink);border-style:solid;border-color:var(--muted)}
+.miss{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:7px 10px}
+/* Cabelo */
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{border-radius:9px;border:1px solid var(--line);padding:5px 2px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:2px;align-items:center;min-height:50px}
+.wd.prio{border-color:var(--hair);border-style:dashed}
+.wd.today{outline:2px solid var(--ink);outline-offset:1px}
+.wd.wash{background:var(--hair);color:#fff;border-color:var(--hair)}
+.wd.cow{background:var(--hair-soft);color:var(--hair)}
+.wd em{font-style:normal;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.04em}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.metric{background:var(--sunk);border-radius:10px;padding:8px 10px;min-width:0}
+.metric span{display:block;font-size:11.5px;color:var(--muted);font-weight:600}
+.metric b{font-size:14.5px}
+.metric.bad b{color:var(--bad)} .metric.ok b{color:var(--ok)} .metric.warn b{color:var(--warn)}
+.reco{border-left:3px solid var(--hair);padding:4px 0 4px 10px;font-size:14px}
+.reco b{color:var(--hair)}
+.tog{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:600;font-size:13.5px}
+.tog[aria-pressed="true"]{background:var(--hair);border-color:var(--hair);color:#fff}
+/* Estoque */
+.seg{display:flex;background:var(--sunk);border-radius:10px;padding:3px;gap:2px;overflow-x:auto}
+.seg button{border:0;background:transparent;border-radius:8px;padding:6px 12px;font-weight:600;font-size:13.5px;color:var(--muted);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.search{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{font-family:var(--f-display);font-size:24px;font-weight:700;display:block;line-height:1.1}
+.stat span{font-size:12px;color:var(--muted);font-weight:600}
+.stat.bad b{color:var(--bad)} .stat.warn b{color:var(--warn)}
+.group{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.group-h{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--sunk);font-weight:700;font-size:13px}
+.prow{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;width:100%}
+.prow:first-of-type{border-top:0}
+.prow:hover{background:var(--bg)}
+.prow .pt{flex:1;min-width:0}
+.prow .pt small{display:block;font-size:12px;color:var(--muted)}
+.prow .pt b{font-weight:600;font-size:14px}
+.prow .pr{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.prow.gone{opacity:.55}
+.shop li{padding:6px 0;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.shop li:first-child{border-top:0}
+.shop{list-style:none;margin:0;padding:0}
+/* Rotina */
+.vers{display:flex;flex-direction:column;gap:6px}
+.ver{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:left;width:100%}
+.ver[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.ver .vt{flex:1;min-width:0}
+.ver .vt small{display:block;color:var(--muted);font-size:12.5px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table.grid{border-collapse:collapse;width:100%;font-size:13px}
+table.grid th,table.grid td{padding:8px 2px;border-top:1px solid var(--line);text-align:center;vertical-align:middle}
+table.grid thead th{border-top:0;font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:600}
+table.grid th.s,table.grid td.s{text-align:left;padding-left:10px;padding-right:4px;min-width:120px}
+@media (max-width:480px){table.grid thead th:not(.s){font-size:0}table.grid thead th:not(.s)::after{content:attr(data-l);font-size:11px}}
+table.grid td.s b{display:block;font-size:13.5px}
+table.grid td.s small{display:block;color:var(--muted);font-size:11.5px;line-height:1.35}
+.cell{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:7px;font-family:var(--f-mono);font-size:11px;font-weight:600}
+.c0{background:var(--accent-soft);color:var(--accent)} .c1{background:var(--hair-soft);color:var(--hair)} .c2{background:var(--gold-soft);color:var(--gold)} .c3{background:var(--ok-soft);color:var(--ok)}
+.cnone{color:var(--line)}
+/* Histórico */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .hd{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+.day{border:1px solid var(--line);background:var(--surface);border-radius:10px;min-height:62px;padding:5px;display:flex;flex-direction:column;gap:4px;text-align:left}
+.day.out{visibility:hidden}
+.day.today{border-color:var(--ink)}
+.day .n{font-family:var(--f-mono);font-size:12px;font-weight:600}
+.marks{display:flex;flex-wrap:wrap;gap:3px}
+.mk{width:8px;height:8px;border-radius:50%;background:var(--sunk)}
+.mk.dd{background:var(--accent)} .mk.dp{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+.mk.nd{background:var(--ink)} .mk.np{background:color-mix(in srgb,var(--ink) 30%,transparent)}
+.mk.hw{background:var(--hair)} .mk.hc{background:var(--hair-soft);box-shadow:inset 0 0 0 1.5px var(--hair)}
+.mk.ex{background:var(--gold)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;gap:5px;align-items:center}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+/* Modal */
+.modal{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,14,28,.45)}
+.sheet{background:var(--bg);width:100%;max-width:760px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+@media (min-width:820px){.modal{align-items:center}.sheet{border-radius:18px;max-height:88%}}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:-16px;background:var(--bg);padding-block:4px;z-index:2}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .full{grid-column:1/-1}
+@media (max-width:480px){.form{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:600;color:var(--muted);min-width:0}
+label.f input,label.f select,label.f textarea,.inp{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 10px;font-size:14.5px;color:var(--ink);font-weight:400;width:100%;min-width:0}
+label.chk{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500}
+.edstep{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.edrule{background:var(--sunk);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:8px}
+.days{display:flex;gap:4px;flex-wrap:wrap}
+.dchip{width:34px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:11.5px;font-weight:700;font-family:var(--f-mono)}
+.dchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.dchip.taken{opacity:.35}
+.catchip{display:inline-flex;gap:4px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;font-size:12.5px;font-weight:600}
+.catchip button{border:0;background:var(--sunk);border-radius:50%;width:20px;height:20px;font-size:12px;line-height:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+@media (min-width:820px){.toast{bottom:24px}}
+.empty{text-align:center;padding:28px 12px;color:var(--muted)}
+.empty b{display:block;font-family:var(--f-display);font-size:18px;color:var(--ink);margin-bottom:4px}
+.extra-list{display:flex;flex-wrap:wrap;gap:6px}
+.xchip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-soft);color:var(--gold);border-radius:999px;padding:5px 6px 5px 11px;font-weight:600;font-size:13px}
+.xchip button{border:0;background:transparent;color:inherit;font-size:15px;line-height:1;padding:0 4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Nécessaire<small>Skincare · cabelo · estoque</small></div>
+    <nav class="topnav" id="topnav"></nav>
+  </header>
+  <main id="main"><div class="empty"><b>Abrindo seu nécessaire…</b>Carregando produtos e rotina.</div></main>
 </div>
-<div id="ov" hidden><div id="sheet" role="dialog" aria-modal="true"></div></div>
-<div id="toast" role="status" aria-live="polite"></div>
+<nav class="nav" id="nav"></nav>
+<div id="modal"></div>
+<div id="toast" class="toast" hidden></div>
 
 <script>
-const SEED = [{"id":"p1","regiao":"Rosto","tipo":"Cleansing Oil","etapa":"limp1","marca":"BM Skin","nome":"MeltGrape","qtd":1,"status":"uso","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p2","regiao":"Rosto","tipo":"Sabonete Líquido Facial","etapa":"limp2","marca":"The Joy Lab","nome":"Freshen Enzymatic Cleansing Powder","qtd":1,"status":"uso","validade":"2026-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p3","regiao":"Rosto","tipo":"Hidratante Aquoso","etapa":"locao","marca":"La Roche-Posay","nome":"Água Termal","qtd":1,"status":"uso","validade":"2027-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p4","regiao":"Rosto","tipo":"Hidratante Aquoso","etapa":"locao","marca":"Naturie","nome":"Hatomugi Skin Conditioner","qtd":1,"status":"uso","validade":"2028-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p5","regiao":"Rosto","tipo":"Hidratante Olhos","etapa":"olhos","marca":"La Roche-Posay","nome":"Redermic R Retinol Olhos","qtd":1,"status":"uso","validade":"2026-02-01","aberto":null,"pao":null,"ativo":"retinoide"},{"id":"p6","regiao":"Rosto","tipo":"Hidratante Olhos","etapa":"olhos","marca":"Océane","nome":"Cica Eye Cream","qtd":1,"status":"uso","validade":"2027-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p7","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"Creamy","nome":"Calming Cream","qtd":1,"status":"uso","validade":"2027-04-01","aberto":null,"pao":null,"ativo":null},{"id":"p8","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"Creamy","nome":"Intensive Cream","qtd":1,"status":"uso","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p9","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"O Boticário","nome":"Ácido Hialurônico Gel Creme (Refil)","qtd":2,"status":"fechado","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p10","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"Nivea","nome":"Nutritivo 5 em 1 100ml","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p11","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"Nivea","nome":"Antissinais 5 em 1 100ml","qtd":1,"status":"uso","validade":"2027-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p12","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"La Roche-Posay","nome":"Cicaplast Baume B5+ FPS 50","qtd":1,"status":"uso","validade":"2028-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p13","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"La Roche-Posay","nome":"Toleriane Rosaliac AR Concentré","qtd":1,"status":"uso","validade":"2028-04-01","aberto":null,"pao":null,"ativo":null},{"id":"p14","regiao":"Rosto","tipo":"Hidratante Facial","etapa":"hidrat","marca":"La Roche-Posay","nome":"Cicaplast Baume B5+","qtd":1,"status":"fechado","validade":"2028-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p15","regiao":"Rosto","tipo":"Hidratante Labial","etapa":"labios","marca":"Creamy","nome":"Latte","qtd":1,"status":"uso","validade":"2026-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p16","regiao":"Rosto","tipo":"Hidratante Labial","etapa":"labios","marca":"Bepantol","nome":"Protetor Labial Derma FPS 50","qtd":1,"status":"uso","validade":"2027-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p17","regiao":"Rosto","tipo":"Hidratante Labial","etapa":"labios","marca":"Nivea","nome":"Amora Shine","qtd":1,"status":"fechado","validade":"2027-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p18","regiao":"Rosto","tipo":"Hidratante Labial","etapa":"labios","marca":"Dauf","nome":"Protetor Solar Labial com cor Morango FPS 30","qtd":1,"status":"uso","validade":"2027-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p19","regiao":"Rosto","tipo":"Hidratante Labial","etapa":"labios","marca":"Laneige","nome":"Lip Sleeping Mask Ex Berry","qtd":1,"status":"uso","validade":"2028-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p20","regiao":"Rosto","tipo":"Tratamento Facial","etapa":"trat","marca":"Creamy","nome":"Retinol 0,3% + nano vitamina c + phloretin","qtd":1,"status":"uso","validade":"2025-11-01","aberto":null,"pao":null,"ativo":"retinoide"},{"id":"p21","regiao":"Rosto","tipo":"Tratamento Facial","etapa":"trat","marca":"Dermotivin","nome":"Benzac Peróxido de Benzoíla 5%","qtd":1,"status":"uso","validade":"2026-07-01","aberto":null,"pao":null,"ativo":"bpo"},{"id":"p22","regiao":"Rosto","tipo":"Tratamento Facial","etapa":"trat","marca":"Creamy","nome":"Ácido Lático 5% + niacinamida + bisabolol","qtd":1,"status":"fechado","validade":"2027-01-01","aberto":null,"pao":null,"ativo":"acido"},{"id":"p23","regiao":"Rosto","tipo":"Tratamento Facial","etapa":"trat","marca":"Creamy","nome":"Ácido Mandélico 7% + alfa arbutin + alantoina","qtd":1,"status":"uso","validade":"2027-03-01","aberto":null,"pao":null,"ativo":"acido"},{"id":"p24","regiao":"Rosto","tipo":"Tratamento Facial","etapa":"trat","marca":"Creamy","nome":"Retinal 0,05% + Gluconolactona + Altheostem","qtd":1,"status":"fechado","validade":"2028-03-01","aberto":null,"pao":null,"ativo":"retinoide"},{"id":"p25","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"O Boticário","nome":"Boti.Sun FPS 70 (Amostra)","qtd":1,"status":"uso","validade":"2026-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p26","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Creamy","nome":"Watery Lotion FPS 60","qtd":1,"status":"uso","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p27","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Mantecorp","nome":"Episol Color Tom 1 FPS 70","qtd":1,"status":"uso","validade":"2027-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p28","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Mantecorp","nome":"Episol Color Tom 2 FPS 70","qtd":1,"status":"uso","validade":"2027-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p29","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Dauf","nome":"Stick FPS 90","qtd":2,"status":"uso","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p30","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Bioderma","nome":"Photoderm XDefense Ultra-Fluid FPS50+ Cor 01","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p31","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Nivea","nome":"Toque Seco Antissinais FPS 70","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p32","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"Neutrogena","nome":"Sun Fresh Hydro Boost FPS 50","qtd":1,"status":"uso","validade":"2028-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p33","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"La Roche-Posay","nome":"Anthelios Ultra Cover Cor 2.0 FPS 60","qtd":1,"status":"uso","validade":"2028-04-01","aberto":null,"pao":null,"ativo":null},{"id":"p34","regiao":"Rosto","tipo":"Protetor Solar Facial","etapa":"fps","marca":"La Roche-Posay","nome":"Anthelios Airlicium Antioleosidade FPS 50","qtd":1,"status":"uso","validade":"2028-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p35","regiao":"Rosto","tipo":"Cushion","etapa":"cushion","marca":"Laneige","nome":"Neo Cushion Glow 23N1","qtd":1,"status":"uso","validade":"2027-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p36","regiao":"Rosto","tipo":"Sleeping Mask","etapa":"sleep","marca":"Eucerin","nome":"Aquaphor Repairing Ointment","qtd":1,"status":"uso","validade":"2027-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p37","regiao":"Rosto","tipo":"Sleeping Mask","etapa":"sleep","marca":"Avène","nome":"Cicalfate","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p38","regiao":"Rosto","tipo":"Máscara Facial Tecido","etapa":"mascara","marca":"Kiss NY","nome":"Água de Coco - Hidratante","qtd":1,"status":"fechado","validade":"2028-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p39","regiao":"Rosto","tipo":"Máscara Facial Tecido","etapa":"mascara","marca":"Kiss NY","nome":"Mel - Nutritivo","qtd":1,"status":"fechado","validade":"2028-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p40","regiao":"Cabelo","tipo":"Shampoo Detox","etapa":"detox","marca":"Tresemmé","nome":"Detox Capilar","qtd":1,"status":"uso","validade":"2028-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p41","regiao":"Cabelo","tipo":"Shampoo","etapa":"shampoo","marca":"K.Pro","nome":"pH Balancer","qtd":1,"status":"uso","validade":"2028-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p42","regiao":"Cabelo","tipo":"Shampoo","etapa":"shampoo","marca":"Left","nome":"Maracujá - Summer Edition","qtd":1,"status":"uso","validade":"2028-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p43","regiao":"Cabelo","tipo":"Condicionador","etapa":"cond","marca":"K.Pro","nome":"pH Balancer","qtd":1,"status":"uso","validade":"2027-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p44","regiao":"Cabelo","tipo":"Booster de Tratamento","etapa":"booster","marca":"K.Pro","nome":"pH Balancer Acidificante","qtd":1,"status":"uso","validade":"2027-04-01","aberto":null,"pao":null,"ativo":null},{"id":"p45","regiao":"Cabelo","tipo":"Booster de Tratamento","etapa":"booster","marca":"O Boticário","nome":"Booster de Nutrição","qtd":1,"status":"uso","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p46","regiao":"Cabelo","tipo":"Booster de Tratamento","etapa":"booster","marca":"O Boticário","nome":"Booster de Reconstrução","qtd":1,"status":"uso","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p47","regiao":"Cabelo","tipo":"Creme de Pentear","etapa":"pentear","marca":"Left","nome":"Maracujá - Summer Edition","qtd":1,"status":"uso","validade":"2028-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p48","regiao":"Cabelo","tipo":"Creme de Pentear","etapa":"pentear","marca":"Widi Care","nome":"Revitalizando a Juba","qtd":1,"status":"uso","validade":"2028-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p49","regiao":"Cabelo","tipo":"Óleo Finalizador","etapa":"oleo","marca":"Lola Cosmetics","nome":"Pinga Cenoura e Oliva","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p50","regiao":"Cabelo","tipo":"Máscara","etapa":"masc_cap","marca":"L'Oreal","nome":"Nutrioil","qtd":1,"status":"uso","validade":"2026-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p51","regiao":"Cabelo","tipo":"Máscara","etapa":"masc_cap","marca":"Left","nome":"Maracujá - Summer Edition","qtd":1,"status":"uso","validade":"2028-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p52","regiao":"Cabelo","tipo":"Máscara","etapa":"masc_cap","marca":"Elseve L'Oreal","nome":"Óleo Extraordinário","qtd":1,"status":"uso","validade":null,"aberto":null,"pao":null,"ativo":null},{"id":"p53","regiao":"Corpo","tipo":"Sabonete Líquido Esfoliante","etapa":"c_banho","marca":"O Boticário","nome":"Matcha","qtd":1,"status":"uso","validade":"2024-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p54","regiao":"Corpo","tipo":"Sabonete Líquido Esfoliante","etapa":"c_banho","marca":"Natura","nome":"Capim Limão e Hortelã","qtd":1,"status":"fechado","validade":"2026-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p55","regiao":"Corpo","tipo":"Hidratante para Mãos","etapa":"c_maos","marca":"L'Occitane Au Brésil","nome":"Amburana ao Sol","qtd":1,"status":"uso","validade":"2026-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p56","regiao":"Corpo","tipo":"Hidratante para Pés","etapa":"c_pes","marca":"Granado","nome":"Pink Reparador de Calcanhares Danificados","qtd":1,"status":"fechado","validade":"2027-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p57","regiao":"Corpo","tipo":"Hidratante para Pés","etapa":"c_pes","marca":"Diabet TX","nome":"Creme Hidratante +Plus 10% Ureia","qtd":1,"status":"uso","validade":"2027-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p58","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"Bepantriz","nome":"Bepantriz Derma","qtd":1,"status":"uso","validade":"2026-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p59","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"O Boticário","nome":"Lily Geléia Iluminadora","qtd":1,"status":"uso","validade":"2026-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p60","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"O Boticário","nome":"Ameixa Dourada","qtd":1,"status":"uso","validade":"2026-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p61","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"Natura","nome":"Chá de Camomila e Lavanda","qtd":1,"status":"uso","validade":"2027-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p62","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"O Boticário","nome":"Lilac (Viagem)","qtd":1,"status":"fechado","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p63","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"Natura","nome":"Limão Siciliano e Flor de Gardênia (Viagem)","qtd":1,"status":"fechado","validade":"2027-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p64","regiao":"Corpo","tipo":"Hidratante Corporal","etapa":"c_hidrat","marca":"CeraVe","nome":"Loção Hidratante","qtd":1,"status":"uso","validade":"2028-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p65","regiao":"Corpo","tipo":"Hidratante de Cutículas","etapa":"c_cuti","marca":"Granado","nome":"Pink SOS Cutículas Perfeitas","qtd":1,"status":"uso","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p66","regiao":"Corpo","tipo":"Óleo Corporal","etapa":"c_oleo","marca":"Natura","nome":"Ekos Buriti","qtd":1,"status":"uso","validade":"2026-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p67","regiao":"Corpo","tipo":"Protetor Solar Corporal","etapa":"c_fps","marca":"Nivea","nome":"Protect e Hidrata FPS 50 100ml","qtd":1,"status":"uso","validade":"2025-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p68","regiao":"Corpo","tipo":"Protetor Solar Corporal","etapa":"c_fps","marca":"Nivea","nome":"Protect e Hidrata FPS 50 200ml","qtd":1,"status":"uso","validade":"2026-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p69","regiao":"Corpo","tipo":"Repelente","etapa":"c_rep","marca":"Repelex","nome":"Aerosol","qtd":1,"status":"uso","validade":"2025-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p70","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"De orelha a orelha","qtd":1,"status":"fechado","validade":"2021-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p71","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Café no Central Perk","qtd":1,"status":"fechado","validade":"2024-04-01","aberto":null,"pao":null,"ativo":null},{"id":"p72","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Imensidão","qtd":1,"status":"fechado","validade":"2025-02-01","aberto":null,"pao":null,"ativo":null},{"id":"p73","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Terra Molhada","qtd":1,"status":"fechado","validade":"2025-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p74","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Oliva","qtd":1,"status":"fechado","validade":"2025-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p75","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Sem Filtro","qtd":1,"status":"fechado","validade":"2026-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p76","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Cachoeira na Chapada","qtd":1,"status":"fechado","validade":"2026-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p77","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Loungerie","nome":"Perfect","qtd":1,"status":"fechado","validade":"2026-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p78","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Bali","qtd":1,"status":"fechado","validade":"2026-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p79","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Terracota que Provoca","qtd":1,"status":"fechado","validade":"2026-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p80","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Cafuné","qtd":1,"status":"fechado","validade":"2027-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p81","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Medo na medida certa","qtd":1,"status":"fechado","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p82","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Mistura o Modão","qtd":1,"status":"fechado","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p83","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Som do Berrante","qtd":1,"status":"fechado","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p84","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Amarração para o amor","qtd":1,"status":"fechado","validade":"2027-03-01","aberto":null,"pao":null,"ativo":null},{"id":"p85","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 3.0","qtd":1,"status":"fechado","validade":"2027-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p86","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Base dos Sonhos","qtd":1,"status":"fechado","validade":"2027-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p87","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Cappuccino","qtd":1,"status":"fechado","validade":"2027-05-01","aberto":null,"pao":null,"ativo":null},{"id":"p88","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 4.0","qtd":1,"status":"fechado","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p89","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 5.0","qtd":1,"status":"fechado","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p90","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 7.0","qtd":1,"status":"fechado","validade":"2027-06-01","aberto":null,"pao":null,"ativo":null},{"id":"p91","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Grão de Café","qtd":1,"status":"fechado","validade":"2027-07-01","aberto":null,"pao":null,"ativo":null},{"id":"p92","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Rosa Queimado","qtd":1,"status":"fechado","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p93","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Ponto de Luz","qtd":1,"status":"fechado","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p94","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Sutileza","qtd":1,"status":"fechado","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p95","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Lágrimas de Vênus","qtd":1,"status":"fechado","validade":"2027-08-01","aberto":null,"pao":null,"ativo":null},{"id":"p96","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Discreta, mas nem tanto","qtd":1,"status":"fechado","validade":"2027-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p97","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Impala","nome":"Na Ponta do Pé","qtd":1,"status":"fechado","validade":"2027-09-01","aberto":null,"pao":null,"ativo":null},{"id":"p98","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Chaminés de fadas","qtd":1,"status":"fechado","validade":"2027-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p99","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Passeio de balão","qtd":1,"status":"fechado","validade":"2027-10-01","aberto":null,"pao":null,"ativo":null},{"id":"p100","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Cidade subterrânea","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p101","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Paisagem Lunar","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p102","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Pôr do sol","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p103","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Voo da Liberdade","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p104","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Anita","nome":"Gratidão","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p105","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 8.0","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p106","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Léo Mandou Flores","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p107","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Renda","qtd":1,"status":"fechado","validade":"2027-11-01","aberto":null,"pao":null,"ativo":null},{"id":"p108","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Colorama","nome":"Nude 6.0","qtd":1,"status":"fechado","validade":"2027-12-01","aberto":null,"pao":null,"ativo":null},{"id":"p109","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Gabriela","qtd":1,"status":"fechado","validade":"2028-01-01","aberto":null,"pao":null,"ativo":null},{"id":"p110","regiao":"Unhas","tipo":"Esmalte","etapa":"esmalte","marca":"Risqué","nome":"Rainha da selva de pedra","qtd":1,"status":"fechado","validade":"2028-03-01","aberto":null,"pao":null,"ativo":null}];
-
+(() => {
+'use strict';
 /* ---------- utilidades ---------- */
 const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pad = n => String(n).padStart(2, '0');
-const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const parse = s => { const [a,b,c] = s.split('-').map(Number); return new Date(a, b-1, c || 1); };
-const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate()+n); return ymd(d); };
-const norm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const TODAY = ymd(new Date());
-const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const DIASL = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-const fmtD = s => { const d = parse(s); return `${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}`; };
-
-/* ---------- domínio ---------- */
-const ETAPAS = {
-  limp1:'Limpeza 1', limp2:'Limpeza 2', locao:'Loção', olhos:'Olhos', trat:'Tratamento', hidrat:'Hidratante',
-  fps:'Protetor solar', cushion:'Cushion', labios:'Lábios', sleep:'Sleeping mask', mascara:'Máscara facial',
-  detox:'Shampoo detox', shampoo:'Shampoo', booster:'Booster', masc_cap:'Máscara capilar', cond:'Condicionador',
-  pentear:'Creme de pentear', oleo:'Finalizador',
-  c_banho:'Sabonete corporal', c_hidrat:'Hidratante corporal', c_maos:'Mãos', c_pes:'Pés', c_cuti:'Cutículas',
-  c_oleo:'Óleo corporal', c_fps:'Protetor corporal', c_rep:'Repelente', esmalte:'Esmalte', outro:'Outro'
-};
-const REG_ETAPAS = {
-  Rosto:['limp1','limp2','locao','olhos','trat','hidrat','fps','cushion','labios','sleep','mascara'],
-  Cabelo:['detox','shampoo','booster','masc_cap','cond','pentear','oleo'],
-  Corpo:['c_banho','c_hidrat','c_maos','c_pes','c_cuti','c_oleo','c_fps','c_rep'],
-  Unhas:['esmalte']
-};
-const FOCO = { acido:['Ácido','--f-acido'], retinol:['Retinol','--f-retinol'], hidrat:['Hidratação','--f-hidrat'], argila:['Argila','--f-argila'] };
-const CICLO = ['Acidificação','Nutrição','Reconstrução'], CICLOK = ['acidific','nutri','reconstr'];
-const ROT = { manha:'Manhã', noite:'Noite', cabelo:'Cabelo' };
-const ATIVO = { retinoide:'Retinoide', acido:'Ácido', bpo:'Peróxido' };
+const h = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clone = o => JSON.parse(JSON.stringify(o ?? null));
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const toD = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d||1, 12); };
+const hoje = () => iso(new Date());
+const addDays = (s,n) => { const d = toD(s); d.setDate(d.getDate()+n); return iso(d); };
+const dow = s => toD(s).getDay();
+const diff = (a,b) => Math.round((toD(b)-toD(a))/864e5);
+const norm = s => String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+const DIAS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const DC = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DL = ['D','S','T','Q','Q','S','S'];
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const fmtCurto = s => { const d = toD(s); return pad(d.getDate())+'/'+pad(d.getMonth()+1); };
+const fmtLongo = s => { const d = toD(s); return d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear(); };
+const diasTxt = n => n === 0 ? 'hoje' : n === 1 ? 'ontem' : 'há '+n+' dias';
+const listaDias = ds => ds.length === 7 ? 'Todos os dias' : ds.slice().sort().map(d => DC[d]).join(', ');
+const AREAS = ['Rosto','Olhos','Pescoço e colo'];
+const REGIOES = ['Rosto','Cabelo','Corpo'];
 
 /* ---------- estado ---------- */
-const KEY = 'necessaire.v1';
-function fresh(){
-  return { v:1, produtos: JSON.parse(JSON.stringify(SEED)),
-    plano:{ noite:['acido','retinol','argila','acido','retinol','acido','retinol'],
-            cabelo:['tratamento',null,'lavagem',null,'lavagem',null,null], anchor:'2026-10-18' },
-    log:{}, last:{} };
+const S = {
+  produtos:{}, rotinas:{}, diario:{}, config:{},
+  loaded:{}, slow:false, local:false, err:null,
+  view:'hoje', dia:hoje(), mes:hoje().slice(0,7),
+  reg:'Rosto', busca:'', acabados:false, verSel:null,
+  hairDraft:{}, extraForm:false, expand:new Set()
+};
+const COLS = ['produtos','rotinas','diario','config'];
+const cfg = () => S.config.geral || {};
+const extrasTipos = () => cfg().extras || ['Máscara de tecido','Máscara de argila','Máscara hidratante','Limpeza de pele','Esfoliação física'];
+
+/* ---------- armazenamento ---------- */
+const LKEY = 'necessaire.local.v1';
+const pending = new Map(), inflight = new Set();
+const Store = {
+  db:null,
+  async init(){
+    let db = null;
+    try { db = (window.claude && window.claude.use) ? await window.claude.use('db') : null; } catch(e) { db = null; }
+    if (db) {
+      this.db = db;
+      COLS.forEach(c => this.listen(c));
+      setTimeout(() => { if (!COLS.every(c => S.loaded[c])) { S.slow = true; render(); } }, 10000);
+    } else {
+      S.local = true;
+      let tem = false;
+      try { const raw = localStorage.getItem(LKEY); if (raw) { Object.assign(S, JSON.parse(raw)); tem = true; } } catch(e) {}
+      if (!tem) {
+        try { const r = await fetch('dados-iniciais.json', {cache:'no-store'}); if (r.ok) { const j = await r.json(); ['produtos','rotinas','config'].forEach(c => S[c] = j[c] || {}); this.saveLocal(); } } catch(e) {}
+      }
+      COLS.forEach(c => S.loaded[c] = true);
+      render();
+    }
+  },
+  listen(col){
+    let q = this.db.collection(col);
+    if (col === 'diario') q = q.orderBy('data','desc').limit(1000);
+    q.onSnapshot(snap => {
+      const m = {};
+      snap.docs.forEach(d => { m[d.id] = d.data(); });
+      for (const [k,job] of pending) if (job.col === col) { if (job.data === null) delete m[job.id]; else m[job.id] = job.data; }
+      S[col] = m; S.loaded[col] = true;
+      if (!snap.metadata.fromCache) S.slow = false;
+      render();
+    }, err => { S.err = err.code; S.loaded[col] = true; render(); });
+  },
+  write(col, id, data){
+    const m = Object.assign({}, S[col]);
+    if (data === null) delete m[id]; else m[id] = data;
+    S[col] = m;
+    render();
+    if (S.local) { this.saveLocal(); return; }
+    pending.set(col+'/'+id, {col, id, data});
+    pump(col+'/'+id);
+  },
+  saveLocal(){
+    try { localStorage.setItem(LKEY, JSON.stringify({produtos:S.produtos, rotinas:S.rotinas, diario:S.diario, config:S.config})); } catch(e) {}
+  }
+};
+async function pump(key){
+  if (inflight.has(key)) return;
+  const job = pending.get(key); if (!job) return;
+  pending.delete(key); inflight.add(key);
+  const run = () => { const ref = Store.db.collection(job.col).doc(job.id); return job.data === null ? ref.delete() : ref.set(job.data); };
+  try { await run(); }
+  catch(e) {
+    if (e && e.code === 'unavailable') { await new Promise(r => setTimeout(r, 600 + Math.random()*900)); try { await run(); } catch(e2) { toast('Não salvou. Verifique a conexão e tente de novo.'); } }
+    else if (e && e.code === 'quota_exceeded') toast('O banco do app está cheio. Exclua registros antigos.');
+    else toast('Não foi possível salvar esta alteração.');
+  } finally { inflight.delete(key); if (pending.has(key)) pump(key); }
 }
-let S = null;
-try { S = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
-if (!S || !Array.isArray(S.produtos)) S = fresh();
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
-const ui = { tab:'hoje', date:TODAY, filtro:null, regiao:'Todos', q:'', seg:'estoque' };
-try { const t = localStorage.getItem(KEY+'.tab'); if (t && ['hoje','estoque','plano'].includes(t)) ui.tab = t; } catch(e) {}
 
 /* ---------- produtos ---------- */
-const byId = id => S.produtos.find(p => p.id === id);
-const naPrateleira = p => p.status !== 'acabou' && p.qtd > 0;
-function expDate(p){
-  let e = p.validade ? parse(p.validade) : null;
-  if (p.aberto && p.pao){ const a = parse(p.aberto); a.setMonth(a.getMonth() + Number(p.pao)); if (!e || a < e) e = a; }
-  return e;
+const prodList = () => Object.entries(S.produtos).map(([id,p]) => Object.assign({id}, p));
+const diasVal = p => p.val ? diff(hoje(), p.val) : 9999;
+const vencido = p => p.val && diasVal(p) < 0;
+const valClass = p => !p.val ? 'ok' : diasVal(p) < 0 ? 'bad' : diasVal(p) <= 60 ? 'warn' : 'ok';
+const valTxt = p => p.val ? 'VAL '+p.val.slice(5,7)+'/'+p.val.slice(2,4) : 'sem val.';
+const valBadge = p => `<span class="val ${valClass(p)}" title="${p.val ? 'Validade '+fmtCurto(p.val)+'/'+p.val.slice(0,4) : ''}">${valTxt(p)}</span>`;
+const pNome = p => (p.marca ? p.marca+' — ' : '') + p.nome;
+const PRIO = {1:'Preferir', 0:'Normal', '-1':'Deixar por último'};
+const HORARIO = {'':'Qualquer horário', manha:'Só diurno', noite:'Só noturno'};
+/* Opções de uma etapa: respeita horário do produto, kit viagem e só mostra
+   fechados quando a categoria não tem nenhum aberto. Ordem: prioridade da
+   Karine → não vencido → vence primeiro. */
+function prodsFor(cats, viagem, periodo){
+  const set = new Set(cats||[]);
+  let ps = prodList().filter(p => set.has(p.cat) && !p.acabou && (p.qtd ?? 1) > 0 && (viagem || !p.viagem) && (!periodo || !p.periodo || p.periodo === periodo));
+  const abertas = new Set(ps.filter(p => p.status !== 'Fechado').map(p => p.cat));
+  ps = ps.filter(p => p.status !== 'Fechado' || !abertas.has(p.cat));
+  ps.sort((a,b) => ((b.prio||0)-(a.prio||0)) || (vencido(a)-vencido(b)) || ((a.status==='Fechado')-(b.status==='Fechado')) || (a.val||'9999').localeCompare(b.val||'9999') || pNome(a).localeCompare(pNome(b)));
+  return ps;
 }
-const porPAO = p => { if (!(p.aberto && p.pao)) return false; const a = parse(p.aberto); a.setMonth(a.getMonth()+Number(p.pao)); return !p.validade || a < parse(p.validade); };
-function dias(p){ const e = expDate(p); return e ? Math.round((e - parse(TODAY)) / 864e5) : null; }
-function est(p){ const d = dias(p); return d === null ? 'none' : d < 0 ? 'bad' : d <= 60 ? 'warn' : 'ok'; }
-const dur = d => { d = Math.abs(d); return d < 45 ? `${d} dia${d===1?'':'s'}` : `${Math.round(d/30.44)} meses`; };
-function prazo(p){ const d = dias(p); if (d === null) return 'sem validade'; if (d < 0) return 'vencido há ' + dur(d); if (d === 0) return 'vence hoje'; return 'vence em ' + dur(d); }
-function stamp(p){ const e = expDate(p); return e ? `VAL ${pad(e.getMonth()+1)}/${e.getFullYear()}` : 'SEM VAL'; }
-
-const SHAPE = {limp1:'pump',limp2:'pump',shampoo:'pump',detox:'pump',cond:'pump',c_banho:'pump',c_hidrat:'pump',locao:'spray',c_rep:'spray',
-  fps:'tube',c_fps:'tube',c_maos:'tube',c_pes:'tube',pentear:'tube',olhos:'tube',hidrat:'jar',sleep:'jar',masc_cap:'jar',mascara:'jar',
-  trat:'dropper',booster:'dropper',oleo:'dropper',c_oleo:'dropper',c_cuti:'dropper',labios:'stick',cushion:'compact',esmalte:'polish'};
-const HUE = { Rosto:340, Cabelo:36, Corpo:168, Unhas:285 };
-const hash = s => { let h = 0; for (const c of s) h = (h*31 + c.charCodeAt(0)) | 0; return Math.abs(h); };
-function cores(p){ const h = (HUE[p.regiao] ?? 200) + (hash(p.marca+p.nome) % 80) - 40; const l = 56 + hash(p.nome) % 14; return [`hsl(${h} 46% ${l}%)`, `hsl(${h} 30% 30%)`]; }
-function ico(p, h = 30){
-  const [c, k] = cores(p);
-  const B = {
-    pump:`<rect x="10" y="7" width="4" height="5" fill="${k}"/><rect x="7" y="4" width="10" height="3" rx="1" fill="${k}"/><rect x="16" y="4.6" width="5" height="1.6" fill="${k}"/><rect x="5" y="12" width="14" height="18" rx="3.5" fill="${c}"/>`,
-    spray:`<rect x="9" y="3" width="6" height="7" rx="2" fill="${k}"/><rect x="6" y="10" width="12" height="20" rx="5" fill="${c}"/>`,
-    tube:`<path d="M5 4h14l-3 21H8z" fill="${c}"/><rect x="5" y="2" width="14" height="2.6" fill="${k}"/><rect x="8" y="25" width="8" height="5" rx="1.2" fill="${k}"/>`,
-    jar:`<rect x="3.5" y="12" width="17" height="5" rx="1.5" fill="${k}"/><rect x="4.5" y="17" width="15" height="12.5" rx="3.5" fill="${c}"/>`,
-    dropper:`<circle cx="12" cy="5.5" r="3" fill="${k}"/><rect x="9" y="8" width="6" height="4.5" fill="${k}"/><rect x="6" y="12.5" width="12" height="17" rx="4" fill="${c}"/>`,
-    stick:`<rect x="8" y="3" width="8" height="11" rx="2.5" fill="${k}"/><rect x="8" y="15" width="8" height="15" rx="1.5" fill="${c}"/>`,
-    compact:`<rect x="3" y="13" width="18" height="5" rx="2.5" fill="${k}"/><rect x="3" y="18" width="18" height="9" rx="4" fill="${c}"/>`,
-    polish:`<rect x="9.5" y="2" width="5" height="13" rx="1.2" fill="${k}"/><rect x="5" y="15" width="14" height="14.5" rx="4" fill="${c}"/>`
-  }[SHAPE[p.etapa] || 'jar'];
-  return `<svg viewBox="0 0 24 32" width="${Math.round(h*.75)}" height="${h}" aria-hidden="true" style="justify-self:center">${B}<rect x="7" y="20" width="2" height="6" rx="1" fill="#fff" opacity=".35"/></svg>`;
-}
-
-/* ---------- plano e rotinas ---------- */
-const wd = s => parse(s).getDay();
-const foco = s => S.plano.noite[wd(s)];
-const cabelo = s => S.plano.cabelo[wd(s)];
-const domingo = s => { const d = parse(s); d.setDate(d.getDate() - d.getDay()); return ymd(d); };
-function cicloIdx(s){ const w = Math.round((parse(domingo(s)) - parse(domingo(S.plano.anchor))) / (7*864e5)); return ((w % 3) + 3) % 3; }
-const getR = (s, r) => (S.log[s] && S.log[s][r]) || {};
-function setR(s, r){ S.log[s] ??= {}; const R = S.log[s][r] ??= {}; R.sel ??= {}; R.done ??= {}; return R; }
-
-function etapas(r, s){
-  if (r === 'manha') return ['limp2','locao','olhos','hidrat','fps', ...((getR(s,r).mode || 'presencial') === 'presencial' ? ['cushion'] : []), 'labios'];
-  if (r === 'noite'){
-    const f = foco(s), e = ['limp1','limp2','locao','olhos'];
-    if (f === 'acido' || f === 'retinol') e.push('trat');
-    if (f === 'argila' || f === 'hidrat') e.push('mascara');
-    e.push('hidrat');
-    if (f === 'hidrat' || f === 'argila') e.push('sleep');
-    e.push('labios'); return e;
-  }
-  const h = cabelo(s);
-  if (!h) return [];
-  return h === 'tratamento' ? ['shampoo','booster','masc_cap','cond','pentear','oleo'] : ['detox','cond','pentear','oleo'];
-}
-function recom(p, r, e, s){
-  if (r === 'noite'){ const f = foco(s);
-    if (e === 'trat') return (f === 'acido' && p.ativo === 'acido') || (f === 'retinol' && p.ativo === 'retinoide');
-    if (e === 'olhos' && f === 'retinol') return p.ativo === 'retinoide'; }
-  if (r === 'cabelo' && e === 'booster' && cabelo(s) === 'tratamento') return norm(p.nome).includes(CICLOK[cicloIdx(s)]);
-  return false;
-}
-function evitar(p, r, e, s){
-  if (r === 'manha' && p.ativo) return true;
-  if (r === 'noite' && e === 'olhos' && foco(s) !== 'retinol' && p.ativo === 'retinoide') return true;
-  return false;
-}
-function score(p, r, e, s){ let x = 0; if (recom(p,r,e,s)) x += 8; if (evitar(p,r,e,s)) x -= 8; if (est(p) === 'bad') x -= 20; if (p.status === 'uso') x += 2; return x; }
-function cands(r, e, s){
-  return S.produtos.filter(p => p.etapa === e && naPrateleira(p))
-    .sort((a,b) => score(b,r,e,s) - score(a,r,e,s) || ((dias(a) ?? 9e9) - (dias(b) ?? 9e9)));
-}
-function escolha(r, e, s){
-  const v = (getR(s,r).sel || {})[e];
-  if (v === 'skip') return 'skip';
-  if (v && byId(v)) return byId(v);
-  const c = cands(r,e,s); if (!c.length) return null;
-  const last = byId(S.last[r+':'+e]);
-  if (last && c.includes(last) && est(last) !== 'bad' && !evitar(last,r,e,s) && (recom(last,r,e,s) || !c.some(p => recom(p,r,e,s)))) return last;
-  return c.find(p => est(p) !== 'bad' && !evitar(p,r,e,s)) || c.find(p => est(p) !== 'bad') || null;
-}
-function alertas(p, r, e, s){
-  const a = []; if (!p || p === 'skip') return a;
-  if (est(p) === 'bad') a.push(['bad','Vencido']); else if (est(p) === 'warn') a.push(['warn', prazo(p)]);
-  if (evitar(p,r,e,s)) a.push(['warn', r === 'manha' ? 'Ativo de uso noturno' : 'Retinoide fora da noite de retinol']);
-  if (p.ativo && r === 'noite'){
-    const outros = etapas(r,s).filter(x => x !== e).map(x => escolha(r,x,s)).filter(x => x && x !== 'skip');
-    const tem = t => outros.some(q => q.ativo === t);
-    if ((p.ativo === 'acido' && tem('retinoide')) || (p.ativo === 'retinoide' && (tem('acido') || tem('bpo'))) || (p.ativo === 'bpo' && tem('retinoide')))
-      a.push(['warn','Ativos fortes juntos']);
-  }
-  if (p.status === 'fechado') a.push(['info','Abre ao concluir']);
-  return a;
-}
-function prog(r, s){
-  const R = getR(s,r); let d = 0, t = 0;
-  for (const e of etapas(r,s)){ const c = escolha(r,e,s); if (c === null) continue; t++; if (c === 'skip' || (R.done && R.done[e])) d++; }
-  return [d, t];
-}
-function rotinasDo(s){ return ['manha','noite', ...(cabelo(s) ? ['cabelo'] : [])]; }
-function corRot(r, s){ return r === 'manha' ? '--f-manha' : r === 'cabelo' ? '--f-hair' : FOCO[foco(s)][1]; }
-
-/* ---------- views ---------- */
-function vTop(){
-  const venc = S.produtos.filter(p => naPrateleira(p) && p.status === 'uso' && est(p) === 'bad').length;
-  const t = { hoje:'Rotina do dia', estoque:'Estoque', plano:'Plano' }[ui.tab];
-  return `<div><p class="eyebrow">Nécessaire da Karine</p><h1>${t}</h1></div>` +
-    (venc ? `<button class="alert" data-act="goVenc">${venc} vencido${venc>1?'s':''} em uso</button>` : '');
-}
-
-function vHoje(){
-  const s = ui.date, d0 = domingo(s);
-  const days = [...Array(7)].map((_, i) => {
-    const x = addDays(d0, i), rs = rotinasDo(x);
-    const full = rs.every(r => { const [a,b] = prog(r,x); return b > 0 && a === b; });
-    const dots = `<i style="--c:var(${FOCO[foco(x)][1]})"></i>` + (cabelo(x) ? `<i class="hair" style="--c:var(--f-hair)"></i>` : '');
-    return `<button class="day ${x===TODAY?'today':''} ${full?'full':''}" data-act="day" data-date="${x}" aria-pressed="${x===s}" aria-label="${DIASL[i]} ${parse(x).getDate()}">
-      <span class="dl">${DIAS[i]}</span><span class="dn">${parse(x).getDate()}</span><span class="dots">${dots}</span></button>`;
-  }).join('');
-  const f = foco(s), h = cabelo(s), dt = parse(s);
-  const head = `<div class="dayhead"><h2>${DIASL[wd(s)]}, ${dt.getDate()} de ${MESES[dt.getMonth()]}${s===TODAY?' · hoje':''}</h2>
-    <div class="chips"><span class="chip dot" style="--c:var(${FOCO[f][1]})">Noite de ${FOCO[f][0].toLowerCase()}</span>
-    ${h ? `<span class="chip dot" style="--c:var(--f-hair)">Cabelo: ${h==='tratamento' ? 'tratamento · '+CICLO[cicloIdx(s)].toLowerCase() : 'lavagem'}</span>` : `<span class="chip">Sem lavagem de cabelo</span>`}</div></div>`;
-
-  let tot = 0, feitos = 0, bottles = [];
-  for (const r of rotinasDo(s)){
-    const R = getR(s,r), part = [];
-    for (const e of etapas(r,s)){ const c = escolha(r,e,s); if (c && c !== 'skip'){ tot++; const ok = R.done && R.done[e]; if (ok) feitos++; part.push(`<span class="b ${ok?'':'pend'}" title="${esc(c.nome)}">${ico(c, 40)}</span>`); } }
-    if (part.length) bottles.push(part.join(''));
-  }
-  const shelf = `<section class="shelf" aria-label="Produtos escolhidos para o dia"><div class="shelf-h"><h3>Na pia hoje</h3><span>${feitos} de ${tot} aplicados</span></div>
-    <div class="shelf-row">${bottles.join('<span class="sep"></span>') || '<span class="empty">Nada planejado</span>'}</div>
-    <div class="shelf-leg"><span>Cheio = aplicado</span><span>Claro = falta aplicar</span><span>Toque no produto da etapa para trocar</span></div></section>`;
-
-  const cards = rotinasDo(s).map(r => vRot(r, s)).join('');
-  return `<section class="week"><button class="wkbtn" data-act="wk" data-n="-7" aria-label="Semana anterior">‹</button><div class="days">${days}</div><button class="wkbtn" data-act="wk" data-n="7" aria-label="Próxima semana">›</button></section>
-    ${head}${shelf}${cards}
-    ${!cabelo(s) ? `<div class="nohair">Cabelo não está planejado para ${DIASL[wd(s)].toLowerCase()}. Ajuste os dias de lavagem na aba Plano.</div>` : ''}`;
-}
-
-function vRot(r, s){
-  const R = getR(s,r), [d, t] = prog(r,s), c = corRot(r,s);
-  const C = 2*Math.PI*15, off = t ? C*(1 - d/t) : C;
-  const sub = r === 'manha' ? 'Limpeza leve, hidratação e protetor'
-    : r === 'noite' ? `Foco: ${FOCO[foco(s)][0].toLowerCase()}`
-    : cabelo(s) === 'tratamento' ? `Cronograma: ${CICLO[cicloIdx(s)].toLowerCase()}` : 'Lavagem simples';
-  const mode = r === 'manha' ? `<div class="seg2" role="group" aria-label="Onde vai passar o dia">
-      <button data-act="mode" data-m="presencial" aria-pressed="${(R.mode||'presencial')==='presencial'}">Presencial</button>
-      <button data-act="mode" data-m="casa" aria-pressed="${R.mode==='casa'}">Em casa</button></div>` : '';
-  const steps = etapas(r,s).map(e => {
-    const p = escolha(r,e,s), done = !!(R.done && R.done[e]);
-    if (p === null){
-      const temVencido = S.produtos.some(x => x.etapa === e && naPrateleira(x));
-      return `<li class="step"><button class="check" disabled aria-label="Sem produto"><i></i></button>
-        <button class="pick none" data-act="pick" data-r="${r}" data-e="${e}"><span class="ghostico"></span><span class="mid"><span class="lbl">${ETAPAS[e]}</span><span class="nm">${temVencido ? 'Só há itens vencidos' : 'Nada em estoque'}</span></span><span class="chev">›</span></button></li>`;
-    }
-    if (p === 'skip'){
-      return `<li class="step"><button class="check" disabled aria-label="Etapa pulada"><i></i></button>
-        <button class="pick skip" data-act="pick" data-r="${r}" data-e="${e}"><span class="ghostico"></span><span class="mid"><span class="lbl">${ETAPAS[e]}</span><span class="nm">Pulada hoje</span></span><span class="chev">›</span></button></li>`;
-    }
-    const fl = alertas(p,r,e,s).map(([k,txt]) => `<span class="flag ${k}">${esc(txt)}</span>`).join('');
-    return `<li class="step ${done?'done':''}" style="--c:var(${c})"><button class="check" data-act="done" data-r="${r}" data-e="${e}" aria-pressed="${done}" aria-label="Marcar ${ETAPAS[e]} como feito"><i></i></button>
-      <button class="pick" data-act="pick" data-r="${r}" data-e="${e}">${ico(p,30)}<span class="mid"><span class="lbl">${ETAPAS[e]}</span><span class="nm">${esc(p.nome)}</span><span class="br">${esc(p.marca)}</span>${fl ? `<span class="flags">${fl}</span>` : ''}</span><span class="chev">›</span></button></li>`;
-  }).join('');
-  return `<article class="rot" style="--c:var(${c})"><div class="rot-h">
-      <svg class="ring" viewBox="0 0 38 38" aria-hidden="true"><circle class="bgc" cx="19" cy="19" r="15" fill="none" stroke-width="4"/><circle class="fg" cx="19" cy="19" r="15" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 19 19)"/><text x="19" y="22.5" text-anchor="middle">${d}/${t}</text></svg>
-      <div class="ttl"><h3>${ROT[r]}</h3><p>${sub}</p>${mode}</div>
-      <button class="allbtn" data-act="all" data-r="${r}">${t && d === t ? 'Desfazer' : 'Concluir tudo'}</button></div>
-    <ol class="steps">${steps}</ol></article>`;
-}
-
-function vEstoque(){
-  const em = S.produtos.filter(naPrateleira), rep = S.produtos.filter(p => p.status === 'acabou');
-  const seg = `<div class="segbar" role="group"><button data-act="seg" data-s="estoque" aria-pressed="${ui.seg==='estoque'}">Na prateleira<b>${em.length}</b></button><button data-act="seg" data-s="repor" aria-pressed="${ui.seg==='repor'}">Repor<b>${rep.length}</b></button></div>`;
-  if (ui.seg === 'repor'){
-    const rows = rep.map(p => `<div class="row st-none" style="grid-template-columns:30px 1fr auto">${ico(p)}<span class="mid"><span class="nm">${esc(p.nome)}</span><span class="br">${esc(p.marca)} · ${esc(p.tipo)}</span></span>
-      <span class="side"><button class="btn" style="padding:7px 12px;font-size:13px" data-act="comprei" data-pid="${p.id}">Comprei</button><button class="pill" data-act="del" data-pid="${p.id}">Remover</button></span></div>`).join('');
-    return seg + (rows ? `<div class="list">${rows}</div><p class="note">“Comprei” devolve o item à prateleira e pede a nova validade.</p>` : `<p class="empty">Nada para repor. Quando um produto acabar, ele aparece aqui como lista de compras.</p>`);
-  }
-  const n = k => em.filter(p => k === 'bad' || k === 'warn' ? est(p) === k : p.status === k).length;
-  const stats = `<div class="stats">${[['bad','Vencidos'],['warn','Até 60 dias'],['uso','Em uso'],['fechado','Fechados']].map(([k,l]) =>
-    `<button class="stat ${k}" data-act="filtro" data-k="${k}" aria-pressed="${ui.filtro===k}"><b>${n(k)}</b><span>${l}</span></button>`).join('')}</div>`;
-  const regs = `<div class="chips">${['Todos','Rosto','Cabelo','Corpo','Unhas'].map(x => `<button class="chip ${ui.regiao===x?'on':''}" data-act="regiao" data-k="${x}">${x}</button>`).join('')}</div>`;
-  return seg + stats + regs + `<input class="search" id="q" type="search" placeholder="Buscar por nome, marca ou tipo" value="${esc(ui.q)}" autocomplete="off">
-    <div id="list">${vLista()}</div><button class="fab" data-act="add">+ Produto</button>`;
-}
-function vLista(){
-  const q = norm(ui.q);
-  const ps = S.produtos.filter(p => naPrateleira(p)
-    && (ui.regiao === 'Todos' || p.regiao === ui.regiao)
-    && (!ui.filtro || (ui.filtro === 'bad' || ui.filtro === 'warn' ? est(p) === ui.filtro : p.status === ui.filtro))
-    && (!q || norm(p.nome+' '+p.marca+' '+p.tipo).includes(q)));
-  if (!ps.length) return `<p class="empty">Nenhum produto com esses filtros.</p>`;
-  const groups = new Map();
-  for (const p of ps){ const k = (ui.regiao === 'Todos' ? p.regiao + ' · ' : '') + p.tipo; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); }
-  return [...groups].map(([k, arr]) => {
-    arr.sort((a,b) => (dias(a) ?? 9e9) - (dias(b) ?? 9e9));
-    return `<section class="group"><h4><span>${esc(k)}</span><span>${arr.length}</span></h4><div class="list">${arr.map(p => {
-      const d = dias(p), pct = d === null ? 0 : Math.max(4, Math.min(100, d/730*100));
-      return `<button class="row st-${est(p)}" data-act="item" data-pid="${p.id}">${ico(p)}<span class="mid"><span class="nm">${esc(p.nome)}</span><span class="br">${esc(p.marca)}${p.qtd>1?` · ${p.qtd} unidades`:''}${p.ativo?` · ${ATIVO[p.ativo]}`:''}</span></span>
-        <span class="side"><i class="stamp">${stamp(p)}</i><span class="pill ${p.status}">${p.status==='uso'?'Em uso':'Fechado'}</span></span><span class="meter"><i style="width:${pct}%"></i></span></button>`;
-    }).join('')}</div></section>`;
-  }).join('');
-}
-
-function vPlano(){
-  const semana = DIAS.map((dn, i) => `<div class="prow"><span class="pd">${dn}</span><div class="pcol">
-      <div class="chips sm">${Object.entries(FOCO).map(([k,[n,c]]) => `<button class="chip ${S.plano.noite[i]===k?'on':''}" style="--c:var(${c})" data-act="setfoco" data-i="${i}" data-k="${k}">${n}</button>`).join('')}</div>
-      <div class="chips sm">${[['','Sem cabelo'],['lavagem','Lavar'],['tratamento','Tratamento']].map(([k,n]) => `<button class="chip ${(S.plano.cabelo[i]||'')===k?'on':''}" style="--c:var(--f-hair)" data-act="setcab" data-i="${i}" data-k="${k}">${n}</button>`).join('')}</div>
-    </div></div>`).join('');
-  const ci = cicloIdx(TODAY);
-  const ciclo = `<div class="card"><h3>Cronograma capilar</h3><p class="sub">Nos dias de tratamento o booster segue um ciclo de 3 semanas. Toque na etapa desta semana para alinhar o ciclo.</p>
-    <div class="chips">${CICLO.map((n,k) => `<button class="chip dot ${k===ci?'on':''}" style="--c:var(--f-hair)" data-act="setciclo" data-k="${k}">${k===ci?'Esta semana: ':''}${n}</button>`).join('')}</div></div>`;
-
-  const d = parse(ui.date), y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1), nd = new Date(y, m+1, 0).getDate();
-  let cells = DIAS.map(x => `<span class="h">${x[0]}</span>`).join('') + '<span></span>'.repeat(first.getDay());
-  for (let i = 1; i <= nd; i++){
-    const x = ymd(new Date(y, m, i));
-    const marks = rotinasDo(x).map(r => { const [a,b] = prog(r,x); const done = getR(x,r).done && Object.keys(getR(x,r).done).length;
-      return `<i class="${b && a===b && done ? 'f' : ''}" style="--c:var(${corRot(r,x)})"></i>`; }).join('');
-    cells += `<button class="${x===TODAY?'today':''}" data-act="goday" data-date="${x}">${i}<span class="m">${marks}</span></button>`;
-  }
-  const cal = `<div class="card"><div class="shelf-h"><h3>${MESES[m][0].toUpperCase()+MESES[m].slice(1)} ${y}</h3><span class="btnrow"><button class="allbtn" data-act="mes" data-n="-1" aria-label="Mês anterior">‹</button><button class="allbtn" data-act="mes" data-n="1" aria-label="Próximo mês">›</button></span></div>
-    <p class="sub">Bolinha cheia: rotina concluída. Vazia: planejada. Toque num dia para abrir.</p><div class="cal">${cells}</div></div>`;
-
-  const dados = `<div class="card"><h3>Dados</h3><p class="sub">Tudo fica salvo neste aparelho. Copie um backup de vez em quando ou para levar a outro celular.</p>
-    <div class="btnrow"><button class="btn ghost" data-act="export">Copiar backup</button><button class="btn ghost" data-act="importOpen">Restaurar backup</button><button class="btn danger" data-act="reset">Recarregar da planilha</button></div></div>`;
-  return `<div class="card"><h3>Semana padrão</h3><p class="sub">Linha de cima: foco da noite (sua legenda da planilha). Linha de baixo: cabelo.</p>${semana}</div>${ciclo}${cal}${dados}`;
-}
-
-/* ---------- folhas ---------- */
-function sheet(html){ $('#sheet').innerHTML = html; const o = $('#ov'); o.hidden = false; requestAnimationFrame(() => o.classList.add('show')); }
-function closeSheet(){ const o = $('#ov'); o.classList.remove('show'); o.hidden = true; }
-const head = (eb, t) => `<div class="sh-head"><div><p class="eyebrow">${eb}</p><h2>${t}</h2></div><button class="x" data-act="close" aria-label="Fechar">×</button></div>`;
-
-function openChooser(r, e){
-  const s = ui.date, c = cands(r,e,s), cur = escolha(r,e,s), f = foco(s);
-  const hint = r === 'noite' && e === 'trat' ? `Noite de ${FOCO[f][0].toLowerCase()}: produtos indicados aparecem primeiro.`
-    : r === 'cabelo' && e === 'booster' ? `Semana de ${CICLO[cicloIdx(s)].toLowerCase()} no cronograma.`
-    : r === 'manha' ? 'Ativos (ácidos e retinoides) ficam no fim da lista de manhã.' : 'Ordem: indicados, depois o que vence primeiro.';
-  const cards = c.map(p => `<button class="pc st-${est(p)} ${cur===p?'on':''}" data-act="choose" data-r="${r}" data-e="${e}" data-pid="${p.id}">${ico(p,40)}
-      <span class="nm">${esc(p.nome)}</span><span class="br">${esc(p.marca)}</span>
-      <span class="tg"><i class="stamp">${stamp(p)}</i>${recom(p,r,e,s)?'<i class="tagx rec">indicado</i>':''}${p.status==='fechado'?'<i class="tagx">fechado</i>':''}${est(p)==='bad'?'<i class="tagx">vencido</i>':''}</span></button>`).join('');
-  sheet(head(`${ROT[r]} · ${DIASL[wd(s)]}`, ETAPAS[e]) + `<p class="hint">${hint}</p>` +
-    (cards ? `<div class="grid">${cards}</div>` : `<p class="empty">Nenhum produto desta etapa no estoque.</p>`) +
-    `<div class="sh-actions"><button class="btn ghost" data-act="skip" data-r="${r}" data-e="${e}">Pular hoje</button><button class="btn ghost" data-act="auto" data-r="${r}" data-e="${e}">Sugestão automática</button><button class="btn ghost" data-act="add" data-e="${e}">+ Novo produto</button></div>`);
-}
-
-function openItem(id){
-  const p = byId(id); if (!p) return;
-  sheet(`<div class="sh-head"><div style="display:flex;gap:12px;align-items:center">${ico(p,56)}<div><p class="eyebrow">${esc(p.regiao)} · ${esc(p.tipo)}</p><h2>${esc(p.nome)}</h2><p class="note">${esc(p.marca)}</p></div></div><button class="x" data-act="close" aria-label="Fechar">×</button></div>
-    <div class="facts st-${est(p)}"><div><span>Validade</span><b><i class="stamp">${stamp(p)}</i></b><em>${prazo(p)}${porPAO(p)?' · pelo PAO':''}</em></div>
-      <div><span>Status</span><b>${p.status==='uso'?'Em uso':'Fechado'}</b><em>${p.aberto?'aberto em '+fmtD(p.aberto):'data de abertura não registrada'}</em></div>
-      <div><span>Unidades</span><b>${p.qtd}</b></div><div><span>Depois de aberto</span><b>${p.pao?p.pao+' meses':'—'}</b><em>${p.pao?'':'veja o potinho “12M” na embalagem'}</em></div></div>
-    <div class="btnrow">${p.status==='fechado'?`<button class="btn" data-act="abrir" data-pid="${p.id}">Abri hoje</button>`:''}
-      <button class="btn ${p.status==='fechado'?'ghost':''}" data-act="acabou" data-pid="${p.id}">${p.qtd>1?'Terminei uma unidade':'Acabou'}</button>
-      <button class="btn ghost" data-act="mais" data-pid="${p.id}">+1 unidade</button><button class="btn ghost" data-act="edit" data-pid="${p.id}">Editar</button>
-      <button class="btn danger" data-act="del" data-pid="${p.id}">Excluir</button></div>`);
-}
-
-function regiaoDe(e){ return Object.keys(REG_ETAPAS).find(k => REG_ETAPAS[k].includes(e)); }
-function etapaOpts(reg, sel){ return (REG_ETAPAS[reg] || ['outro']).map(e => `<option value="${e}" ${e===sel?'selected':''}>${ETAPAS[e]}</option>`).join(''); }
-function openForm(p, preset = {}){
-  const novo = !p;
-  p = p || { regiao: regiaoDe(preset.etapa) || (ui.regiao !== 'Todos' ? ui.regiao : 'Rosto'), etapa: preset.etapa || '', marca:'', nome:'', qtd:1, status:'fechado', validade:null, aberto:null, pao:'' };
-  sheet(head(novo ? 'Novo produto' : 'Editar', novo ? 'Adicionar à prateleira' : esc(p.nome)) + `<form id="pform" data-id="${p.id||''}">
-    <div class="two"><label>Região<select id="f-regiao" name="regiao">${Object.keys(REG_ETAPAS).map(k => `<option ${k===p.regiao?'selected':''}>${k}</option>`).join('')}</select></label>
-    <label>Etapa na rotina<select id="f-etapa" name="etapa">${etapaOpts(p.regiao, p.etapa)}</select></label></div>
-    <label>Marca<input id="f-marca" name="marca" required value="${esc(p.marca)}" autocomplete="off"></label>
-    <label>Nome<input id="f-nome" name="nome" required value="${esc(p.nome)}" autocomplete="off"></label>
-    <div class="two"><label>Validade (VAL/EXP)<input type="month" id="f-val" name="validade" value="${p.validade?p.validade.slice(0,7):''}"></label>
-    <label>Depois de aberto<select id="f-pao" name="pao"><option value="">—</option>${[3,6,9,12,18,24,36].map(m => `<option value="${m}" ${Number(p.pao)===m?'selected':''}>${m} meses</option>`).join('')}</select></label></div>
-    <p class="note">O potinho aberto com “6M”, “12M” na embalagem é o prazo depois de aberto. O app usa o que vencer primeiro.</p>
-    <div class="two"><label>Unidades<input type="number" min="1" id="f-qtd" name="qtd" value="${Math.max(1,p.qtd||1)}"></label>
-    <label>Status<select id="f-status" name="status"><option value="fechado" ${p.status==='fechado'?'selected':''}>Fechado</option><option value="uso" ${p.status==='uso'?'selected':''}>Em uso</option></select></label></div>
-    <label>Aberto em<input type="date" id="f-ab" name="aberto" value="${p.aberto||''}"></label>
-    <button class="btn" type="submit">${novo?'Adicionar':'Salvar'}</button></form>`);
-}
-
-/* ---------- ações ---------- */
-let toastT;
-function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2800); }
-function abrirSeFechado(p, s){ if (p && p !== 'skip' && p.status === 'fechado'){ p.status = 'uso'; p.aberto = s; return true; } return false; }
-function armar(btn, fn){
-  if (btn.dataset.armed){ fn(); return; }
-  btn.dataset.armed = '1'; const old = btn.textContent; btn.textContent = 'Toque de novo para confirmar';
-  setTimeout(() => { if (btn.isConnected){ delete btn.dataset.armed; btn.textContent = old; } }, 3000);
-}
-const ACT = {
-  tab: d => { ui.tab = d.t; try { localStorage.setItem(KEY+'.tab', d.t); } catch(e) {} render(); $('#main').scrollTop = 0; },
-  day: d => { ui.date = d.date; render(); },
-  goday: d => { ui.date = d.date; ui.tab = 'hoje'; render(); $('#main').scrollTop = 0; },
-  wk: d => { ui.date = addDays(ui.date, +d.n); render(); },
-  mes: d => { const x = parse(ui.date); x.setDate(1); x.setMonth(x.getMonth() + +d.n); ui.date = ymd(x); render(); },
-  mode: d => { setR(ui.date,'manha').mode = d.m; save(); render(); },
-  pick: d => openChooser(d.r, d.e),
-  choose: d => { setR(ui.date,d.r).sel[d.e] = d.pid; S.last[d.r+':'+d.e] = d.pid; save(); closeSheet(); render(); },
-  skip: d => { setR(ui.date,d.r).sel[d.e] = 'skip'; save(); closeSheet(); render(); },
-  auto: d => { delete setR(ui.date,d.r).sel[d.e]; save(); closeSheet(); render(); },
-  done: d => {
-    const R = setR(ui.date,d.r), p = escolha(d.r,d.e,ui.date);
-    R.done[d.e] = !R.done[d.e]; if (!R.done[d.e]) delete R.done[d.e];
-    if (R.done[d.e] && p && p !== 'skip'){ S.last[d.r+':'+d.e] = p.id; if (abrirSeFechado(p, ui.date)) toast(`${p.nome} marcado como aberto hoje`); }
-    save(); render();
-  },
-  all: d => {
-    const R = setR(ui.date,d.r), [a,b] = prog(d.r,ui.date);
-    if (b && a === b){ R.done = {}; } else { let ab = 0;
-      for (const e of etapas(d.r,ui.date)){ const p = escolha(d.r,e,ui.date); if (p && p !== 'skip'){ R.done[e] = true; S.last[d.r+':'+e] = p.id; if (abrirSeFechado(p, ui.date)) ab++; } }
-      toast(`${ROT[d.r]} concluída${ab ? ` · ${ab} produto${ab>1?'s':''} aberto${ab>1?'s':''} hoje` : ''}`); }
-    save(); render();
-  },
-  goVenc: () => { ui.tab = 'estoque'; ui.seg = 'estoque'; ui.filtro = 'bad'; ui.regiao = 'Todos'; ui.q = ''; render(); },
-  seg: d => { ui.seg = d.s; render(); },
-  filtro: d => { ui.filtro = ui.filtro === d.k ? null : d.k; render(); },
-  regiao: d => { ui.regiao = d.k; render(); },
-  item: d => openItem(d.pid),
-  abrir: d => { const p = byId(d.pid); p.status = 'uso'; p.aberto = TODAY; save(); openItem(p.id); render(); toast('Aberto hoje'); },
-  acabou: d => { const p = byId(d.pid);
-    if (p.qtd > 1){ p.qtd--; p.status = 'fechado'; p.aberto = null; toast(`Restam ${p.qtd} · a próxima está fechada`); openItem(p.id); }
-    else { p.qtd = 0; p.status = 'acabou'; p.aberto = null; closeSheet(); toast(`${p.nome} foi para Repor`); }
-    save(); render(); },
-  mais: d => { const p = byId(d.pid); p.qtd++; save(); openItem(p.id); render(); },
-  edit: d => openForm(byId(d.pid)),
-  add: d => openForm(null, { etapa: d.e }),
-  comprei: d => { const p = byId(d.pid); p.qtd = 1; p.status = 'fechado'; p.aberto = null; p.validade = null; openForm(p); },
-  del: (d, btn) => armar(btn, () => { S.produtos = S.produtos.filter(p => p.id !== d.pid); save(); closeSheet(); render(); toast('Produto excluído'); }),
-  close: () => closeSheet(),
-  setfoco: d => { S.plano.noite[+d.i] = d.k; save(); render(); },
-  setcab: d => { S.plano.cabelo[+d.i] = d.k || null; save(); render(); },
-  setciclo: d => { S.plano.anchor = addDays(domingo(TODAY), -7 * +d.k); save(); render(); },
-  export: () => { const txt = JSON.stringify(S);
-    const fallback = () => { sheet(head('Backup','Copie o texto abaixo') + `<textarea id="bk" readonly>${esc(txt)}</textarea>`); const t = $('#bk'); t.focus(); t.select(); };
-    try { navigator.clipboard.writeText(txt).then(() => toast('Backup copiado'), fallback); } catch(e) { fallback(); } },
-  importOpen: () => sheet(head('Backup','Restaurar') + `<form id="iform"><label>Cole aqui o texto do backup<textarea id="imp" required></textarea></label><button class="btn" type="submit">Restaurar</button></form>`),
-  reset: (d, btn) => armar(btn, () => { S = fresh(); save(); render(); toast('Dados recarregados da planilha'); })
+const categorias = () => {
+  const s = new Set(prodList().map(p => p.cat).filter(Boolean));
+  Object.values(S.rotinas).forEach(v => (v.periodos||[]).forEach(p => p.etapas.forEach(e => (e.regras||[]).forEach(r => (r.cats||[]).forEach(c => s.add(c))))));
+  return [...s].sort((a,b) => a.localeCompare(b));
 };
 
-document.addEventListener('click', e => {
-  if (e.target.id === 'ov'){ closeSheet(); return; }
-  const t = e.target.closest('[data-act]'); if (!t || t.disabled) return;
-  const f = ACT[t.dataset.act]; if (f){ e.preventDefault(); f(t.dataset, t); }
-});
-document.addEventListener('input', e => { if (e.target.id === 'q'){ ui.q = e.target.value; $('#list').innerHTML = vLista(); } });
-document.addEventListener('change', e => { if (e.target.id === 'f-regiao') $('#f-etapa').innerHTML = etapaOpts(e.target.value, ''); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#ov').hidden) closeSheet(); });
-document.addEventListener('submit', e => {
-  e.preventDefault();
-  if (e.target.id === 'iform'){
-    try { const x = JSON.parse($('#imp').value); if (!Array.isArray(x.produtos)) throw 0; S = x; save(); closeSheet(); render(); toast('Backup restaurado'); }
-    catch(err){ toast('Texto inválido. Cole o backup completo, do primeiro { ao último }.'); }
-    return;
-  }
-  if (e.target.id !== 'pform') return;
-  const fd = new FormData(e.target), id = e.target.dataset.id, old = id ? byId(id) : null;
-  const etapa = fd.get('etapa'), val = fd.get('validade');
-  const p = Object.assign(old || { id: 'p' + Date.now().toString(36), ativo: null }, {
-    regiao: fd.get('regiao'), etapa, tipo: old && old.etapa === etapa ? old.tipo : ETAPAS[etapa],
-    marca: fd.get('marca').trim(), nome: fd.get('nome').trim(), validade: val ? val + '-01' : null,
-    pao: fd.get('pao') || null, qtd: Math.max(1, parseInt(fd.get('qtd'), 10) || 1), status: fd.get('status'),
-    aberto: fd.get('aberto') || (fd.get('status') === 'uso' && !(old && old.aberto) ? TODAY : null)
-  });
-  const n = norm(p.nome); p.ativo = /retin/.test(n) ? 'retinoide' : /acido (latico|mandelico|glicolico|salicilico)|aha|bha/.test(n) ? 'acido' : /peroxido/.test(n) ? 'bpo' : (old ? old.ativo : null);
-  if (!old) S.produtos.push(p);
-  save(); closeSheet(); render(); toast(old ? 'Salvo' : 'Adicionado à prateleira');
-});
-
-function render(){
-  $('#top').innerHTML = vTop();
-  $('#main').innerHTML = ui.tab === 'hoje' ? vHoje() : ui.tab === 'estoque' ? vEstoque() : vPlano();
-  document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.t === ui.tab));
+/* ---------- rotinas ---------- */
+const versoes = () => Object.entries(S.rotinas).map(([id,v]) => Object.assign({id}, v)).sort((a,b) => a.inicio.localeCompare(b.inicio));
+function versaoPara(d){ const vs = versoes(); if (!vs.length) return null; let v = vs[0]; for (const x of vs) if (x.inicio <= d) v = x; return v; }
+function etapasDoDia(v, d){
+  if (!v) return [];
+  const wd = dow(d);
+  return (v.periodos||[]).map(p => ({
+    id:p.id, nome:p.nome, sigla:p.sigla,
+    etapas: p.etapas.map((e,i) => { const r = (e.regras||[]).find(r => (r.dias||[]).includes(wd)); return r ? Object.assign({}, e, {regra:r, ord:(p.sigla||'')+(i+1)}) : null; }).filter(Boolean)
+  }));
 }
-render();
+function faltas(v){
+  const out = new Map();
+  if (!v) return [];
+  (v.periodos||[]).forEach(p => p.etapas.forEach((e,i) => (e.regras||[]).forEach(r => {
+    if (!(r.dias||[]).length || !(r.cats||[]).length) return;
+    const ps = prodsFor(r.cats, false, p.id);
+    if (!ps.length) {
+      const key = r.cats.join(' / ');
+      if (!out.has(key)) out.set(key, {cats:r.cats, onde:[]});
+      out.get(key).onde.push((p.sigla||'')+(i+1)+' '+e.nome+(r.rotulo ? ' · '+r.rotulo : ''));
+    }
+  })));
+  return [...out.values()];
+}
+
+/* ---------- diário ---------- */
+function getDia(d){ return S.diario[d] ? clone(S.diario[d]) : {data:d, pele:{}, cabelo:null, extras:[], viagem:false}; }
+function saveDia(doc){
+  doc.data = S.dia === doc.data ? doc.data : doc.data;
+  const vazio = !Object.keys(doc.pele||{}).length && !doc.cabelo && !(doc.extras||[]).length && !doc.viagem;
+  Store.write('diario', doc.data, vazio ? null : doc);
+}
+
+/* ---------- cabelo ---------- */
+function hairCfg(d){ const v = versaoPara(d); return Object.assign({minSemana:3, prioridade:[0,2,4], acidDias:14, detoxSemana:1, cowashConta:false, nota:''}, v && v.cabelo); }
+function hairEntries(){ return Object.values(S.diario).filter(x => x.cabelo).map(x => Object.assign({data:x.data}, x.cabelo)).sort((a,b) => a.data.localeCompare(b.data)); }
+function hairStatus(day){
+  const c = hairCfg(day);
+  const all = hairEntries();
+  const conta = e => e.tipo === 'lavagem' || (c.cowashConta && e.tipo === 'cowash');
+  const before = all.filter(e => e.data < day);
+  const weekStart = addDays(day, -dow(day));
+  const semana = all.filter(e => e.data >= weekStart && e.data <= addDays(weekStart,6));
+  const semanaAntes = before.filter(e => e.data >= weekStart);
+  const lavSemana = semanaAntes.filter(conta).length;
+  const detoxSemana = semanaAntes.filter(e => e.detox).length;
+  const lastWash = before.filter(e => e.tipo === 'lavagem' || e.tipo === 'cowash').at(-1);
+  const lastLav = before.filter(e => e.tipo === 'lavagem').at(-1);
+  const lastAcid = all.filter(e => e.acid && e.data < day).at(-1);
+  const acidDue = lastAcid ? addDays(lastAcid.data, c.acidDias) : null;
+  const restam = 7 - dow(day);
+  const falta = Math.max(0, c.minSemana - lavSemana);
+  let lavar;
+  if (falta > 0 && falta >= restam) lavar = 'precisa';
+  else if (falta === 0) lavar = 'meta';
+  else if ((c.prioridade||[]).includes(dow(day))) lavar = 'prioridade';
+  else lavar = 'opcional';
+  const sug = {detox:false, acid:false};
+  if ((!acidDue || acidDue <= day) && !(lastLav && lastLav.acid)) sug.acid = true;
+  if (detoxSemana < c.detoxSemana && !(lastLav && lastLav.detox)) sug.detox = true;
+  if (sug.acid && sug.detox && falta > 1 && restam > 2) sug.detox = false; // espaça: acidifica agora, detox numa próxima
+  return {c, lavSemana, detoxSemana, lastWash, lastLav, lastAcid, acidDue, restam, falta, lavar, sug, weekStart, semana};
+}
+
+/* ---------- UI genérica ---------- */
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); }
+const ICON = {
+  hoje:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 3h6v3l1.5 2.2V20a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V8.2L9 6z"/><path d="M8 12h8"/></svg>',
+  estoque:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h16v12H4z"/><path d="M7 8V5h10v3M10 12h4"/></svg>',
+  rotina:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>',
+  historico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>'
+};
+const VIEWS = [['hoje','Hoje'],['estoque','Estoque'],['rotina','Rotina'],['historico','Histórico']];
+function renderNav(){
+  const html = VIEWS.map(([k,l]) => `<a href="#${k}" ${S.view===k?'aria-current="page"':''}>${ICON[k]}<span>${l}</span></a>`).join('');
+  $('#nav').innerHTML = html; $('#topnav').innerHTML = html;
+}
+function render(){
+  const ae = document.activeElement, aid = ae && ae.id, sel = ae && ae.selectionStart;
+  renderNav();
+  const ready = COLS.every(c => S.loaded[c]);
+  let html;
+  if (!ready) html = `<div class="empty"><b>${S.slow ? 'Ainda conectando…' : 'Abrindo seu nécessaire…'}</b>${S.slow ? 'Os dados não responderam. Verifique a internet; o app tenta de novo sozinho.' : 'Carregando produtos e rotina.'}</div>`;
+  else html = (S.local ? `<div class="banner" style="margin-bottom:12px">Seus dados ficam salvos neste aparelho. Exporte um backup de vez em quando (aba Rotina, no fim da página).</div>` : '')
+    + (S.err ? `<div class="banner bad" style="margin-bottom:12px">Sem acesso aos dados agora (${h(S.err)}).</div>` : '')
+    + ({hoje:vHoje, estoque:vEstoque, rotina:vRotina, historico:vHistorico}[S.view] || vHoje)();
+  $('#main').innerHTML = html;
+  if (aid) { const el = document.getElementById(aid); if (el && !el.closest('#modal')) { el.focus(); try { if (sel != null) el.setSelectionRange(sel, sel); } catch(e) {} } }
+}
+
+/* ---------- VIEW: Hoje ---------- */
+function vHoje(){
+  const d = S.dia, v = versaoPara(d), dia = getDia(d), isHoje = d === hoje();
+  const rel = diff(hoje(), d);
+  const relTxt = rel === 0 ? 'Hoje' : rel === -1 ? 'Ontem' : rel === 1 ? 'Amanhã' : (rel < 0 ? 'há '+(-rel)+' dias' : 'em '+rel+' dias');
+  let out = `<div class="card">
+    <div class="daynav">
+      <button class="iconbtn" data-act="dia" data-n="-1" aria-label="Dia anterior">‹</button>
+      <div class="lbl"><b>${DIAS[dow(d)]}</b><span>${fmtLongo(d)} · ${relTxt}</span></div>
+      <button class="iconbtn" data-act="dia" data-n="1" aria-label="Próximo dia">›</button>
+    </div>
+    <div class="ctx">
+      ${!isHoje ? `<button class="btn sm" data-act="dia-hoje">Voltar para hoje</button>` : ''}
+      ${v ? `<span class="pill acc">Rotina: ${h(v.nome)} · desde ${fmtCurto(v.inicio)}</span>` : ''}
+      <button class="switch" data-act="viagem" aria-pressed="${!!dia.viagem}"><i></i>Viagem</button>
+    </div>
+  </div>`;
+  if (!v) return out + `<div class="empty"><b>Nenhuma rotina cadastrada</b>Crie a primeira na aba Rotina.</div>`;
+
+  /* Pele */
+  const periodos = etapasDoDia(v, d);
+  const usados = new Set();
+  out += `<section class="section"><div class="section-h"><h2>Skincare</h2><span class="small muted">Toque no produto que usou. Toque de novo para desmarcar.</span></div>`;
+  periodos.forEach(p => {
+    const feitos = p.etapas.filter(e => dia.pele[p.id+':'+e.id]).length;
+    out += `<div class="period"><div class="period-h"><h3>${h(p.nome)}</h3><span class="prog ${feitos===p.etapas.length && feitos ? 'done':''}">${feitos}/${p.etapas.length}</span></div>`;
+    if (!p.etapas.length) out += `<div class="banner">Nenhuma etapa neste dia.</div>`;
+    p.etapas.forEach(e => {
+      const k = p.id+':'+e.id; usados.add(k);
+      const reg = dia.pele[k];
+      const ps = prodsFor(e.regra.cats, dia.viagem, p.id);
+      const sugId = ps[0] && ps[0].id;
+      const missing = !ps.length;
+      let st = '<span class="state">pendente</span>';
+      if (reg && reg.pulou) st = '<span class="state">não usei</span>';
+      else if (reg) st = '<span class="state ok">✓ feito</span>';
+      out += `<div class="step ${reg ? 'done' : ''} ${missing ? 'missing' : ''}">
+        <div class="step-h"><span class="ord">${h(e.ord)}</span><div class="t"><b>${h(e.nome)}</b><small>${h([e.regra.rotulo, e.area].filter(Boolean).join(' · '))}</small></div>${st}</div>
+        ${missing ? `<div class="miss">Sem produto para ${h(e.regra.cats.join(' / '))} · comprar</div>` : ''}
+        <div class="opts">
+          ${ps.filter((x,ix) => ix < (S.expand.has(k) ? 999 : 3) || (reg && reg.produto === x.id)).map(x => `<button class="opt ${reg && reg.produto===x.id ? 'sel':''} ${x.status==='Fechado'?'closed':''}" data-act="pick" data-k="${h(k)}" data-p="${h(x.id)}">
+              <span class="pn">${h(x.nome)}</span>
+              <span class="pm">${h(x.marca||'')} ${valBadge(x)} ${x.status==='Fechado' ? '<span>fechado</span>' : ''} ${x.viagem ? '<span>viagem</span>' : ''} ${x.prio===1 ? '<span>★ preferido</span>' : ''} ${x.id===sugId ? '<b>sugestão</b>' : ''}</span>
+            </button>`).join('')}
+          ${reg && reg.produto && !ps.some(x => x.id === reg.produto) ? `<button class="opt sel" data-act="pick" data-k="${h(k)}" data-p="${h(reg.produto)}"><span class="pn">${h(reg.prodNome)}</span><span class="pm">registrado</span></button>` : ''}
+          ${ps.length > 3 && !S.expand.has(k) ? `<button class="opt skip" data-act="more" data-k="${h(k)}">+${ps.length-3} opções</button>` : ''}
+          <button class="opt skip ${reg && reg.pulou ? 'sel':''}" data-act="pick" data-k="${h(k)}" data-p="__skip">Não usei</button>
+        </div>
+      </div>`;
+    });
+    out += `</div>`;
+  });
+  const orfaos = Object.entries(dia.pele).filter(([k]) => !usados.has(k));
+  if (orfaos.length) out += `<div class="card small"><div class="eyebrow" style="margin-bottom:6px">Outros registros deste dia</div>${orfaos.map(([k,r]) => `<div>${h(r.ord||'')} ${h(r.etapa)}${r.rotulo ? ' · '+h(r.rotulo) : ''}: <b>${r.pulou ? 'não usei' : h(r.prodNome)}</b></div>`).join('')}</div>`;
+  out += `</section>`;
+
+  out += vCabelo(d, dia);
+  out += vExtras(d, dia);
+  return out;
+}
+
+function vCabelo(d, dia){
+  const st = hairStatus(d), c = st.c, reg = dia.cabelo;
+  const draft = S.hairDraft[d] || (reg ? {detox:!!reg.detox, acid:!!reg.acid} : clone(st.sug));
+  S.hairDraft[d] = draft;
+  const week = [...Array(7)].map((_,i) => {
+    const wd = addDays(st.weekStart, i), e = st.semana.find(x => x.data === wd);
+    const cls = ['wd', (c.prioridade||[]).includes(i) ? 'prio':'', wd === d ? 'today':'', e ? (e.tipo === 'cowash' ? 'cow' : 'wash') : ''].join(' ');
+    const tag = e ? (e.tipo === 'cowash' ? 'CW' : [e.detox ? 'DTX' : '', e.acid ? 'ACD' : ''].filter(Boolean).join('+') || 'LAV') : '';
+    return `<div class="${cls}"><span>${DL[i]}</span><em>${toD(wd).getDate()}</em><em>${tag}</em></div>`;
+  }).join('');
+  const lw = st.lastWash ? diff(st.lastWash.data, d) : null;
+  const acidTxt = !st.lastAcid ? 'Sem registro' : (st.acidDue <= d ? (st.acidDue === d ? 'Hoje' : 'Atrasada '+diff(st.acidDue, d)+'d') : fmtCurto(st.acidDue)+' · em '+diff(d, st.acidDue)+'d');
+  const acidCls = !st.lastAcid || st.acidDue <= d ? 'warn' : 'ok';
+  const reco = {
+    precisa: `<b>Lave hoje.</b> Faltam ${st.falta} lavage${st.falta>1?'ns':'m'} e restam ${st.restam} dia${st.restam>1?'s':''} na semana.`,
+    prioridade: `<b>Dia prioritário de lavagem.</b> ${st.lavSemana} de ${c.minSemana} feitas nesta semana.`,
+    opcional: `Lavagem opcional hoje. ${st.lavSemana} de ${c.minSemana} feitas nesta semana.`,
+    meta: `<b>Meta da semana cumprida</b> (${st.lavSemana}/${c.minSemana}). Lave se quiser.`
+  }[st.lavar];
+  const tipoSug = st.sug.acid && st.sug.detox ? 'shampoo detox + acidificação' : st.sug.acid ? 'acidificação (shampoo + acidificante + condicionador)' : st.sug.detox ? 'shampoo detox' : 'lavagem comum';
+  const repete = st.lastLav ? (st.lastLav.detox ? 'detox' : st.lastLav.acid ? 'acidificação' : 'comum') : null;
+  let out = `<section class="section"><div class="section-h"><h2>Cabelo</h2><span class="small muted">Semana de domingo a sábado</span></div>
+  <div class="card stack">
+    <div class="week">${week}</div>
+    <div class="metrics">
+      <div class="metric ${st.lavSemana >= c.minSemana ? 'ok':''}"><span>Lavagens na semana</span><b class="mono">${st.lavSemana}/${c.minSemana}</b></div>
+      <div class="metric"><span>Última lavagem</span><b>${lw == null ? 'Sem registro' : diasTxt(lw)}${st.lastWash && st.lastWash.tipo==='cowash' ? ' (cowash)' : ''}</b></div>
+      <div class="metric ${st.detoxSemana >= c.detoxSemana ? 'ok':'warn'}"><span>Detox na semana</span><b>${st.detoxSemana >= c.detoxSemana ? 'Feito' : 'Pendente'}</b></div>
+      <div class="metric ${acidCls}"><span>Próxima acidificação</span><b>${acidTxt}</b></div>
+    </div>`;
+  if (!reg) {
+    out += `<div class="reco">${reco}<br>Sugestão de tipo: <b>${tipoSug}</b>.${repete ? ` <span class="muted small">Última foi ${repete}.</span>` : ''}</div>
+    <div class="row"><span class="small muted">Esta lavagem inclui:</span>
+      <button class="tog" data-act="hair-tog" data-f="detox" aria-pressed="${draft.detox}">Shampoo detox</button>
+      <button class="tog" data-act="hair-tog" data-f="acid" aria-pressed="${draft.acid}">Acidificação</button>
+    </div>
+    <div class="row"><button class="btn primary" data-act="hair-reg" data-t="lavagem">Registrar lavagem</button><button class="btn" data-act="hair-reg" data-t="cowash">Registrar cowash</button></div>`;
+  } else {
+    const desc = reg.tipo === 'cowash' ? 'Cowash (fora da rotina)' : 'Lavagem' + (reg.detox ? ' · shampoo detox' : '') + (reg.acid ? ' · acidificação' : '') + (!reg.detox && !reg.acid ? ' comum' : '');
+    out += `<div class="row between"><span class="pill hair">✓ ${h(desc)}</span><button class="btn sm ghost" data-act="hair-undo">Desfazer</button></div>`;
+    if (reg.tipo === 'lavagem') out += `<div class="row"><span class="small muted">Corrigir:</span>
+      <button class="tog" data-act="hair-fix" data-f="detox" aria-pressed="${!!reg.detox}">Shampoo detox</button>
+      <button class="tog" data-act="hair-fix" data-f="acid" aria-pressed="${!!reg.acid}">Acidificação</button></div>`;
+  }
+  if (c.nota) out += `<div class="small muted">${h(c.nota)}</div>`;
+  out += `</div></section>`;
+  return out;
+}
+
+function vExtras(d, dia){
+  const tipos = extrasTipos();
+  const last = {};
+  Object.values(S.diario).forEach(x => (x.extras||[]).forEach(e => { if (x.data <= d && (!last[e.tipo] || last[e.tipo] < x.data)) last[e.tipo] = x.data; }));
+  let out = `<section class="section"><div class="section-h"><h2>Cuidados extras</h2><span class="small muted">Não entram na rotina, só ficam registrados</span></div><div class="card stack">`;
+  if ((dia.extras||[]).length) out += `<div class="extra-list">${dia.extras.map((e,i) => `<span class="xchip">${h(e.tipo)}${e.prodNome ? ' · '+h(e.prodNome) : ''}<button data-act="extra-del" data-i="${i}" aria-label="Remover">×</button></span>`).join('')}</div>`;
+  if (S.extraForm) {
+    const ps = prodList().filter(p => !p.acabou && p.regiao !== 'Cabelo').sort((a,b) => (a.cat||'').localeCompare(b.cat||'') || pNome(a).localeCompare(pNome(b)));
+    const grupos = {}; ps.forEach(p => (grupos[p.cat] = grupos[p.cat] || []).push(p));
+    out += `<div class="form">
+      <label class="f">Cuidado<select id="ex-tipo">${tipos.map(t => `<option>${h(t)}</option>`).join('')}<option value="__outro">Outro…</option></select></label>
+      <label class="f">Novo tipo (se "Outro")<input id="ex-outro" placeholder="ex.: Peeling de diamante"></label>
+      <label class="f full">Produto usado (opcional)<select id="ex-prod"><option value="">— nenhum / não lembro —</option>${Object.entries(grupos).map(([g,l]) => `<optgroup label="${h(g)}">${l.map(p => `<option value="${h(p.id)}">${h(pNome(p))}${p.qtd>1 ? ' ('+p.qtd+')' : ''}</option>`).join('')}</optgroup>`).join('')}</select></label>
+      <label class="chk full"><input type="checkbox" id="ex-desc"> Descontar 1 unidade do estoque (ex.: máscara de tecido)</label>
+    </div>
+    <div class="row"><button class="btn primary" data-act="extra-save">Registrar em ${fmtCurto(d)}</button><button class="btn ghost" data-act="extra-cancel">Cancelar</button></div>`;
+  } else out += `<div><button class="btn" data-act="extra-open">+ Registrar cuidado extra</button></div>`;
+  const ult = tipos.filter(t => last[t]).map(t => `<span class="pill gold">${h(t)}: ${diasTxt(diff(last[t], d))}</span>`);
+  if (ult.length) out += `<div class="row">${ult.join('')}</div>`;
+  out += `</div></section>`;
+  return out;
+}
+
+/* ---------- VIEW: Estoque ---------- */
+function vEstoque(){
+  const all = prodList();
+  const ativos = all.filter(p => !p.acabou);
+  const venc = ativos.filter(vencido);
+  const logo = ativos.filter(p => p.val && diasVal(p) >= 0 && diasVal(p) <= 60);
+  const v = versaoPara(hoje());
+  const fl = faltas(v);
+  let out = `<div class="stats">
+    <div class="stat"><b class="mono">${ativos.length}</b><span>produtos ativos</span></div>
+    <div class="stat ${venc.length?'bad':''}"><b class="mono">${venc.length}</b><span>vencidos</span></div>
+    <div class="stat ${logo.length?'warn':''}"><b class="mono">${logo.length}</b><span>vencem em 60 dias</span></div>
+    <div class="stat ${fl.length?'warn':''}"><b class="mono">${fl.length}</b><span>etapas sem produto</span></div>
+  </div>`;
+  if (fl.length) out += `<section class="section"><div class="section-h"><h2>Lista de compras</h2><span class="small muted">Etapas da rotina atual sem nenhum produto</span></div>
+    <div class="card"><ul class="shop">${fl.map(f => `<li><b>${h(f.cats.join(' / '))}</b><span class="small muted">${h(f.onde.join(' · '))}</span></li>`).join('')}</ul></div></section>`;
+  out += `<section class="section"><div class="section-h"><h2>Produtos</h2><button class="btn primary sm" data-act="prod-new">+ Novo produto</button></div>
+    <div class="seg" role="group" aria-label="Região">${[...REGIOES,'Todos'].map(r => `<button data-act="reg" data-r="${r}" aria-pressed="${S.reg===r}">${r}</button>`).join('')}</div>
+    <div class="row"><input id="busca" class="search" type="search" placeholder="Buscar marca, nome ou tipo" value="${h(S.busca)}" style="flex:1;min-width:0">
+    <button class="switch" data-act="acabados" aria-pressed="${S.acabados}"><i></i>Acabados</button></div>
+    <div id="plist" class="stack">${listaProdutos()}</div></section>`;
+  return out;
+}
+function listaProdutos(){
+  const q = norm(S.busca);
+  const ps = prodList().filter(p => (S.reg === 'Todos' || p.regiao === S.reg) && (S.acabados ? p.acabou : !p.acabou) && (!q || norm([p.marca,p.nome,p.cat].join(' ')).includes(q)));
+  if (!ps.length) return `<div class="empty"><b>Nada por aqui</b>${S.acabados ? 'Nenhum produto marcado como acabado.' : 'Ajuste o filtro ou cadastre um produto.'}</div>`;
+  const g = {}; ps.forEach(p => (g[p.cat||'Sem categoria'] = g[p.cat||'Sem categoria'] || []).push(p));
+  return Object.keys(g).sort((a,b) => a.localeCompare(b)).map(cat => {
+    const l = g[cat].sort((a,b) => (a.val||'9999').localeCompare(b.val||'9999'));
+    return `<div class="group"><div class="group-h"><span>${h(cat)}</span><span class="mono muted">${l.length}</span></div>${l.map(p => `
+      <button class="prow ${p.acabou?'gone':''}" data-act="prod-edit" data-id="${h(p.id)}">
+        <div class="pt"><small>${h(p.marca||'')}</small><b>${h(p.nome)}</b></div>
+        <div class="pr">${p.prio===1 ? '<span class="pill gold">★ preferido</span>' : p.prio===-1 ? '<span class="pill">por último</span>' : ''}${p.periodo ? `<span class="pill hair">${p.periodo==='noite' ? 'só noite' : 'só dia'}</span>` : ''}${p.viagem ? '<span class="pill">viagem</span>' : ''}${(p.qtd??1) > 1 ? `<span class="pill mono">×${p.qtd}</span>` : ''}<span class="pill ${p.status==='Fechado' ? '' : 'acc'}">${h(p.acabou ? 'acabou' : p.status||'Em uso')}</span>${valBadge(p)}</div>
+      </button>`).join('')}</div>`;
+  }).join('');
+}
+
+function prodModal(id){
+  const p = id ? Object.assign({}, S.produtos[id]) : {regiao:S.reg==='Todos'?'Rosto':S.reg, cat:'', marca:'', nome:'', qtd:1, status:'Em uso', val:'', viagem:false, obs:'', periodo:'', prio:0};
+  const cats = categorias();
+  openModal(`<div class="sheet-h"><h2>${id ? 'Editar produto' : 'Novo produto'}</h2><button class="iconbtn" data-act="close" aria-label="Fechar">×</button></div>
+  <div class="form">
+    <label class="f">Região<select id="pf-regiao">${REGIOES.map(r => `<option ${p.regiao===r?'selected':''}>${r}</option>`).join('')}</select></label>
+    <label class="f">Tipo / categoria<input id="pf-cat" list="pf-cats" value="${h(p.cat)}" placeholder="ex.: Hidratante Comum"><datalist id="pf-cats">${cats.map(c => `<option value="${h(c)}">`).join('')}</datalist></label>
+    <label class="f">Marca<input id="pf-marca" value="${h(p.marca)}"></label>
+    <label class="f">Nome<input id="pf-nome" value="${h(p.nome)}"></label>
+    <label class="f">Quantidade<input id="pf-qtd" type="number" min="0" step="1" value="${h(p.qtd ?? 1)}"></label>
+    <label class="f">Situação<select id="pf-status"><option ${p.status!=='Fechado'?'selected':''}>Em uso</option><option ${p.status==='Fechado'?'selected':''}>Fechado</option></select></label>
+    <label class="f">Validade<input id="pf-val" type="date" value="${h(p.val||'')}"></label>
+    <label class="f">Horário de uso<select id="pf-periodo">${Object.entries(HORARIO).map(([k,l]) => `<option value="${k}" ${(p.periodo||'')===k?'selected':''}>${l}</option>`).join('')}</select></label>
+    <label class="f">Prioridade<select id="pf-prio">${[1,0,-1].map(k => `<option value="${k}" ${(p.prio||0)===k?'selected':''}>${PRIO[k]}</option>`).join('')}</select></label>
+    <label class="chk full"><input type="checkbox" id="pf-viagem" ${p.viagem?'checked':''}> Kit de viagem (só aparece no modo viagem)</label>
+    <label class="f full">Observações<textarea id="pf-obs" rows="2">${h(p.obs||'')}</textarea></label>
+  </div>
+  <div class="small muted">Para entrar numa etapa da rotina, o tipo precisa ser um dos tipos usados na aba Rotina. "Preferir" coloca o produto na frente da sugestão por validade.</div>
+  <div class="row between">
+    <div class="row"><button class="btn primary" data-act="prod-save" data-id="${h(id||'')}">Salvar</button><button class="btn ghost" data-act="close">Cancelar</button></div>
+    ${id ? `<div class="row">${p.acabou ? `<button class="btn" data-act="prod-restore" data-id="${h(id)}">Restaurar</button>` : `<button class="btn" data-act="prod-acabou" data-id="${h(id)}">Acabou</button>`}<button class="btn danger" data-act="prod-del" data-id="${h(id)}" data-confirm="Toque de novo para excluir">Excluir</button></div>` : ''}
+  </div>`);
+}
+
+/* ---------- VIEW: Rotina ---------- */
+function vRotina(){
+  const vs = versoes(), atual = versaoPara(hoje());
+  if (!vs.length) return `<div class="empty"><b>Nenhuma rotina ainda</b><button class="btn primary" data-act="rot-nova" style="margin-top:10px">Criar rotina</button></div>`;
+  const sel = (S.verSel && S.rotinas[S.verSel]) ? Object.assign({id:S.verSel}, S.rotinas[S.verSel]) : atual;
+  let out = `<section class="section" style="margin-top:0"><div class="section-h"><h2>Versões da rotina</h2><button class="btn primary sm" data-act="rot-nova">+ Nova versão a partir de uma data</button></div>
+  <div class="small muted">Cada versão vale a partir da data de início até a próxima. O que já foi registrado continua no histórico do jeito que foi feito.</div>
+  <div class="vers">${vs.slice().reverse().map((v,i,arr) => {
+    const prox = vs[vs.indexOf(v)+1];
+    const tag = v.id === atual.id ? '<span class="pill ok">em vigor</span>' : v.inicio > hoje() ? '<span class="pill acc">agendada</span>' : '<span class="pill">anterior</span>';
+    return `<button class="ver" data-act="rot-sel" data-id="${h(v.id)}" aria-pressed="${v.id===sel.id}"><div class="vt"><b>${h(v.nome)}</b><small class="mono">${fmtCurto(v.inicio)}/${v.inicio.slice(0,4)} → ${prox ? fmtCurto(addDays(prox.inicio,-1))+'/'+addDays(prox.inicio,-1).slice(0,4) : 'atual'}</small></div>${tag}</button>`;
+  }).join('')}</div></section>`;
+
+  out += `<section class="section"><div class="section-h"><h2>${h(sel.nome)}</h2><div class="row"><button class="btn sm" data-act="rot-edit" data-id="${h(sel.id)}">Editar esta versão</button>${vs.length > 1 ? `<button class="btn sm danger" data-act="rot-del" data-id="${h(sel.id)}" data-confirm="Confirmar exclusão">Excluir</button>` : ''}</div></div>
+  ${sel.obs ? `<div class="small muted">${h(sel.obs)}</div>` : ''}`;
+  (sel.periodos||[]).forEach(p => {
+    out += `<h3 style="margin-top:6px">${h(p.nome)}</h3><div class="tblwrap"><table class="grid"><thead><tr><th class="s">Etapa</th>${DL.map((l,i) => `<th title="${DIAS[i]}" data-l="${l}">${DC[i]}</th>`).join('')}</tr></thead><tbody>`;
+    p.etapas.forEach((e,i) => {
+      const multi = (e.regras||[]).length > 1;
+      out += `<tr><td class="s"><b><span class="mono muted">${h((p.sigla||'')+(i+1))}</span> ${h(e.nome)}</b>${(e.regras||[]).map((r,ri) => `<small>${multi ? `<span class="cell c${ri%4}" style="min-width:16px;height:16px;font-size:9.5px">${ri+1}</span> ` : ''}${h(r.rotulo || (r.dias.length===7 ? 'Todos os dias' : listaDias(r.dias)))}: ${h((r.cats||[]).join(', ') || '—')}</small>`).join('')}</td>`;
+      for (let wd = 0; wd < 7; wd++) {
+        const ri = (e.regras||[]).findIndex(r => (r.dias||[]).includes(wd));
+        out += `<td>${ri < 0 ? '<span class="cell cnone">–</span>' : `<span class="cell c${ri%4}">${multi ? ri+1 : '●'}</span>`}</td>`;
+      }
+      out += `</tr>`;
+    });
+    out += `</tbody></table></div>`;
+  });
+  const c = Object.assign({minSemana:3, prioridade:[], acidDias:14, detoxSemana:1}, sel.cabelo);
+  out += `<h3 style="margin-top:6px">Cabelo</h3><div class="card small stack" style="gap:4px">
+    <div>Mínimo de <b>${c.minSemana}</b> lavagens por semana · prioridade: <b>${h(listaDias(c.prioridade||[]))}</b></div>
+    <div>Acidificação a cada <b>${c.acidDias}</b> dias · shampoo detox <b>${c.detoxSemana}×</b> por semana</div>
+    <div>Cowash ${c.cowashConta ? '<b>conta</b>' : '<b>não conta</b>'} como lavagem</div>
+    ${c.nota ? `<div class="muted">${h(c.nota)}</div>` : ''}</div></section>`;
+  out += `<section class="section"><div class="section-h"><h2>Backup dos dados</h2></div>
+    <div class="card stack"><div class="small muted">Um arquivo .json com produtos, rotinas e histórico. Serve para guardar uma cópia ou passar os dados para outro aparelho.</div>
+    <div class="row"><button class="btn" data-act="exportar">Exportar backup</button>
+    <label class="btn" for="imp-file">Importar backup</label><input type="file" id="imp-file" accept=".json,application/json" hidden></div>
+    <div id="imp-msg">${impMsg()}</div></div></section>`;
+  return out;
+}
+
+function impMsg(){
+  const j = S.importando; if (!j) return '';
+  const n = c => Object.keys(j[c]||{}).length;
+  return `<div class="banner warn stack" style="gap:8px"><div>Este backup tem ${n('produtos')} produtos, ${n('rotinas')} versões de rotina e ${n('diario')} dias registrados. Importar substitui tudo o que está no app agora.</div><div class="row"><button class="btn primary sm" data-act="importar-ok">Substituir pelos dados do backup</button><button class="btn sm ghost" data-act="importar-cancel">Cancelar</button></div></div>`;
+}
+/* editor de versão */
+function novaEtapa(){ return {id:uid('e'), nome:'Nova etapa', area:'Rosto', regras:[{dias:[0,1,2,3,4,5,6], rotulo:'', cats:[]}]}; }
+function abrirEditor(base, nova){
+  const ed = clone(base);
+  if (nova) { ed.id = uid('r'); ed.inicio = hoje(); ed.nome = 'Rotina a partir de '+fmtCurto(hoje()); }
+  ed.cabelo = Object.assign({minSemana:3, prioridade:[0,2,4], acidDias:14, detoxSemana:1, cowashConta:false, nota:''}, ed.cabelo);
+  S.ed = ed; S.edNova = nova; renderEditor();
+}
+function renderEditor(){
+  const ed = S.ed, cats = categorias();
+  const sheet = document.querySelector('#modal .sheet'); const st = sheet ? sheet.scrollTop : 0;
+  let html = `<div class="sheet-h"><h2>${S.edNova ? 'Nova versão da rotina' : 'Editar versão'}</h2><button class="iconbtn" data-act="close" aria-label="Fechar">×</button></div>
+  <div class="form">
+    <label class="f">Nome<input id="ed-nome" data-ed="nome" value="${h(ed.nome)}"></label>
+    <label class="f">Vale a partir de<input id="ed-inicio" type="date" data-ed="inicio" value="${h(ed.inicio)}"></label>
+    <label class="f full">Observação<input id="ed-obs" data-ed="obs" value="${h(ed.obs||'')}" placeholder="ex.: pele mais sensível no inverno"></label>
+  </div>
+  <datalist id="ed-cats">${cats.map(c => `<option value="${h(c)}">`).join('')}</datalist>`;
+  ed.periodos.forEach((p,pi) => {
+    html += `<div class="stack" style="gap:8px"><h3>${h(p.nome)}</h3>`;
+    p.etapas.forEach((e,ei) => {
+      html += `<div class="edstep">
+        <div class="row">
+          <span class="ord">${h((p.sigla||'')+(ei+1))}</span>
+          <input class="inp" id="ed-${pi}-${ei}-nome" data-ed="periodos.${pi}.etapas.${ei}.nome" value="${h(e.nome)}" style="flex:1;min-width:120px" aria-label="Nome da etapa">
+          <select class="inp" id="ed-${pi}-${ei}-area" data-ed="periodos.${pi}.etapas.${ei}.area" style="width:auto" aria-label="Área">${AREAS.map(a => `<option ${e.area===a?'selected':''}>${a}</option>`).join('')}</select>
+          <button class="iconbtn" data-act="ed-mv" data-pi="${pi}" data-ei="${ei}" data-d="-1" aria-label="Subir" ${ei===0?'disabled':''}>↑</button>
+          <button class="iconbtn" data-act="ed-mv" data-pi="${pi}" data-ei="${ei}" data-d="1" aria-label="Descer" ${ei===p.etapas.length-1?'disabled':''}>↓</button>
+          <button class="iconbtn" data-act="ed-step-del" data-pi="${pi}" data-ei="${ei}" aria-label="Remover etapa">×</button>
+        </div>`;
+      e.regras.forEach((r,ri) => {
+        const outros = new Set(); e.regras.forEach((o,oi) => { if (oi !== ri) o.dias.forEach(d => outros.add(d)); });
+        html += `<div class="edrule">
+          <div class="row between"><div class="days">${DC.map((l,wd) => `<button class="dchip ${outros.has(wd)?'taken':''}" data-act="ed-day" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}" data-wd="${wd}" aria-pressed="${r.dias.includes(wd)}" title="${DIAS[wd]}">${l}</button>`).join('')}</div>
+          ${e.regras.length > 1 ? `<button class="btn sm ghost" data-act="ed-rule-del" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}">Remover variação</button>` : ''}</div>
+          <input class="inp" id="ed-${pi}-${ei}-${ri}-rot" data-ed="periodos.${pi}.etapas.${ei}.regras.${ri}.rotulo" value="${h(r.rotulo||'')}" placeholder="Rótulo (opcional), ex.: Hidratação intensa">
+          <div class="row">${r.cats.map((c,ci) => `<span class="catchip">${h(c)}<button data-act="ed-cat-del" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}" data-ci="${ci}" aria-label="Remover ${h(c)}">×</button></span>`).join('') || '<span class="small muted">Nenhum tipo de produto: a etapa vai aparecer como "sem produto".</span>'}</div>
+          <div class="row"><input class="inp" id="ed-${pi}-${ei}-${ri}-cat" list="ed-cats" placeholder="Tipo de produto que serve nesta etapa" style="flex:1;min-width:0"><button class="btn sm" data-act="ed-cat-add" data-pi="${pi}" data-ei="${ei}" data-ri="${ri}">Adicionar tipo</button></div>
+        </div>`;
+      });
+      const usados = new Set(e.regras.flatMap(r => r.dias));
+      html += `<div class="row between"><span class="small muted">${usados.size === 7 ? 'Cobre todos os dias' : 'Não aparece em: '+h([0,1,2,3,4,5,6].filter(d => !usados.has(d)).map(d => DC[d]).join(', '))}</span><button class="btn sm" data-act="ed-rule-add" data-pi="${pi}" data-ei="${ei}">+ Variação por dia</button></div></div>`;
+    });
+    html += `<div><button class="btn" data-act="ed-step-add" data-pi="${pi}">+ Etapa em ${h(p.nome)}</button></div></div>`;
+  });
+  const c = ed.cabelo;
+  html += `<div class="stack" style="gap:8px"><h3>Cabelo</h3><div class="edstep">
+    <div class="form">
+      <label class="f">Lavagens mínimas por semana<input id="ed-c-min" type="number" min="0" data-ed="cabelo.minSemana" data-num value="${h(c.minSemana)}"></label>
+      <label class="f">Acidificação a cada (dias)<input id="ed-c-acid" type="number" min="1" data-ed="cabelo.acidDias" data-num value="${h(c.acidDias)}"></label>
+      <label class="f">Shampoo detox por semana<input id="ed-c-detox" type="number" min="0" data-ed="cabelo.detoxSemana" data-num value="${h(c.detoxSemana)}"></label>
+      <label class="chk" style="align-self:end;padding-bottom:8px"><input type="checkbox" id="ed-c-cow" data-ed="cabelo.cowashConta" data-bool ${c.cowashConta?'checked':''}> Cowash conta como lavagem</label>
+    </div>
+    <div class="small muted">Dias prioritários de lavagem</div>
+    <div class="days">${DC.map((l,wd) => `<button class="dchip" data-act="ed-hday" data-wd="${wd}" aria-pressed="${c.prioridade.includes(wd)}">${l}</button>`).join('')}</div>
+    <label class="f">Lembrete (aparece no card do cabelo)<textarea id="ed-c-nota" rows="2" data-ed="cabelo.nota">${h(c.nota||'')}</textarea></label>
+  </div></div>
+  <div id="ed-msg"></div>
+  <div class="row"><button class="btn primary" data-act="ed-save">${S.edNova ? 'Salvar nova versão' : 'Salvar alterações'}</button><button class="btn ghost" data-act="close">Cancelar</button></div>`;
+  openModal(html);
+  const sh = document.querySelector('#modal .sheet'); if (sh) sh.scrollTop = st;
+}
+function setPath(o, path, val){ const ks = path.split('.'); let x = o; for (let i = 0; i < ks.length-1; i++) x = x[ks[i]]; x[ks.at(-1)] = val; }
+
+/* ---------- VIEW: Histórico ---------- */
+function statusDia(d){
+  const reg = S.diario[d]; if (!reg) return null;
+  const per = etapasDoDia(versaoPara(d), d);
+  const r = {};
+  per.forEach(p => { const n = p.etapas.length, f = p.etapas.filter(e => reg.pele && reg.pele[p.id+':'+e.id]).length; r[p.id] = !f ? 0 : f >= n ? 2 : 1; });
+  r.cabelo = reg.cabelo ? reg.cabelo.tipo : null;
+  r.extras = (reg.extras||[]).length;
+  return r;
+}
+function vHistorico(){
+  const [y,m] = S.mes.split('-').map(Number);
+  const first = new Date(y, m-1, 1, 12), dias = new Date(y, m, 0).getDate();
+  const off = first.getDay();
+  let cells = DC.map(l => `<div class="hd">${l}</div>`).join('');
+  for (let i = 0; i < off; i++) cells += `<div class="day out"></div>`;
+  const resumo = {lav:0, cow:0, detox:0, acid:0, ext:{}, peleDias:0, manha:0, noite:0};
+  for (let n = 1; n <= dias; n++) {
+    const d = y+'-'+pad(m)+'-'+pad(n), s = statusDia(d), reg = S.diario[d];
+    let mk = '';
+    if (s) {
+      if (s.manha) mk += `<i class="mk ${s.manha===2?'dd':'dp'}" title="Diurna"></i>`;
+      if (s.noite) mk += `<i class="mk ${s.noite===2?'nd':'np'}" title="Noturna"></i>`;
+      if (s.cabelo) mk += `<i class="mk ${s.cabelo==='cowash'?'hc':'hw'}" title="${s.cabelo}"></i>`;
+      if (s.extras) mk += `<i class="mk ex" title="Extra"></i>`;
+      if (s.manha === 2) resumo.manha++; if (s.noite === 2) resumo.noite++;
+      if (reg.cabelo) { if (reg.cabelo.tipo === 'cowash') resumo.cow++; else resumo.lav++; if (reg.cabelo.detox) resumo.detox++; if (reg.cabelo.acid) resumo.acid++; }
+      (reg.extras||[]).forEach(e => resumo.ext[e.tipo] = (resumo.ext[e.tipo]||0)+1);
+    }
+    cells += `<button class="day ${d===hoje()?'today':''}" data-act="hist-dia" data-d="${d}" aria-label="${fmtLongo(d)}"><span class="n">${n}</span><span class="marks">${mk}</span></button>`;
+  }
+  return `<section class="section" style="margin-top:0">
+    <div class="card"><div class="daynav"><button class="iconbtn" data-act="mes" data-n="-1" aria-label="Mês anterior">‹</button><div class="lbl"><b style="text-transform:capitalize">${MESES[m-1]}</b><span>${y}</span></div><button class="iconbtn" data-act="mes" data-n="1" aria-label="Próximo mês">›</button></div></div>
+    <div class="cal">${cells}</div>
+    <div class="legend"><span><i class="mk dd"></i>Diurna completa</span><span><i class="mk nd"></i>Noturna completa</span><span><i class="mk dp"></i>parcial</span><span><i class="mk hw"></i>Lavagem</span><span><i class="mk hc"></i>Cowash</span><span><i class="mk ex"></i>Extra</span></div>
+    <div class="small muted">Toque num dia para ver ou corrigir o que foi feito.</div>
+    <h3>Resumo do mês</h3>
+    <div class="sum">
+      <div class="metric"><span>Diurnas completas</span><b class="mono">${resumo.manha}</b></div>
+      <div class="metric"><span>Noturnas completas</span><b class="mono">${resumo.noite}</b></div>
+      <div class="metric"><span>Lavagens</span><b class="mono">${resumo.lav}${resumo.cow ? ' + '+resumo.cow+' cowash' : ''}</b></div>
+      <div class="metric"><span>Detox · acidificação</span><b class="mono">${resumo.detox} · ${resumo.acid}</b></div>
+      ${Object.entries(resumo.ext).map(([k,v]) => `<div class="metric"><span>${h(k)}</span><b class="mono">${v}</b></div>`).join('')}
+    </div></section>`;
+}
+
+/* ---------- modal ---------- */
+function openModal(html){
+  const m = $('#modal');
+  if (!m.firstChild) m.innerHTML = `<div class="modal" data-act="backdrop"><div class="sheet" role="dialog" aria-modal="true"></div></div>`;
+  m.querySelector('.sheet').innerHTML = html;
+}
+function closeModal(){ $('#modal').innerHTML = ''; S.ed = null; }
+
+/* ---------- ações ---------- */
+const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+const A = {
+  dia: t => { S.dia = addDays(S.dia, +t.dataset.n); S.extraForm = false; render(); },
+  more: t => { S.expand.add(t.dataset.k); render(); },
+  'dia-hoje': () => { S.dia = hoje(); render(); },
+  viagem: () => { const doc = getDia(S.dia); doc.viagem = !doc.viagem; saveDia(doc); },
+  pick: t => {
+    const d = S.dia, doc = getDia(d), k = t.dataset.k, pid = t.dataset.p, cur = doc.pele[k];
+    const [per, eid] = k.split(':');
+    const P = etapasDoDia(versaoPara(d), d).find(p => p.id === per);
+    const e = P && P.etapas.find(x => x.id === eid);
+    const info = e ? {periodo:per, etapa:e.nome, rotulo:e.regra.rotulo||'', ord:e.ord, area:e.area||''} : (cur || {periodo:per});
+    if (pid === '__skip') { if (cur && cur.pulou) delete doc.pele[k]; else doc.pele[k] = Object.assign({}, info, {pulou:true}); }
+    else if (cur && cur.produto === pid) delete doc.pele[k];
+    else {
+      const p = S.produtos[pid]; if (!p) return;
+      doc.pele[k] = Object.assign({}, info, {produto:pid, prodNome:pNome(p), cat:p.cat||''});
+      if (p.status === 'Fechado') { Store.write('produtos', pid, Object.assign(clone(p), {status:'Em uso', abertoEm:d})); toast('Marcado como "em uso" no estoque'); }
+    }
+    saveDia(doc);
+  },
+  'hair-tog': t => { const dr = S.hairDraft[S.dia]; dr[t.dataset.f] = !dr[t.dataset.f]; render(); },
+  'hair-reg': t => {
+    const doc = getDia(S.dia), dr = S.hairDraft[S.dia] || {};
+    doc.cabelo = t.dataset.t === 'cowash' ? {tipo:'cowash'} : {tipo:'lavagem', detox:!!dr.detox, acid:!!dr.acid};
+    saveDia(doc); toast(t.dataset.t === 'cowash' ? 'Cowash registrado' : 'Lavagem registrada');
+  },
+  'hair-fix': t => { const doc = getDia(S.dia); if (!doc.cabelo) return; doc.cabelo[t.dataset.f] = !doc.cabelo[t.dataset.f]; saveDia(doc); },
+  'hair-undo': () => { const doc = getDia(S.dia); doc.cabelo = null; delete S.hairDraft[S.dia]; saveDia(doc); },
+  'extra-open': () => { S.extraForm = true; render(); },
+  'extra-cancel': () => { S.extraForm = false; render(); },
+  'extra-save': () => {
+    let tipo = val('ex-tipo');
+    if (tipo === '__outro') {
+      tipo = val('ex-outro').trim(); if (!tipo) { toast('Escreva o nome do novo cuidado'); return; }
+      const lista = extrasTipos(); if (!lista.includes(tipo)) Store.write('config', 'geral', Object.assign(clone(cfg()), {extras:[...lista, tipo]}));
+    }
+    const pid = val('ex-prod'), p = pid && S.produtos[pid];
+    const doc = getDia(S.dia);
+    doc.extras = doc.extras || [];
+    doc.extras.push({id:uid('x'), tipo, produto:pid||'', prodNome:p ? pNome(p) : ''});
+    if (p && document.getElementById('ex-desc').checked) {
+      const q = Math.max(0, (p.qtd ?? 1) - 1);
+      Store.write('produtos', pid, Object.assign(clone(p), {qtd:q}, q === 0 ? {acabou:true, acabouEm:S.dia} : {}));
+    }
+    S.extraForm = false; saveDia(doc); toast(tipo+' registrado');
+  },
+  'extra-del': t => { const doc = getDia(S.dia); doc.extras.splice(+t.dataset.i, 1); saveDia(doc); },
+  reg: t => { S.reg = t.dataset.r; render(); },
+  acabados: () => { S.acabados = !S.acabados; render(); },
+  'prod-new': () => prodModal(null),
+  'prod-edit': t => prodModal(t.dataset.id),
+  'prod-save': t => {
+    const id = t.dataset.id || uid('p');
+    const old = S.produtos[id] || {};
+    const nome = val('pf-nome').trim(); if (!nome) { toast('Dê um nome ao produto'); return; }
+    const qtd = Math.max(0, parseInt(val('pf-qtd'), 10) || 0);
+    const p = Object.assign(clone(old), {regiao:val('pf-regiao'), cat:val('pf-cat').trim(), marca:val('pf-marca').trim(), nome, qtd, status:val('pf-status'), val:val('pf-val'), viagem:document.getElementById('pf-viagem').checked, obs:val('pf-obs').trim(), periodo:val('pf-periodo'), prio:parseInt(val('pf-prio'),10)||0});
+    if (!old.criadoEm) p.criadoEm = hoje();
+    Store.write('produtos', id, p); closeModal(); toast('Produto salvo');
+  },
+  'prod-acabou': t => { const id = t.dataset.id; Store.write('produtos', id, Object.assign(clone(S.produtos[id]), {acabou:true, acabouEm:hoje()})); closeModal(); toast('Marcado como acabado'); },
+  'prod-restore': t => { const id = t.dataset.id; const p = clone(S.produtos[id]); p.acabou = false; delete p.acabouEm; if (!p.qtd) p.qtd = 1; Store.write('produtos', id, p); closeModal(); toast('Produto restaurado'); },
+  'prod-del': t => { Store.write('produtos', t.dataset.id, null); closeModal(); toast('Produto excluído'); },
+  'rot-sel': t => { S.verSel = t.dataset.id; render(); },
+  'rot-nova': () => { const base = versaoPara(hoje()) || {nome:'', inicio:hoje(), periodos:[{id:'manha', nome:'Diurna', sigla:'D', etapas:[]},{id:'noite', nome:'Noturna', sigla:'N', etapas:[]}]}; abrirEditor(base, true); },
+  'rot-edit': t => abrirEditor(Object.assign({id:t.dataset.id}, S.rotinas[t.dataset.id]), false),
+  'rot-del': t => { Store.write('rotinas', t.dataset.id, null); S.verSel = null; toast('Versão excluída'); },
+  'ed-mv': t => { const p = S.ed.periodos[+t.dataset.pi], i = +t.dataset.ei, j = i + +t.dataset.d; if (j < 0 || j >= p.etapas.length) return; [p.etapas[i], p.etapas[j]] = [p.etapas[j], p.etapas[i]]; renderEditor(); },
+  'ed-step-del': t => { S.ed.periodos[+t.dataset.pi].etapas.splice(+t.dataset.ei, 1); renderEditor(); },
+  'ed-step-add': t => { S.ed.periodos[+t.dataset.pi].etapas.push(novaEtapa()); renderEditor(); },
+  'ed-rule-add': t => { const e = S.ed.periodos[+t.dataset.pi].etapas[+t.dataset.ei]; e.regras.push({dias:[], rotulo:'', cats:[]}); renderEditor(); },
+  'ed-rule-del': t => { const e = S.ed.periodos[+t.dataset.pi].etapas[+t.dataset.ei]; e.regras.splice(+t.dataset.ri, 1); renderEditor(); },
+  'ed-day': t => {
+    const e = S.ed.periodos[+t.dataset.pi].etapas[+t.dataset.ei], ri = +t.dataset.ri, wd = +t.dataset.wd, r = e.regras[ri];
+    if (r.dias.includes(wd)) r.dias = r.dias.filter(x => x !== wd);
+    else { e.regras.forEach((o,oi) => { if (oi !== ri) o.dias = o.dias.filter(x => x !== wd); }); r.dias.push(wd); r.dias.sort(); }
+    renderEditor();
+  },
+  'ed-cat-add': t => { const {pi,ei,ri} = t.dataset; const v = val(`ed-${pi}-${ei}-${ri}-cat`).trim(); if (!v) return; const r = S.ed.periodos[+pi].etapas[+ei].regras[+ri]; if (!r.cats.includes(v)) r.cats.push(v); renderEditor(); },
+  'ed-cat-del': t => { const {pi,ei,ri,ci} = t.dataset; S.ed.periodos[+pi].etapas[+ei].regras[+ri].cats.splice(+ci, 1); renderEditor(); },
+  'ed-hday': t => { const c = S.ed.cabelo, wd = +t.dataset.wd; c.prioridade = c.prioridade.includes(wd) ? c.prioridade.filter(x => x !== wd) : [...c.prioridade, wd].sort(); renderEditor(); },
+  'ed-save': () => {
+    const ed = S.ed, msg = document.getElementById('ed-msg');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(ed.inicio || '')) { msg.innerHTML = '<div class="banner bad">Escolha a data de início.</div>'; return; }
+    const clash = versoes().find(v => v.inicio === ed.inicio && v.id !== ed.id);
+    if (clash) { msg.innerHTML = `<div class="banner bad">Já existe a versão "${h(clash.nome)}" começando em ${fmtCurto(ed.inicio)}. Escolha outra data ou edite aquela.</div>`; return; }
+    const id = ed.id; const body = clone(ed); delete body.id;
+    body.nome = (body.nome || '').trim() || 'Rotina de '+fmtCurto(body.inicio);
+    body.atualizadoEm = hoje();
+    Store.write('rotinas', id, body); S.verSel = id; closeModal();
+    toast(S.edNova ? 'Nova versão vale a partir de '+fmtCurto(body.inicio) : 'Versão atualizada');
+  },
+  close: () => closeModal(),
+  exportar: async () => {
+    const dados = {app:'necessaire', versao:1, exportadoEm:new Date().toISOString(), produtos:S.produtos, rotinas:S.rotinas, diario:S.diario, config:S.config};
+    const nome = 'necessaire-backup-'+hoje()+'.json', txt = JSON.stringify(dados, null, 1);
+    let dl = null;
+    try { dl = (window.claude && window.claude.use) ? await window.claude.use('downloads') : null; } catch(e) {}
+    if (dl) { try { await dl.save({filename:nome, data:txt}); toast('Backup salvo'); } catch(e) { if (e && e.code !== 'declined') toast('Não foi possível salvar o backup aqui.'); } return; }
+    const url = URL.createObjectURL(new Blob([txt], {type:'application/json'}));
+    const a = document.createElement('a'); a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  },
+  'importar-ok': () => {
+    const j = S.importando; if (!j) return;
+    ['produtos','rotinas','diario','config'].forEach(col => {
+      const novo = j[col] || {};
+      Object.keys(S[col]).forEach(id => { if (!(id in novo)) Store.write(col, id, null); });
+      Object.entries(novo).forEach(([id,doc]) => Store.write(col, id, doc));
+    });
+    S.importando = null; document.getElementById('imp-msg').innerHTML = ''; toast('Backup importado');
+  },
+  'importar-cancel': () => { S.importando = null; document.getElementById('imp-msg').innerHTML = ''; },
+  'hist-dia': t => { S.dia = t.dataset.d; location.hash = 'hoje'; },
+  mes: t => { const [y,m] = S.mes.split('-').map(Number); const d = new Date(y, m-1 + +t.dataset.n, 1, 12); S.mes = d.getFullYear()+'-'+pad(d.getMonth()+1); render(); }
+};
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('[data-act]'); if (!t) return;
+  if (t.dataset.act === 'backdrop') { if (ev.target === t) closeModal(); return; }
+  if (t.dataset.confirm && !t.classList.contains('armed')) {
+    t.classList.add('armed'); const old = t.textContent; t.textContent = t.dataset.confirm;
+    setTimeout(() => { t.classList.remove('armed'); t.textContent = old; }, 4000); return;
+  }
+  const fn = A[t.dataset.act]; if (fn) fn(t, ev);
+});
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.id === 'busca') { S.busca = t.value; const pl = document.getElementById('plist'); if (pl) pl.innerHTML = listaProdutos(); return; }
+  if (t.dataset && t.dataset.ed && S.ed) {
+    let v = t.value;
+    if ('num' in t.dataset) v = Math.max(0, parseInt(v, 10) || 0);
+    if ('bool' in t.dataset) v = t.checked;
+    setPath(S.ed, t.dataset.ed, v);
+  }
+});
+document.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.dataset && 'bool' in t.dataset && S.ed) setPath(S.ed, t.dataset.ed, t.checked);
+  if (t.id === 'imp-file' && t.files && t.files[0]) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const msg = document.getElementById('imp-msg');
+      try {
+        const j = JSON.parse(fr.result);
+        if (j.app !== 'necessaire' || !j.produtos || !j.rotinas) throw new Error('formato');
+        S.importando = j;
+        msg.innerHTML = impMsg();
+      } catch(e) { msg.innerHTML = '<div class="banner bad">Este arquivo não é um backup do Nécessaire.</div>'; }
+      t.value = '';
+    };
+    fr.readAsText(t.files[0]);
+  }
+});
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && $('#modal').firstChild) closeModal(); });
+function route(){ const k = (location.hash || '#hoje').slice(1); S.view = VIEWS.some(v => v[0] === k) ? k : 'hoje'; closeModal(); render(); window.scrollTo(0,0); }
+window.addEventListener('hashchange', route);
+S.view = VIEWS.some(v => v[0] === location.hash.slice(1)) ? location.hash.slice(1) : 'hoje';
+renderNav();
+Store.init();
+})();
 </script>
-<script>if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));</script>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
 </body>
 </html>

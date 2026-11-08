@@ -1,31 +1,35 @@
-# Nécessaire da Karine
+# Nécessaire
 
-PWA estático (um `index.html`, sem build) para estoque de cosméticos por validade e rotina diária de skincare/haircare. Dados iniciais vêm da planilha `Cosméticos.xlsb` (abas Produtos + Esmaltes, 110 itens).
+App web para a rotina de skincare, o cabelo e o estoque de cosméticos. Funciona instalado na tela inicial do celular e também sem internet.
 
 ## Publicar no GitHub Pages
-1. Crie o repo (ex.: `necessaire`) e suba estes arquivos na raiz.
-2. Settings → Pages → Source: `Deploy from a branch` → `main` / `(root)`.
-3. Abra `https://<usuario>.github.io/necessaire/` no celular dela → Compartilhar → **Adicionar à Tela de Início**.
-   - Instalado como app, o iOS não apaga o `localStorage` por inatividade (no Safari comum ele pode apagar após 7 dias sem uso).
 
-## Modelo de dados (`localStorage['necessaire.v1']`)
-| Campo | Uso |
+1. Crie um repositório (ex.: `necessaire`) e envie **todos** os arquivos desta pasta para a raiz, incluindo a pasta `icons/`.
+2. No repositório, abra **Settings → Pages**. Em *Source*, escolha **Deploy from a branch**, depois a branch `main` e a pasta `/ (root)`. Salve.
+3. Em 1 ou 2 minutos o endereço `https://SEU-USUARIO.github.io/necessaire/` fica no ar.
+
+## Instalar no celular
+
+- **iPhone (Safari):** abra o endereço → botão Compartilhar → **Adicionar à Tela de Início**.
+- **Android (Chrome):** abra o endereço → menu ⋮ → **Instalar app** (ou *Adicionar à tela inicial*).
+
+## Onde ficam os dados
+
+- Na primeira abertura, o app carrega `dados-iniciais.json` (seus produtos e a rotina da planilha).
+- Depois disso, tudo o que você marca fica salvo **no próprio aparelho**. Não é enviado para o GitHub.
+- Para guardar uma cópia ou passar os dados para outro aparelho, use **Rotina → Backup dos dados → Exportar / Importar**.
+- Apagar os dados do site no navegador ou desinstalar o app apaga os registros. Exporte um backup de vez em quando.
+
+## Atualizar o app
+
+Substitua o `index.html` no repositório e aumente o número em `sw.js` (`necessaire-v2` → `necessaire-v3`). Assim o celular baixa a versão nova. Seus dados continuam no aparelho.
+
+## Arquivos
+
+| Arquivo | Para que serve |
 |---|---|
-| `produtos[]` | `id, regiao, tipo, etapa, marca, nome, qtd, status(fechado/uso/acabou), validade, aberto, pao, ativo` |
-| `plano.noite[7]` | foco por dia da semana: `acido / retinol / hidrat / argila` |
-| `plano.cabelo[7]` | `null / lavagem / tratamento` |
-| `plano.anchor` | domingo de referência do cronograma capilar (Acidificação → Nutrição → Reconstrução) |
-| `log[YYYY-MM-DD][manha/noite/cabelo]` | `{mode, sel{etapa:id/'skip'}, done{etapa:true}}` |
-| `last[rotina:etapa]` | última escolha → vira sugestão padrão |
-
-Validade efetiva = `min(VAL da embalagem, data de abertura + PAO)`.
-Sugestão automática por etapa: indicado para o foco do dia > última escolha > FEFO (o que vence primeiro), nunca vencido.
-
-## Roadmap
-| Fase | Entrega | Como |
-|---|---|---|
-| 1 ✅ | Estoque, rotina visual, plano semanal, backup por texto | este repo |
-| 2 | Leitura de código de barras para cadastrar | `html5-qrcode` + Open Beauty Facts (`/api/v2/product/{EAN}.json`) para preencher marca/nome |
-| 3 | Sincronizar entre celulares | `data.json` no próprio repo via GitHub REST (`PUT /repos/{owner}/{repo}/contents/data.json`) com token fine-grained guardado no aparelho |
-| 4 | Alerta de vencimento | GitHub Actions agendado lê `data.json` e manda e-mail/Telegram com o que vence em 30 dias |
-| 5 | Etapas editáveis por rotina e rotina de corpo/unhas | trocar a função `etapas()` por modelos salvos em `plano` |
+| `index.html` | O app inteiro |
+| `dados-iniciais.json` | Produtos e rotina importados da planilha (usado só na primeira abertura) |
+| `manifest.webmanifest` | Nome, cores e ícone do app instalado |
+| `sw.js` | Faz o app abrir sem internet |
+| `icons/` | Ícones da tela inicial |
